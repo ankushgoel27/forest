@@ -1832,6 +1832,7 @@
 <a href="#1832" id="1832">1832</a>
 <a href="#1833" id="1833">1833</a>
 <a href="#1834" id="1834">1834</a>
+<a href="#1835" id="1835">1835</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1869,7 +1870,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::shim::{clock::ChainEpoch, state_tree::StateTree};
 <span class="kw">use </span><span class="kw">crate</span>::utils::db::BlockstoreExt <span class="kw">as _</span>;
 <span class="kw">use </span>anyhow::{bail, <span class="prelude-ty">Result</span>};
-<span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>cbor4ii::core::dec::Decode <span class="kw">as _</span>;
+<span class="kw">use </span>cbor4ii::core::Value;
 <span class="kw">use </span>cid::Cid;
 <span class="kw">use </span>fvm_ipld_blockstore::Blockstore;
 <span class="kw">use </span>fvm_ipld_encoding::{RawBytes, CBOR, DAG_CBOR, IPLD_RAW};
@@ -2640,10 +2642,10 @@
 </span><span class="kw">fn </span>decode_payload(payload: <span class="kw-2">&amp;</span>fvm_ipld_encoding::RawBytes, codec: u64) -&gt; <span class="prelude-ty">Result</span>&lt;EthBytes&gt; {
     <span class="kw">match </span>codec {
         DAG_CBOR | CBOR =&gt; {
-            <span class="kw">let </span>result: <span class="prelude-ty">Result</span>&lt;Vec&lt;u8&gt;, <span class="kw">_</span>&gt; = serde_ipld_dagcbor::de::from_reader(payload.reader());
-            <span class="kw">match </span>result {
-                <span class="prelude-val">Ok</span>(buffer) =&gt; <span class="prelude-val">Ok</span>(EthBytes(buffer)),
-                <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">bail!</span>(<span class="string">"decode_payload: failed to decode cbor payload: {err}"</span>),
+            <span class="kw">let </span><span class="kw-2">mut </span>reader = cbor4ii::core::utils::SliceReader::new(payload.bytes());
+            <span class="kw">match </span>Value::decode(<span class="kw-2">&amp;mut </span>reader) {
+                <span class="prelude-val">Ok</span>(Value::Bytes(bytes)) =&gt; <span class="prelude-val">Ok</span>(EthBytes(bytes)),
+                <span class="kw">_ </span>=&gt; <span class="macro">bail!</span>(<span class="string">"failed to read params byte array"</span>),
             }
         }
         IPLD_RAW =&gt; <span class="prelude-val">Ok</span>(EthBytes(payload.to_vec())),
