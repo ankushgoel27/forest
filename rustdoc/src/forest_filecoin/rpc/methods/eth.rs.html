@@ -1833,6 +1833,26 @@
 <a href="#1833" id="1833">1833</a>
 <a href="#1834" id="1834">1834</a>
 <a href="#1835" id="1835">1835</a>
+<a href="#1836" id="1836">1836</a>
+<a href="#1837" id="1837">1837</a>
+<a href="#1838" id="1838">1838</a>
+<a href="#1839" id="1839">1839</a>
+<a href="#1840" id="1840">1840</a>
+<a href="#1841" id="1841">1841</a>
+<a href="#1842" id="1842">1842</a>
+<a href="#1843" id="1843">1843</a>
+<a href="#1844" id="1844">1844</a>
+<a href="#1845" id="1845">1845</a>
+<a href="#1846" id="1846">1846</a>
+<a href="#1847" id="1847">1847</a>
+<a href="#1848" id="1848">1848</a>
+<a href="#1849" id="1849">1849</a>
+<a href="#1850" id="1850">1850</a>
+<a href="#1851" id="1851">1851</a>
+<a href="#1852" id="1852">1852</a>
+<a href="#1853" id="1853">1853</a>
+<a href="#1854" id="1854">1854</a>
+<a href="#1855" id="1855">1855</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -2292,6 +2312,7 @@
 <span class="kw">pub enum </span>Web3ClientVersion {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>Web3ClientVersion {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.Web3ClientVersion"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"web3_clientVersion"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2310,6 +2331,7 @@
 <span class="kw">pub enum </span>EthAccounts {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthAccounts {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthAccounts"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_accounts"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2329,6 +2351,7 @@
 <span class="kw">pub enum </span>EthBlockNumber {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthBlockNumber {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthBlockNumber"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_blockNumber"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2363,6 +2386,7 @@
 <span class="kw">pub enum </span>EthChainId {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthChainId {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthChainId"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_chainId"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2381,6 +2405,7 @@
 <span class="kw">pub enum </span>EthGasPrice {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthGasPrice {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGasPrice"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_gasPrice"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2407,6 +2432,7 @@
 <span class="kw">pub enum </span>EthGetBalance {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">2</span>&gt; <span class="kw">for </span>EthGetBalance {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetBalance"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getBalance"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">2</span>] = [<span class="string">"address"</span>, <span class="string">"block_param"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2822,6 +2848,7 @@
 <span class="kw">pub enum </span>EthGetBlockByHash {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">2</span>&gt; <span class="kw">for </span>EthGetBlockByHash {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetBlockByHash"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getBlockByHash"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">2</span>] = [<span class="string">"block_param"</span>, <span class="string">"full_tx_info"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2842,6 +2869,7 @@
 <span class="kw">pub enum </span>EthGetBlockByNumber {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">2</span>&gt; <span class="kw">for </span>EthGetBlockByNumber {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetBlockByNumber"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getBlockByNumber"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">2</span>] = [<span class="string">"block_param"</span>, <span class="string">"full_tx_info"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2862,6 +2890,7 @@
 <span class="kw">pub enum </span>EthGetBlockTransactionCountByHash {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>EthGetBlockTransactionCountByHash {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetBlockTransactionCountByHash"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getBlockTransactionCountByHash"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">1</span>] = [<span class="string">"block_hash"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2887,6 +2916,7 @@
 <span class="kw">pub enum </span>EthGetBlockTransactionCountByNumber {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>EthGetBlockTransactionCountByNumber {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetBlockTransactionCountByNumber"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getBlockTransactionCountByNumber"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">1</span>] = [<span class="string">"block_number"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2914,6 +2944,7 @@
 <span class="kw">pub enum </span>EthGetMessageCidByTransactionHash {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>EthGetMessageCidByTransactionHash {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetMessageCidByTransactionHash"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getMessageCidByTransactionHash"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">1</span>] = [<span class="string">"tx_hash"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -2973,6 +3004,7 @@
 <span class="kw">pub enum </span>EthSyncing {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthSyncing {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthSyncing"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_syncing"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -3012,6 +3044,7 @@
 
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">2</span>&gt; <span class="kw">for </span>EthEstimateGas {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthEstimateGas"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_estimateGas"</span>);
     <span class="kw">const </span>N_REQUIRED_PARAMS: usize = <span class="number">1</span>;
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">2</span>] = [<span class="string">"tx"</span>, <span class="string">"block_param"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
@@ -3165,6 +3198,7 @@
 
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">3</span>&gt; <span class="kw">for </span>EthFeeHistory {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthFeeHistory"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_feeHistory"</span>);
     <span class="kw">const </span>N_REQUIRED_PARAMS: usize = <span class="number">2</span>;
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">3</span>] =
         [<span class="string">"block_count"</span>, <span class="string">"newest_block_number"</span>, <span class="string">"reward_percentiles"</span>];
@@ -3294,6 +3328,7 @@
 <span class="kw">pub enum </span>EthGetCode {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">2</span>&gt; <span class="kw">for </span>EthGetCode {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetCode"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getCode"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">2</span>] = [<span class="string">"eth_address"</span>, <span class="string">"block_number_or_hash"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -3355,6 +3390,7 @@
 <span class="kw">pub enum </span>EthGetStorageAt {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">3</span>&gt; <span class="kw">for </span>EthGetStorageAt {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetStorageAt"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getStorageAt"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">3</span>] = [<span class="string">"eth_address"</span>, <span class="string">"position"</span>, <span class="string">"block_number_or_hash"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -3428,6 +3464,7 @@
 <span class="kw">pub enum </span>EthGetTransactionCount {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">2</span>&gt; <span class="kw">for </span>EthGetTransactionCount {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetTransactionCount"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getTransactionCount"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">2</span>] = [<span class="string">"sender"</span>, <span class="string">"block_param"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -3460,6 +3497,7 @@
 <span class="kw">pub enum </span>EthMaxPriorityFeePerGas {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthMaxPriorityFeePerGas {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthMaxPriorityFeePerGas"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_maxPriorityFeePerGas"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -3481,6 +3519,7 @@
 <span class="kw">pub enum </span>EthProtocolVersion {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthProtocolVersion {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthProtocolVersion"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_protocolVersion"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
@@ -3501,6 +3540,7 @@
 <span class="kw">pub enum </span>EthGetTransactionHashByCid {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>EthGetTransactionHashByCid {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthGetTransactionHashByCid"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_getTransactionHashByCid"</span>);
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">1</span>] = [<span class="string">"cid"</span>];
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;

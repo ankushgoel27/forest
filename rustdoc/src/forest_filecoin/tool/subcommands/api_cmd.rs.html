@@ -1979,6 +1979,30 @@
 <a href="#1979" id="1979">1979</a>
 <a href="#1980" id="1980">1980</a>
 <a href="#1981" id="1981">1981</a>
+<a href="#1982" id="1982">1982</a>
+<a href="#1983" id="1983">1983</a>
+<a href="#1984" id="1984">1984</a>
+<a href="#1985" id="1985">1985</a>
+<a href="#1986" id="1986">1986</a>
+<a href="#1987" id="1987">1987</a>
+<a href="#1988" id="1988">1988</a>
+<a href="#1989" id="1989">1989</a>
+<a href="#1990" id="1990">1990</a>
+<a href="#1991" id="1991">1991</a>
+<a href="#1992" id="1992">1992</a>
+<a href="#1993" id="1993">1993</a>
+<a href="#1994" id="1994">1994</a>
+<a href="#1995" id="1995">1995</a>
+<a href="#1996" id="1996">1996</a>
+<a href="#1997" id="1997">1997</a>
+<a href="#1998" id="1998">1998</a>
+<a href="#1999" id="1999">1999</a>
+<a href="#2000" id="2000">2000</a>
+<a href="#2001" id="2001">2001</a>
+<a href="#2002" id="2002">2002</a>
+<a href="#2003" id="2003">2003</a>
+<a href="#2004" id="2004">2004</a>
+<a href="#2005" id="2005">2005</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3188,31 +3212,55 @@
 }
 
 <span class="kw">fn </span>eth_tests() -&gt; Vec&lt;RpcTest&gt; {
-    <span class="macro">vec!</span>[
-        RpcTest::identity(EthAccounts::request(()).unwrap()),
-        RpcTest::basic(EthBlockNumber::request(()).unwrap()),
-        RpcTest::identity(EthChainId::request(()).unwrap()),
+    <span class="kw">let </span><span class="kw-2">mut </span>tests = <span class="macro">vec!</span>[];
+    <span class="kw">for </span>use_alias <span class="kw">in </span>[<span class="bool-val">false</span>, <span class="bool-val">true</span>] {
+        tests.push(RpcTest::identity(
+            EthAccounts::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::basic(
+            EthBlockNumber::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::identity(
+            EthChainId::request_with_alias((), use_alias).unwrap(),
+        ));
         <span class="comment">// There is randomness in the result of this API
-        </span>RpcTest::basic(EthGasPrice::request(()).unwrap()),
-        RpcTest::basic(EthSyncing::request(()).unwrap()),
-        RpcTest::identity(
-            EthGetBalance::request((
-                EthAddress::from_str(<span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>).unwrap(),
-                BlockNumberOrHash::from_predefined(Predefined::Latest),
-            ))
+        </span>tests.push(RpcTest::basic(
+            EthGasPrice::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::basic(
+            EthSyncing::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::identity(
+            EthGetBalance::request_with_alias(
+                (
+                    EthAddress::from_str(<span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>).unwrap(),
+                    BlockNumberOrHash::from_predefined(Predefined::Latest),
+                ),
+                use_alias,
+            )
             .unwrap(),
-        ),
-        RpcTest::identity(
-            EthGetBalance::request((
-                EthAddress::from_str(<span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>).unwrap(),
-                BlockNumberOrHash::from_predefined(Predefined::Pending),
-            ))
+        ));
+        tests.push(RpcTest::identity(
+            EthGetBalance::request_with_alias(
+                (
+                    EthAddress::from_str(<span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>).unwrap(),
+                    BlockNumberOrHash::from_predefined(Predefined::Pending),
+                ),
+                use_alias,
+            )
             .unwrap(),
-        ),
-        RpcTest::basic(Web3ClientVersion::request(()).unwrap()),
-        RpcTest::basic(EthMaxPriorityFeePerGas::request(()).unwrap()),
-        RpcTest::identity(EthProtocolVersion::request(()).unwrap()),
-    ]
+        ));
+        tests.push(RpcTest::basic(
+            Web3ClientVersion::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::basic(
+            EthMaxPriorityFeePerGas::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::identity(
+            EthProtocolVersion::request_with_alias((), use_alias).unwrap(),
+        ));
+    }
+    tests
 }
 
 <span class="kw">fn </span>eth_tests_with_tipset&lt;DB: Blockstore&gt;(store: <span class="kw-2">&amp;</span>Arc&lt;DB&gt;, shared_tipset: <span class="kw-2">&amp;</span>Tipset) -&gt; Vec&lt;RpcTest&gt; {
