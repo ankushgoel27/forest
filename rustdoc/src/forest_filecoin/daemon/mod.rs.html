@@ -791,6 +791,9 @@
 <a href="#791" id="791">791</a>
 <a href="#792" id="792">792</a>
 <a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
+<a href="#795" id="795">795</a>
+<a href="#796" id="796">796</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -959,7 +962,7 @@
         keystore.put(JWT_IDENTIFIER, generate_priv_key())<span class="question-mark">?</span>;
     }
 
-    handle_admin_token(<span class="kw-2">&amp;</span>opts, <span class="kw-2">&amp;</span>config, <span class="kw-2">&amp;</span>keystore)<span class="question-mark">?</span>;
+    handle_admin_token(<span class="kw-2">&amp;</span>opts, <span class="kw-2">&amp;</span>keystore)<span class="question-mark">?</span>;
 
     <span class="kw">let </span>keystore = Arc::new(RwLock::new(keystore));
 
@@ -1364,9 +1367,12 @@
 
 <span class="doccomment">/// Generates, prints and optionally writes to a file the administrator JWT
 /// token.
-</span><span class="kw">fn </span>handle_admin_token(opts: <span class="kw-2">&amp;</span>CliOpts, config: <span class="kw-2">&amp;</span>Config, keystore: <span class="kw-2">&amp;</span>KeyStore) -&gt; anyhow::Result&lt;()&gt; {
+</span><span class="kw">fn </span>handle_admin_token(opts: <span class="kw-2">&amp;</span>CliOpts, keystore: <span class="kw-2">&amp;</span>KeyStore) -&gt; anyhow::Result&lt;()&gt; {
     <span class="kw">let </span>ki = keystore.get(JWT_IDENTIFIER)<span class="question-mark">?</span>;
-    <span class="kw">let </span>token_exp = config.client.token_exp;
+    <span class="comment">// Lotus admin tokens do not expire but Forest requires all JWT tokens to
+    // have an expiration date. So we set the expiration date to 100 years in
+    // the future to match user-visible behavior of Lotus.
+    </span><span class="kw">let </span>token_exp = chrono::Duration::days(<span class="number">365 </span>* <span class="number">100</span>);
     <span class="kw">let </span>token = create_token(
         ADMIN.iter().map(ToString::to_string).collect(),
         ki.private_key(),
