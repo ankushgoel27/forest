@@ -578,6 +578,19 @@
 <a href="#578" id="578">578</a>
 <a href="#579" id="579">579</a>
 <a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -599,6 +612,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::shim::clock::{ChainEpoch, EPOCH_DURATION_SECONDS};
 <span class="kw">use </span><span class="kw">crate</span>::shim::sector::{RegisteredPoStProofV3, RegisteredSealProofV3};
 <span class="kw">use </span><span class="kw">crate</span>::shim::version::NetworkVersion;
+<span class="kw">use </span><span class="kw">crate</span>::utils::misc::env::env_or_default;
 <span class="kw">use crate</span>::{make_butterfly_policy, make_calibnet_policy, make_devnet_policy, make_mainnet_policy};
 
 <span class="kw">mod </span>actors_bundle;
@@ -618,6 +632,9 @@
 
 <span class="doccomment">/// Newest network version for all networks
 </span><span class="kw">pub const </span>NEWEST_NETWORK_VERSION: NetworkVersion = NetworkVersion::V17;
+
+<span class="kw">const </span>ENV_FOREST_BLOCK_DELAY_SECS: <span class="kw-2">&amp;</span>str = <span class="string">"FOREST_BLOCK_DELAY_SECS"</span>;
+<span class="kw">const </span>ENV_FOREST_PROPAGATION_DELAY_SECS: <span class="kw-2">&amp;</span>str = <span class="string">"FOREST_PROPAGATION_DELAY_SECS"</span>;
 
 <span class="doccomment">/// Forest builtin `filecoin` network chains. In general only `mainnet` and its
 /// chain information should be considered stable.
@@ -808,8 +825,11 @@
             network: NetworkChain::Mainnet,
             genesis_cid: <span class="prelude-val">Some</span>(GENESIS_CID.to_string()),
             bootstrap_peers: DEFAULT_BOOTSTRAP.clone(),
-            block_delay_secs: EPOCH_DURATION_SECONDS <span class="kw">as </span>u32,
-            propagation_delay_secs: <span class="number">10</span>,
+            block_delay_secs: env_or_default(
+                ENV_FOREST_BLOCK_DELAY_SECS,
+                EPOCH_DURATION_SECONDS <span class="kw">as </span>u32,
+            ),
+            propagation_delay_secs: env_or_default(ENV_FOREST_PROPAGATION_DELAY_SECS, <span class="number">10</span>),
             genesis_network: GENESIS_NETWORK_VERSION,
             height_infos: HEIGHT_INFOS.clone(),
             policy: <span class="macro">make_mainnet_policy!</span>(v13),
@@ -824,8 +844,11 @@
             network: NetworkChain::Calibnet,
             genesis_cid: <span class="prelude-val">Some</span>(GENESIS_CID.to_string()),
             bootstrap_peers: DEFAULT_BOOTSTRAP.clone(),
-            block_delay_secs: EPOCH_DURATION_SECONDS <span class="kw">as </span>u32,
-            propagation_delay_secs: <span class="number">10</span>,
+            block_delay_secs: env_or_default(
+                ENV_FOREST_BLOCK_DELAY_SECS,
+                EPOCH_DURATION_SECONDS <span class="kw">as </span>u32,
+            ),
+            propagation_delay_secs: env_or_default(ENV_FOREST_PROPAGATION_DELAY_SECS, <span class="number">10</span>),
             genesis_network: GENESIS_NETWORK_VERSION,
             height_infos: HEIGHT_INFOS.clone(),
             policy: <span class="macro">make_calibnet_policy!</span>(v13),
@@ -840,8 +863,8 @@
             network: NetworkChain::Devnet(<span class="string">"devnet"</span>.to_string()),
             genesis_cid: <span class="prelude-val">None</span>,
             bootstrap_peers: Vec::new(),
-            block_delay_secs: <span class="number">4</span>,
-            propagation_delay_secs: <span class="number">1</span>,
+            block_delay_secs: env_or_default(ENV_FOREST_BLOCK_DELAY_SECS, <span class="number">4</span>),
+            propagation_delay_secs: env_or_default(ENV_FOREST_PROPAGATION_DELAY_SECS, <span class="number">1</span>),
             genesis_network: <span class="kw-2">*</span>GENESIS_NETWORK_VERSION,
             height_infos: HEIGHT_INFOS.clone(),
             policy: <span class="macro">make_devnet_policy!</span>(v13),
@@ -857,8 +880,11 @@
             network: NetworkChain::Butterflynet,
             genesis_cid: <span class="prelude-val">Some</span>(GENESIS_CID.to_string()),
             bootstrap_peers: DEFAULT_BOOTSTRAP.clone(),
-            block_delay_secs: EPOCH_DURATION_SECONDS <span class="kw">as </span>u32,
-            propagation_delay_secs: <span class="number">6</span>,
+            block_delay_secs: env_or_default(
+                ENV_FOREST_BLOCK_DELAY_SECS,
+                EPOCH_DURATION_SECONDS <span class="kw">as </span>u32,
+            ),
+            propagation_delay_secs: env_or_default(ENV_FOREST_PROPAGATION_DELAY_SECS, <span class="number">6</span>),
             genesis_network: GENESIS_NETWORK_VERSION,
             height_infos: HEIGHT_INFOS.clone(),
             policy: <span class="macro">make_butterfly_policy!</span>(v13),

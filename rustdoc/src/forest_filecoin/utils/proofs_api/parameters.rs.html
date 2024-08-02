@@ -175,7 +175,7 @@
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>tracing::{debug, warn};
 
-<span class="kw">use </span><span class="kw">super</span>::is_env_truthy;
+<span class="kw">use </span><span class="kw">crate</span>::utils::misc::env::is_env_truthy;
 
 <span class="kw">const </span>PROOF_DIGEST_LEN: usize = <span class="number">16</span>;
 

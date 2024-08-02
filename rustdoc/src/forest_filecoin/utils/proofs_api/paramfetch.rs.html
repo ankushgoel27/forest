@@ -250,7 +250,10 @@
 
 <span class="kw">use crate</span>::{
     shim::sector::SectorSize,
-    utils::net::{download_ipfs_file_trustlessly, global_http_client},
+    utils::{
+        misc::env::is_env_truthy,
+        net::{download_ipfs_file_trustlessly, global_http_client},
+    },
 };
 <span class="kw">use </span>anyhow::{bail, Context};
 <span class="kw">use </span>backoff::{future::retry, ExponentialBackoffBuilder};
@@ -258,12 +261,9 @@
 <span class="kw">use </span>tokio::fs::{<span class="self">self</span>};
 <span class="kw">use </span>tracing::{debug, info, warn};
 
-<span class="kw">use super</span>::{
-    is_env_truthy,
-    parameters::{
-        check_parameter_file, param_dir, ParameterData, ParameterMap, DEFAULT_PARAMETERS,
-        PROOFS_PARAMETER_CACHE_ENV,
-    },
+<span class="kw">use </span><span class="kw">super</span>::parameters::{
+    check_parameter_file, param_dir, ParameterData, ParameterMap, DEFAULT_PARAMETERS,
+    PROOFS_PARAMETER_CACHE_ENV,
 };
 
 <span class="doccomment">/// Default IPFS gateway to use for fetching parameters.
