@@ -547,7 +547,7 @@
     executor::Receipt,
     fvm_shared_latest::MethodNum,
     message::Message,
-    sector::{ExtendedSectorInfo, RegisteredSealProof, SectorNumber, StoragePower},
+    sector::{RegisteredSealProof, SectorInfo, SectorNumber, StoragePower},
 };
 <span class="kw">use </span>cid::Cid;
 <span class="kw">use </span>fil_actor_interface::market::AllocationID;
@@ -1025,8 +1025,8 @@
     #[schemars(with = <span class="string">"LotusJson&lt;StoragePower&gt;"</span>)]
     </span><span class="kw">pub </span>network_power: StoragePower,
     <span class="attr">#[serde(with = <span class="string">"crate::lotus_json"</span>)]
-    #[schemars(with = <span class="string">"LotusJson&lt;Vec&lt;ExtendedSectorInfo&gt;&gt;"</span>)]
-    </span><span class="kw">pub </span>sectors: Vec&lt;ExtendedSectorInfo&gt;,
+    #[schemars(with = <span class="string">"LotusJson&lt;Vec&lt;SectorInfo&gt;&gt;"</span>)]
+    </span><span class="kw">pub </span>sectors: Vec&lt;SectorInfo&gt;,
     <span class="attr">#[serde(with = <span class="string">"crate::lotus_json"</span>)]
     #[schemars(with = <span class="string">"LotusJson&lt;Address&gt;"</span>)]
     </span><span class="kw">pub </span>worker_key: Address,

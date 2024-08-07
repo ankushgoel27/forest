@@ -495,11 +495,6 @@
 <a href="#495" id="495">495</a>
 <a href="#496" id="496">496</a>
 <a href="#497" id="497">497</a>
-<a href="#498" id="498">498</a>
-<a href="#499" id="499">499</a>
-<a href="#500" id="500">500</a>
-<a href="#501" id="501">501</a>
-<a href="#502" id="502">502</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -507,7 +502,7 @@
     actors::{is_account_actor, is_ethaccount_actor, is_placeholder_actor},
     address::{Address, Payload},
     randomness::Randomness,
-    sector::{ExtendedSectorInfo, RegisteredPoStProof, RegisteredSealProof},
+    sector::{RegisteredPoStProof, RegisteredSealProof, SectorInfo},
     state_tree::ActorState,
     version::NetworkVersion,
 };
@@ -535,7 +530,7 @@
         nv: NetworkVersion,
         miner_address: <span class="kw-2">&amp;</span>Address,
         rand: Randomness,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;ExtendedSectorInfo&gt;, anyhow::Error&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;SectorInfo&gt;, anyhow::Error&gt; {
         <span class="kw">let </span>store = <span class="self">self</span>.blockstore();
 
         <span class="kw">let </span>actor = <span class="self">self
@@ -604,12 +599,7 @@
 
         <span class="kw">let </span>out = sectors
             .into_iter()
-            .map(|s_info| ExtendedSectorInfo {
-                proof: s_info.seal_proof.into(),
-                sector_number: s_info.sector_number,
-                sector_key: s_info.sector_key_cid,
-                sealed_cid: s_info.sealed_cid,
-            })
+            .map(|s_info| SectorInfo::new(<span class="kw-2">*</span>spt, s_info.sector_number, s_info.sealed_cid))
             .collect();
 
         <span class="prelude-val">Ok</span>(out)
