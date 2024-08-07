@@ -95,6 +95,7 @@
 <a href="#95" id="95">95</a>
 <a href="#96" id="96">96</a>
 <a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -107,6 +108,8 @@
 <span class="kw">use </span>directories::ProjectDirs;
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>serde_with::serde_as;
+
+<span class="kw">use </span><span class="kw">crate</span>::daemon::db_util::ImportMode;
 
 <span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(transparent)]
@@ -138,11 +141,10 @@
     <span class="kw">pub </span>enable_rpc: bool,
     <span class="kw">pub </span>enable_metrics_endpoint: bool,
     <span class="kw">pub </span>enable_health_check: bool,
-    <span class="doccomment">/// If this is true, delete the snapshot at `snapshot_path` if it's a local file.
-    </span><span class="kw">pub </span>consume_snapshot: bool,
     <span class="kw">pub </span>snapshot_height: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="kw">pub </span>snapshot_head: <span class="prelude-ty">Option</span>&lt;i64&gt;,
     <span class="kw">pub </span>snapshot_path: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
+    <span class="kw">pub </span>import_mode: ImportMode,
     <span class="doccomment">/// Skips loading import CAR file and assumes it's already been loaded.
     /// Will use the CIDs in the header of the file to index the chain.
     </span><span class="kw">pub </span>skip_load: bool,
@@ -174,7 +176,7 @@
             enable_metrics_endpoint: <span class="bool-val">true</span>,
             enable_health_check: <span class="bool-val">true</span>,
             snapshot_path: <span class="prelude-val">None</span>,
-            consume_snapshot: <span class="bool-val">false</span>,
+            import_mode: ImportMode::default(),
             snapshot_height: <span class="prelude-val">None</span>,
             snapshot_head: <span class="prelude-val">None</span>,
             skip_load: <span class="bool-val">false</span>,

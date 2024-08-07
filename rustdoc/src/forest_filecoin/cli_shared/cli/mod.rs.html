@@ -401,12 +401,6 @@
 <a href="#401" id="401">401</a>
 <a href="#402" id="402">402</a>
 <a href="#403" id="403">403</a>
-<a href="#404" id="404">404</a>
-<a href="#405" id="405">405</a>
-<a href="#406" id="406">406</a>
-<a href="#407" id="407">407</a>
-<a href="#408" id="408">408</a>
-<a href="#409" id="409">409</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -418,9 +412,9 @@
     path::{Path, PathBuf},
 };
 
-<span class="kw">use </span><span class="kw">crate</span>::cli_shared::read_config;
 <span class="kw">use </span><span class="kw">crate</span>::networks::NetworkChain;
 <span class="kw">use </span><span class="kw">crate</span>::utils::misc::LoggingColor;
+<span class="kw">use crate</span>::{cli_shared::read_config, daemon::db_util::ImportMode};
 <span class="kw">use </span>ahash::HashSet;
 <span class="kw">use </span>clap::Parser;
 <span class="kw">use </span>directories::ProjectDirs;
@@ -493,9 +487,9 @@ OPTIONS:
     <span class="doccomment">/// Import a snapshot from a local CAR file or URL
     </span><span class="attr">#[arg(long)]
     </span><span class="kw">pub </span>import_snapshot: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// Import a snapshot from a local CAR file and delete it, or from a URL
-    </span><span class="attr">#[arg(long)]
-    </span><span class="kw">pub </span>consume_snapshot: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// Snapshot import mode. Available modes are `copy`, `move` and `symlink`.
+    </span><span class="attr">#[arg(long, default_value = <span class="string">"copy"</span>)]
+    </span><span class="kw">pub </span>import_mode: ImportMode,
     <span class="doccomment">/// Halt with exit code 0 after successfully importing a snapshot
     </span><span class="attr">#[arg(long)]
     </span><span class="kw">pub </span>halt_after_import: bool,
@@ -603,17 +597,11 @@ OPTIONS:
             cfg.network.listening_multiaddrs.clone_from(addresses);
         }
 
-        <span class="kw">if </span><span class="self">self</span>.import_snapshot.is_some() &amp;&amp; <span class="self">self</span>.consume_snapshot.is_some() {
-            <span class="macro">anyhow::bail!</span>(<span class="string">"Can't set import_snapshot and consume_snapshot at the same time!"</span>)
-        }
-
         <span class="kw">if let </span><span class="prelude-val">Some</span>(snapshot_path) = <span class="kw-2">&amp;</span><span class="self">self</span>.import_snapshot {
             cfg.client.snapshot_path = <span class="prelude-val">Some</span>(snapshot_path.into());
+            cfg.client.import_mode = <span class="self">self</span>.import_mode;
         }
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(snapshot_path) = <span class="kw-2">&amp;</span><span class="self">self</span>.consume_snapshot {
-            cfg.client.snapshot_path = <span class="prelude-val">Some</span>(snapshot_path.into());
-            cfg.client.consume_snapshot = <span class="bool-val">true</span>;
-        }
+
         cfg.client.snapshot_height = <span class="self">self</span>.height;
         cfg.client.snapshot_head = <span class="self">self</span>.head.map(|head| head <span class="kw">as </span>i64);
         <span class="kw">if let </span><span class="prelude-val">Some</span>(skip_load) = <span class="self">self</span>.skip_load {

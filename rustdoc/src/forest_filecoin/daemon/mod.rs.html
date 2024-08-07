@@ -789,9 +789,6 @@
 <a href="#789" id="789">789</a>
 <a href="#790" id="790">790</a>
 <a href="#791" id="791">791</a>
-<a href="#792" id="792">792</a>
-<a href="#793" id="793">793</a>
-<a href="#794" id="794">794</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1231,12 +1228,9 @@
     <span class="comment">// Import chain if needed
     </span><span class="kw">if </span>!opts.skip_load.unwrap_or_default() {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(path) = <span class="kw-2">&amp;</span>config.client.snapshot_path {
-            <span class="kw">let </span>(car_db_path, ts) = import_chain_as_forest_car(
-                path,
-                <span class="kw-2">&amp;</span>forest_car_db_dir,
-                config.client.consume_snapshot,
-            )
-            .<span class="kw">await</span><span class="question-mark">?</span>;
+            <span class="kw">let </span>(car_db_path, ts) =
+                import_chain_as_forest_car(path, <span class="kw-2">&amp;</span>forest_car_db_dir, config.client.import_mode)
+                    .<span class="kw">await</span><span class="question-mark">?</span>;
             db.read_only_files(std::iter::once(car_db_path.clone()))<span class="question-mark">?</span>;
             <span class="macro">debug!</span>(<span class="string">"Loaded car DB at {}"</span>, car_db_path.display());
             state_manager
