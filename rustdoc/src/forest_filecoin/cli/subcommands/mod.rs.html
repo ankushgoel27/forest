@@ -142,6 +142,11 @@
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -278,12 +283,17 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">pub fn </span>prompt_confirm() -&gt; bool {
-    <span class="macro">print!</span>(<span class="string">"Do you want to continue? [y/n] "</span>);
-    std::io::stdout().flush().unwrap();
-    <span class="kw">let </span><span class="kw-2">mut </span>line = String::new();
-    std::io::stdin().read_line(<span class="kw-2">&amp;mut </span>line).unwrap();
-    <span class="kw">let </span>line = line.trim().to_lowercase();
-    line == <span class="string">"y" </span>|| line == <span class="string">"yes"
-</span>}
+<span class="doccomment">/// Require user confirmation. Returns `false` when not connected to a terminal.
+</span><span class="kw">pub fn </span>prompt_confirm() -&gt; bool {
+    <span class="kw">let </span>term = dialoguer::console::Term::stderr();
+
+    <span class="kw">if </span>!term.is_term() {
+        <span class="kw">return </span><span class="bool-val">false</span>;
+    }
+
+    dialoguer::Confirm::new()
+        .with_prompt(<span class="string">"Do you want to continue?"</span>)
+        .interact_on(<span class="kw-2">&amp;</span>term)
+        .unwrap_or(<span class="bool-val">false</span>)
+}
 </code></pre></div></section></main></body></html>
