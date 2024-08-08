@@ -1853,6 +1853,29 @@
 <a href="#1853" id="1853">1853</a>
 <a href="#1854" id="1854">1854</a>
 <a href="#1855" id="1855">1855</a>
+<a href="#1856" id="1856">1856</a>
+<a href="#1857" id="1857">1857</a>
+<a href="#1858" id="1858">1858</a>
+<a href="#1859" id="1859">1859</a>
+<a href="#1860" id="1860">1860</a>
+<a href="#1861" id="1861">1861</a>
+<a href="#1862" id="1862">1862</a>
+<a href="#1863" id="1863">1863</a>
+<a href="#1864" id="1864">1864</a>
+<a href="#1865" id="1865">1865</a>
+<a href="#1866" id="1866">1866</a>
+<a href="#1867" id="1867">1867</a>
+<a href="#1868" id="1868">1868</a>
+<a href="#1869" id="1869">1869</a>
+<a href="#1870" id="1870">1870</a>
+<a href="#1871" id="1871">1871</a>
+<a href="#1872" id="1872">1872</a>
+<a href="#1873" id="1873">1873</a>
+<a href="#1874" id="1874">1874</a>
+<a href="#1875" id="1875">1875</a>
+<a href="#1876" id="1876">1876</a>
+<a href="#1877" id="1877">1877</a>
+<a href="#1878" id="1878">1878</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1866,6 +1889,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::chain::{index::ResolveNullTipset, ChainStore};
 <span class="kw">use </span><span class="kw">crate</span>::chain_sync::SyncStage;
 <span class="kw">use </span><span class="kw">crate</span>::cid_collections::CidHashSet;
+<span class="kw">use </span><span class="kw">crate</span>::eth::SAFE_EPOCH_DELAY;
 <span class="kw">use </span><span class="kw">crate</span>::eth::{
     EAMMethod, EVMMethod, EthChainId <span class="kw">as </span>EthChainIdType, EthEip1559TxArgs, EthLegacyEip155TxArgs,
     EthLegacyHomesteadTxArgs,
@@ -2082,6 +2106,8 @@
     Pending,
     <span class="attr">#[default]
     </span>Latest,
+    Safe,
+    Finalized,
 }
 
 <span class="attr">#[derive(PartialEq, Debug, Clone, Serialize, Deserialize, JsonSchema)]
@@ -2473,6 +2499,26 @@
             Predefined::Latest =&gt; {
                 <span class="kw">let </span>parent = chain.chain_index.load_required_tipset(head.parents())<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(parent)
+            }
+            Predefined::Safe =&gt; {
+                <span class="kw">let </span>latest_height = head.epoch() - <span class="number">1</span>;
+                <span class="kw">let </span>safe_height = latest_height - SAFE_EPOCH_DELAY;
+                <span class="kw">let </span>ts = chain.chain_index.tipset_by_height(
+                    safe_height,
+                    head,
+                    ResolveNullTipset::TakeOlder,
+                )<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(ts)
+            }
+            Predefined::Finalized =&gt; {
+                <span class="kw">let </span>latest_height = head.epoch() - <span class="number">1</span>;
+                <span class="kw">let </span>finality_height = latest_height - chain.chain_config.policy.chain_finality;
+                <span class="kw">let </span>ts = chain.chain_index.tipset_by_height(
+                    finality_height,
+                    head,
+                    ResolveNullTipset::TakeOlder,
+                )<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(ts)
             }
         },
         BlockNumberOrHash::BlockNumber(block_number)

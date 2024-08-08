@@ -799,7 +799,7 @@
     </span>eth_mappings: Arc&lt;<span class="kw">dyn </span>EthMappingsStore + Sync + Send&gt;,
 
     <span class="doccomment">/// Needed by the Ethereum mapping.
-    </span>chain_config: Arc&lt;ChainConfig&gt;,
+    </span><span class="kw">pub </span>chain_config: Arc&lt;ChainConfig&gt;,
 }
 
 <span class="kw">impl</span>&lt;DB&gt; BitswapStoreRead <span class="kw">for </span>ChainStore&lt;DB&gt;

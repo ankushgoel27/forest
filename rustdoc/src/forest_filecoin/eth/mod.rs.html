@@ -29,6 +29,13 @@
 <a href="#29" id="29">29</a>
 <a href="#30" id="30">30</a>
 <a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a>
+<a href="#36" id="36">36</a>
+<a href="#37" id="37">37</a>
+<a href="#38" id="38">38</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -60,4 +67,11 @@
 <span class="kw">pub const </span>EIP_1559_TX_TYPE: u64 = <span class="number">2</span>;
 
 <span class="kw">pub const </span>ETH_LEGACY_HOMESTEAD_TX_CHAIN_ID: u64 = <span class="number">0</span>;
+
+<span class="doccomment">/// From Lotus:
+/// &gt; Research into Filecoin chain behavior suggests that probabilistic finality
+/// &gt; generally approaches the intended stability guarantee at, or near, 30 epochs.
+/// &gt; Although a strictly "finalized" safe recommendation remains 900 epochs.
+/// &gt; See &lt;https://github.com/filecoin-project/FIPs/blob/master/FRCs/frc-0089.md&gt;
+</span><span class="kw">pub const </span>SAFE_EPOCH_DELAY: i64 = <span class="number">30</span>;
 </code></pre></div></section></main></body></html>
