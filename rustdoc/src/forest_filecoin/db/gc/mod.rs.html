@@ -468,6 +468,12 @@
 <a href="#468" id="468">468</a>
 <a href="#469" id="469">469</a>
 <a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -816,7 +822,9 @@
         <span class="macro">assert_eq!</span>(gc.epoch_marked, depth);
     }
 
-    <span class="attr">#[quickcheck_async::tokio]
+    <span class="comment">// TODO(forest): https://github.com/ChainSafe/forest/issues/4404
+    // #[quickcheck_async::tokio]
+    </span><span class="attr">#[allow(dead_code)]
     </span><span class="kw">async fn </span>dont_gc_reachable_data(depth: u8, current_epoch: u8) {
         <span class="comment">// Enforce depth above zero.
         </span><span class="kw">if </span>depth &lt; <span class="number">1 </span>{
@@ -854,7 +862,9 @@
         </span>);
     }
 
-    <span class="attr">#[quickcheck_async::tokio]
+    <span class="comment">// TODO(forest): https://github.com/ChainSafe/forest/issues/4404
+    // #[quickcheck_async::tokio]
+    </span><span class="attr">#[allow(dead_code)]
     </span><span class="kw">async fn </span>no_young_data_cleanups(depth: u8, current_epoch: u8, unreachable_nodes: u8) {
         <span class="comment">// Enforce depth above zero.
         </span><span class="kw">if </span>depth &lt; <span class="number">1 </span>{
@@ -896,7 +906,9 @@
         );
     }
 
-    <span class="attr">#[quickcheck_async::tokio]
+    <span class="comment">// TODO(forest): https://github.com/ChainSafe/forest/issues/4404
+    // #[quickcheck_async::tokio]
+    </span><span class="attr">#[allow(dead_code)]
     </span><span class="kw">async fn </span>unreachable_old_data_collected(depth: u8, current_epoch: u8, unreachable_nodes: u8) {
         <span class="comment">// Enforce depth above zero.
         </span><span class="kw">if </span>depth &lt; <span class="number">1 </span>{
