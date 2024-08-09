@@ -2649,6 +2649,10 @@
 <a href="#2649" id="2649">2649</a>
 <a href="#2650" id="2650">2650</a>
 <a href="#2651" id="2651">2651</a>
+<a href="#2652" id="2652">2652</a>
+<a href="#2653" id="2653">2653</a>
+<a href="#2654" id="2654">2654</a>
+<a href="#2655" id="2655">2655</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3370,7 +3374,11 @@
         <span class="kw">let </span>state: miner::State = ctx
             .state_manager
             .get_actor_state_from_address(<span class="kw-2">&amp;</span>ts, <span class="kw-2">&amp;</span>address)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(ApiDeadlineInfo(state.deadline_info(policy, ts.epoch())))
+        <span class="prelude-val">Ok</span>(ApiDeadlineInfo(
+            state
+                .recorded_deadline_info(policy, ts.epoch())
+                .next_not_elapsed(),
+        ))
     }
 }
 
