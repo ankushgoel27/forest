@@ -63,7 +63,7 @@
 // SPDX-License-Identifier: Apache-2.0, MIT
 
 </span><span class="kw">use </span><span class="kw">crate</span>::shim::sector::{PoStProof, RegisteredPoStProof};
-<span class="kw">use </span>fvm_shared3::sector::PoStProof <span class="kw">as </span>PoStProofV3;
+<span class="kw">use </span>fvm_shared4::sector::PoStProof <span class="kw">as </span>PoStProofV4;
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
@@ -91,7 +91,7 @@
             </span>}),
             PoStProof::new(
                 <span class="kw">crate</span>::shim::sector::RegisteredPoStProof::from(
-                    <span class="kw">crate</span>::shim::sector::RegisteredPoStProofV3::StackedDRGWinning2KiBV1,
+                    <span class="kw">crate</span>::shim::sector::RegisteredPoStProofV4::StackedDRGWinning2KiBV1,
                 ),
                 Vec::from_iter(<span class="kw-2">*</span><span class="string">b"hello world!"</span>),
             ),
@@ -99,7 +99,7 @@
     }
 
     <span class="kw">fn </span>into_lotus_json(<span class="self">self</span>) -&gt; <span class="self">Self</span>::LotusJson {
-        <span class="kw">let </span>PoStProofV3 {
+        <span class="kw">let </span>PoStProofV4 {
             post_proof,
             proof_bytes,
         } = <span class="self">self</span>.into();
@@ -114,7 +114,7 @@
             po_st_proof,
             proof_bytes,
         } = lotus_json;
-        <span class="self">Self</span>::from(PoStProofV3 {
+        <span class="self">Self</span>::from(PoStProofV4 {
             post_proof: po_st_proof.into(),
             proof_bytes,
         })

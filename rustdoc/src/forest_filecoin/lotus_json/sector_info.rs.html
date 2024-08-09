@@ -95,7 +95,7 @@
                 </span>}
             }),
             <span class="self">Self</span>::new(
-                fvm_shared3::sector::RegisteredSealProof::StackedDRG2KiBV1,
+                fvm_shared4::sector::RegisteredSealProof::StackedDRG2KiBV1,
                 <span class="number">0</span>,
                 ::cid::Cid::default(),
             ),
@@ -103,7 +103,7 @@
     }
 
     <span class="kw">fn </span>into_lotus_json(<span class="self">self</span>) -&gt; <span class="self">Self</span>::LotusJson {
-        <span class="kw">let </span>fvm_shared3::sector::SectorInfo {
+        <span class="kw">let </span>fvm_shared4::sector::SectorInfo {
             proof,
             sector_number,
             sealed_cid,

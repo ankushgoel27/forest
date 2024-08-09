@@ -29,7 +29,7 @@
 // SPDX-License-Identifier: Apache-2.0, MIT
 
 </span><span class="kw">use </span><span class="kw">crate</span>::shim::sector::RegisteredPoStProof;
-<span class="kw">use </span>fvm_shared3::sector::RegisteredPoStProof <span class="kw">as </span>RegisteredPoStProofV3;
+<span class="kw">use </span>fvm_shared4::sector::RegisteredPoStProof <span class="kw">as </span>RegisteredPoStProofV4;
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
@@ -40,16 +40,16 @@
     </span><span class="kw">fn </span>snapshots() -&gt; Vec&lt;(serde_json::Value, <span class="self">Self</span>)&gt; {
         <span class="macro">vec!</span>[(
             <span class="macro">json!</span>(<span class="number">0</span>),
-            RegisteredPoStProof::from(RegisteredPoStProofV3::StackedDRGWinning2KiBV1),
+            RegisteredPoStProof::from(RegisteredPoStProofV4::StackedDRGWinning2KiBV1),
         )]
     }
 
     <span class="kw">fn </span>into_lotus_json(<span class="self">self</span>) -&gt; <span class="self">Self</span>::LotusJson {
-        i64::from(RegisteredPoStProofV3::from(<span class="self">self</span>))
+        i64::from(RegisteredPoStProofV4::from(<span class="self">self</span>))
     }
 
     <span class="kw">fn </span>from_lotus_json(i: <span class="self">Self</span>::LotusJson) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from(RegisteredPoStProofV3::from(i))
+        <span class="self">Self</span>::from(RegisteredPoStProofV4::from(i))
     }
 }
 </code></pre></div></section></main></body></html>

@@ -29,7 +29,7 @@
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::shim::sector::RegisteredSealProof;
-<span class="kw">use </span>fvm_shared3::sector::RegisteredSealProof <span class="kw">as </span>RegisteredSealProofV3;
+<span class="kw">use </span>fvm_shared4::sector::RegisteredSealProof <span class="kw">as </span>RegisteredSealProofV4;
 
 <span class="kw">impl </span>HasLotusJson <span class="kw">for </span>RegisteredSealProof {
     <span class="kw">type </span>LotusJson = i64;
@@ -38,16 +38,16 @@
     </span><span class="kw">fn </span>snapshots() -&gt; Vec&lt;(serde_json::Value, <span class="self">Self</span>)&gt; {
         <span class="macro">vec!</span>[(
             <span class="macro">json!</span>(<span class="number">0</span>),
-            <span class="self">Self</span>::from(RegisteredSealProofV3::StackedDRG2KiBV1),
+            <span class="self">Self</span>::from(RegisteredSealProofV4::StackedDRG2KiBV1),
         )]
     }
 
     <span class="kw">fn </span>into_lotus_json(<span class="self">self</span>) -&gt; <span class="self">Self</span>::LotusJson {
-        i64::from(RegisteredSealProofV3::from(<span class="self">self</span>))
+        i64::from(RegisteredSealProofV4::from(<span class="self">self</span>))
     }
 
     <span class="kw">fn </span>from_lotus_json(i: <span class="self">Self</span>::LotusJson) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>::from(RegisteredSealProofV3::from(i))
+        <span class="self">Self</span>::from(RegisteredSealProofV4::from(i))
     }
 }
 </code></pre></div></section></main></body></html>
