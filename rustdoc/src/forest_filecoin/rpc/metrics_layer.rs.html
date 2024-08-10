@@ -55,6 +55,7 @@
 <a href="#55" id="55">55</a>
 <a href="#56" id="56">56</a>
 <a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -101,7 +102,8 @@
 
             metrics::RPC_METHOD_TIME
                 .get_or_create(<span class="kw-2">&amp;</span>method)
-                .observe(start_time.elapsed().as_secs_f64());
+                <span class="comment">// Observe the elapsed time in milliseconds
+                </span>.observe(start_time.elapsed().as_secs_f64() * <span class="number">1000.0</span>);
 
             <span class="kw">if </span>req.is_error() {
                 metrics::RPC_METHOD_FAILURE.get_or_create(<span class="kw-2">&amp;</span>method).inc();

@@ -254,12 +254,12 @@
 
 <span class="kw">pub static </span>RPC_METHOD_TIME: Lazy&lt;Family&lt;RpcMethodLabel, Histogram&gt;&gt; = Lazy::new(|| {
     <span class="kw">let </span>metric = Family::&lt;RpcMethodLabel, Histogram&gt;::new_with_constructor(|| {
-        <span class="comment">// Histogram with 10 buckets starting from 0.01s going to 5.12s, each bucket twice as big as the last.
-        </span>Histogram::new(exponential_buckets(<span class="number">0.01</span>, <span class="number">2.0</span>, <span class="number">10</span>))
+        <span class="comment">// Histogram with 5 buckets starting from 0.1ms going to 1s, each bucket 10 times as big as the last.
+        </span>Histogram::new(exponential_buckets(<span class="number">0.1</span>, <span class="number">10.</span>, <span class="number">5</span>))
     });
     <span class="kw">crate</span>::metrics::default_registry().register(
         <span class="string">"rpc_processing_time"</span>,
-        <span class="string">"Duration of RPC method call"</span>,
+        <span class="string">"Duration of RPC method call in milliseconds"</span>,
         metric.clone(),
     );
     metric
