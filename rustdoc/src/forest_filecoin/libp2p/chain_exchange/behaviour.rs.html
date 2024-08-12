@@ -168,6 +168,12 @@
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
 <a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -287,9 +293,15 @@
         peer: PeerId,
         addr: <span class="kw-2">&amp;</span>libp2p::Multiaddr,
         role_override: libp2p::core::Endpoint,
+        port_use: PortUse,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;THandler&lt;<span class="self">Self</span>&gt;, ConnectionDenied&gt; {
-        <span class="self">self</span>.inner
-            .handle_established_outbound_connection(connection_id, peer, addr, role_override)
+        <span class="self">self</span>.inner.handle_established_outbound_connection(
+            connection_id,
+            peer,
+            addr,
+            role_override,
+            port_use,
+        )
     }
 
     <span class="kw">fn </span>handle_pending_inbound_connection(

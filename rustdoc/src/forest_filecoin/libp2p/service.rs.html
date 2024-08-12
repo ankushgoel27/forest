@@ -898,6 +898,7 @@
 <a href="#898" id="898">898</a>
 <a href="#899" id="899">899</a>
 <a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1468,6 +1469,7 @@
             DerivedDiscoveryBehaviourEvent::Identify(identify::Event::Received {
                 peer_id,
                 info,
+                ..
             }) =&gt; {
                 <span class="kw">let </span>protocols = HashSet::from_iter(info.protocols.iter().map(|p| p.to_string()));
                 <span class="kw">if </span>!protocols.contains(<span class="kw">super</span>::hello::HELLO_PROTOCOL_NAME) {
