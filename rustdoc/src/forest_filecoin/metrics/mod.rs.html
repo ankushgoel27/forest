@@ -198,6 +198,8 @@
 <a href="#198" id="198">198</a>
 <a href="#199" id="199">199</a>
 <a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -280,8 +282,10 @@
         <span class="macro">warn!</span>(<span class="string">"Failed to register process metrics: {err}"</span>);
     }
 
-    <span class="comment">// Add the DBCollector to the registry
-    </span>DEFAULT_REGISTRY
+    DEFAULT_REGISTRY.write().register_collector(Box::new(
+        <span class="kw">crate</span>::utils::version::ForestVersionCollector::new(),
+    ));
+    DEFAULT_REGISTRY
         .write()
         .register_collector(Box::new(<span class="kw">crate</span>::metrics::db::DBCollector::new(db_directory)));
 
