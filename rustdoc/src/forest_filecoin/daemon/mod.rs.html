@@ -994,7 +994,7 @@
     // * When snapshot command implemented, this genesis does not need to be
     //   initialized
     </span><span class="kw">let </span>genesis_header = read_genesis_header(
-        config.client.genesis_file.as_ref(),
+        config.client.genesis_file.as_deref(),
         chain_config.genesis_bytes(<span class="kw-2">&amp;</span>db).<span class="kw">await</span><span class="question-mark">?</span>.as_deref(),
         <span class="kw-2">&amp;</span>db,
     )

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["start_offline_rpc","start_offline_server"]};
+window.SIDEBAR_ITEMS = {"fn":["handle_chain_config","handle_snapshots","start_offline_rpc","start_offline_server"]};

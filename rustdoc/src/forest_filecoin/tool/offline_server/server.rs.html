@@ -175,6 +175,37 @@
 <a href="#175" id="175">175</a>
 <a href="#176" id="176">176</a>
 <a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -213,52 +244,29 @@
     rpc_port: u16,
     auto_download_snapshot: bool,
     height: i64,
+    genesis: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
 ) -&gt; anyhow::Result&lt;()&gt; {
     <span class="macro">info!</span>(<span class="string">"Configuring Offline RPC Server"</span>);
+
     <span class="kw">let </span>db = Arc::new(ManyCar::new(MemoryDB::default()));
 
-    <span class="kw">let </span>snapshot_files = <span class="kw">if </span>snapshot_files.is_empty() {
-        <span class="kw">let </span>(snapshot_url, num_bytes, path) =
-            <span class="kw">crate</span>::cli_shared::snapshot::peek(TrustedVendor::default(), <span class="kw-2">&amp;</span>chain)
-                .<span class="kw">await
-                </span>.context(<span class="string">"couldn't get snapshot size"</span>)<span class="question-mark">?</span>;
-        <span class="kw">if </span>!auto_download_snapshot {
-            <span class="macro">warn!</span>(<span class="string">"Automatic snapshot download is disabled."</span>);
-            <span class="kw">let </span>message = <span class="macro">format!</span>(
-                <span class="string">"Fetch a {} snapshot to the current directory? (denying will exit the program). "</span>,
-                indicatif::HumanBytes(num_bytes)
-            );
-            <span class="kw">let </span>have_permission =
-                dialoguer::Confirm::with_theme(<span class="kw-2">&amp;</span>dialoguer::theme::ColorfulTheme::default())
-                    .with_prompt(message)
-                    .default(<span class="bool-val">false</span>)
-                    .interact()
-                    .unwrap_or(<span class="bool-val">false</span>);
-            <span class="kw">if </span>!have_permission {
-                <span class="macro">anyhow::bail!</span>(<span class="string">"No snapshot provided, exiting offline RPC setup."</span>);
-            }
-        }
-        <span class="macro">info!</span>(
-            <span class="string">"Downloading latest snapshot for {} size {}"</span>,
-            chain,
-            indicatif::HumanBytes(num_bytes)
-        );
-        <span class="kw">let </span>downloaded_snapshot_path = std::env::current_dir()<span class="question-mark">?</span>.join(path);
-        download_to(<span class="kw-2">&amp;</span>snapshot_url, <span class="kw-2">&amp;</span>downloaded_snapshot_path).<span class="kw">await</span><span class="question-mark">?</span>;
-        <span class="macro">info!</span>(<span class="string">"Snapshot downloaded"</span>);
-        <span class="macro">vec!</span>[downloaded_snapshot_path]
-    } <span class="kw">else </span>{
-        snapshot_files
-    };
+    <span class="kw">let </span>snapshot_files = handle_snapshots(
+        snapshot_files,
+        <span class="kw-2">&amp;</span>chain,
+        auto_download_snapshot,
+        genesis.clone(),
+    )
+    .<span class="kw">await</span><span class="question-mark">?</span>;
+
     db.read_only_files(snapshot_files.iter().cloned())<span class="question-mark">?</span>;
-    <span class="macro">info!</span>(<span class="string">"Using chain config for {chain}"</span>);
-    <span class="kw">let </span>chain_config = Arc::new(ChainConfig::from_chain(<span class="kw-2">&amp;</span>chain));
-    <span class="kw">if </span>chain_config.is_testnet() {
-        CurrentNetwork::set_global(Network::Testnet);
-    }
+    <span class="kw">let </span>chain_config = Arc::new(handle_chain_config(<span class="kw-2">&amp;</span>chain)<span class="question-mark">?</span>);
     <span class="kw">let </span>sync_config = Arc::new(SyncConfig::default());
-    <span class="kw">let </span>genesis_header =
-        read_genesis_header(<span class="prelude-val">None</span>, chain_config.genesis_bytes(<span class="kw-2">&amp;</span>db).<span class="kw">await</span><span class="question-mark">?</span>.as_deref(), <span class="kw-2">&amp;</span>db).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="kw">let </span>genesis_header = read_genesis_header(
+        genesis.as_deref(),
+        chain_config.genesis_bytes(<span class="kw-2">&amp;</span>db).<span class="kw">await</span><span class="question-mark">?</span>.as_deref(),
+        <span class="kw-2">&amp;</span>db,
+    )
+    .<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let </span>chain_store = Arc::new(ChainStore::new(
         db.clone(),
         db.clone(),
@@ -351,5 +359,59 @@
     };
     <span class="kw">crate</span>::utils::io::terminal_cleanup();
     result
+}
+
+<span class="kw">async fn </span>handle_snapshots(
+    snapshot_files: Vec&lt;PathBuf&gt;,
+    chain: <span class="kw-2">&amp;</span>NetworkChain,
+    auto_download_snapshot: bool,
+    genesis: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
+) -&gt; anyhow::Result&lt;Vec&lt;PathBuf&gt;&gt; {
+    <span class="kw">if </span>!snapshot_files.is_empty() {
+        <span class="kw">return </span><span class="prelude-val">Ok</span>(snapshot_files);
+    }
+
+    <span class="kw">if </span>snapshot_files.is_empty() &amp;&amp; chain.is_devnet() {
+        <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[genesis.context(<span class="string">"missing genesis file"</span>)<span class="question-mark">?</span>]);
+    }
+
+    <span class="kw">let </span>(snapshot_url, num_bytes, path) =
+        <span class="kw">crate</span>::cli_shared::snapshot::peek(TrustedVendor::default(), chain)
+            .<span class="kw">await
+            </span>.context(<span class="string">"couldn't get snapshot size"</span>)<span class="question-mark">?</span>;
+    <span class="kw">if </span>!auto_download_snapshot {
+        <span class="macro">warn!</span>(<span class="string">"Automatic snapshot download is disabled."</span>);
+        <span class="kw">let </span>message = <span class="macro">format!</span>(
+            <span class="string">"Fetch a {} snapshot to the current directory? (denying will exit the program). "</span>,
+            indicatif::HumanBytes(num_bytes)
+        );
+        <span class="kw">let </span>have_permission =
+            dialoguer::Confirm::with_theme(<span class="kw-2">&amp;</span>dialoguer::theme::ColorfulTheme::default())
+                .with_prompt(message)
+                .default(<span class="bool-val">false</span>)
+                .interact()
+                .unwrap_or(<span class="bool-val">false</span>);
+        <span class="kw">if </span>!have_permission {
+            <span class="macro">anyhow::bail!</span>(<span class="string">"No snapshot provided, exiting offline RPC setup."</span>);
+        }
+    }
+    <span class="macro">info!</span>(
+        <span class="string">"Downloading latest snapshot for {} size {}"</span>,
+        chain,
+        indicatif::HumanBytes(num_bytes)
+    );
+    <span class="kw">let </span>downloaded_snapshot_path = std::env::current_dir()<span class="question-mark">?</span>.join(path);
+    download_to(<span class="kw-2">&amp;</span>snapshot_url, <span class="kw-2">&amp;</span>downloaded_snapshot_path).<span class="kw">await</span><span class="question-mark">?</span>;
+    <span class="macro">info!</span>(<span class="string">"Snapshot downloaded"</span>);
+    <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[downloaded_snapshot_path])
+}
+
+<span class="kw">fn </span>handle_chain_config(chain: <span class="kw-2">&amp;</span>NetworkChain) -&gt; anyhow::Result&lt;ChainConfig&gt; {
+    <span class="macro">info!</span>(<span class="string">"Using chain config for {chain}"</span>);
+    <span class="kw">let </span>chain_config = ChainConfig::from_chain(chain);
+    <span class="kw">if </span>chain_config.is_testnet() {
+        CurrentNetwork::set_global(Network::Testnet);
+    }
+    <span class="prelude-val">Ok</span>(chain_config)
 }
 </code></pre></div></section></main></body></html>

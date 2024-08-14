@@ -137,7 +137,7 @@
 #[cfg_attr(test, derive(derive_quickcheck_arbitrary::Arbitrary))]
 </span><span class="kw">pub struct </span>Client {
     <span class="kw">pub </span>data_dir: PathBuf,
-    <span class="kw">pub </span>genesis_file: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="kw">pub </span>genesis_file: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
     <span class="kw">pub </span>enable_rpc: bool,
     <span class="kw">pub </span>enable_metrics_endpoint: bool,
     <span class="kw">pub </span>enable_health_check: bool,

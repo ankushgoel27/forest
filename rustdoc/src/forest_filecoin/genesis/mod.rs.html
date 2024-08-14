@@ -99,10 +99,14 @@
 <a href="#99" id="99">99</a>
 <a href="#100" id="100">100</a>
 <a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::blocks::CachingBlockHeader;
+</span><span class="kw">use </span>std::path::Path;
+
+<span class="kw">use </span><span class="kw">crate</span>::blocks::CachingBlockHeader;
 <span class="kw">use </span><span class="kw">crate</span>::state_manager::StateManager;
 <span class="kw">use </span><span class="kw">crate</span>::utils::db::car_util::load_car;
 <span class="kw">use </span>anyhow::Context <span class="kw">as _</span>;
@@ -116,7 +120,7 @@
 <span class="doccomment">/// Uses an optional file path or the default genesis to parse the genesis and
 /// determine if chain store has existing data for the given genesis.
 </span><span class="kw">pub async fn </span>read_genesis_header&lt;DB&gt;(
-    genesis_fp: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>String&gt;,
+    genesis_fp: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Path&gt;,
     genesis_bytes: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[u8]&gt;,
     db: <span class="kw-2">&amp;</span>DB,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;CachingBlockHeader, anyhow::Error&gt;
