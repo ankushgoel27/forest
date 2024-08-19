@@ -580,6 +580,14 @@
 <a href="#580" id="580">580</a>
 <a href="#581" id="581">581</a>
 <a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -794,6 +802,13 @@
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::wallet::WalletValidateAddress</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::wallet::WalletVerify</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::wallet::WalletDelete</span>);
+
+        <span class="comment">// f3
+        </span><span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::f3::GetTipsetByEpoch</span>);
+        <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::f3::GetTipset</span>);
+        <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::f3::GetHead</span>);
+        <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::f3::GetParent</span>);
+        <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::f3::GetPowerTable</span>);
     };
 }
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>for_each_method;
@@ -866,6 +881,7 @@
     <span class="kw">pub mod </span>chain;
     <span class="kw">pub mod </span>common;
     <span class="kw">pub mod </span>eth;
+    <span class="kw">pub mod </span>f3;
     <span class="kw">pub mod </span>gas;
     <span class="kw">pub mod </span>miner;
     <span class="kw">pub mod </span>mpool;
