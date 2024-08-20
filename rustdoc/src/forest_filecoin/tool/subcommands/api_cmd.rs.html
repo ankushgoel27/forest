@@ -1874,6 +1874,9 @@
 <a href="#1874" id="1874">1874</a>
 <a href="#1875" id="1875">1875</a>
 <a href="#1876" id="1876">1876</a>
+<a href="#1877" id="1877">1877</a>
+<a href="#1878" id="1878">1878</a>
+<a href="#1879" id="1879">1879</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3319,8 +3322,11 @@
         <span class="kw">for </span>smsg <span class="kw">in </span>sample_signed_messages(bls_messages.iter(), secp_messages.iter()) {
             <span class="kw">let </span>tx = new_eth_tx_from_signed_message(<span class="kw-2">&amp;</span>smsg, <span class="kw-2">&amp;</span>state, eth_chain_id)<span class="question-mark">?</span>;
             tests.push(RpcTest::identity(
-                EthGetMessageCidByTransactionHash::request((tx.hash,))<span class="question-mark">?</span>,
+                EthGetMessageCidByTransactionHash::request((tx.hash.clone(),))<span class="question-mark">?</span>,
             ));
+            tests.push(RpcTest::identity(EthGetTransactionByHash::request((
+                tx.hash,
+            ))<span class="question-mark">?</span>));
         }
     }
     tests.push(RpcTest::identity(
