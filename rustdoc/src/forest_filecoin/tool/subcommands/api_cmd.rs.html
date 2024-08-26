@@ -1894,6 +1894,9 @@
 <a href="#1894" id="1894">1894</a>
 <a href="#1895" id="1895">1895</a>
 <a href="#1896" id="1896">1896</a>
+<a href="#1897" id="1897">1897</a>
+<a href="#1898" id="1898">1898</a>
+<a href="#1899" id="1899">1899</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -2453,7 +2456,10 @@
 
 <span class="kw">fn </span>common_tests() -&gt; Vec&lt;RpcTest&gt; {
     <span class="macro">vec!</span>[
-        RpcTest::basic(Version::request(()).unwrap()),
+        <span class="comment">// We don't check the `version` field as it differs between Lotus and Forest.
+        </span>RpcTest::validate(Version::request(()).unwrap(), |forest, lotus| {
+            forest.api_version == lotus.api_version &amp;&amp; forest.block_delay == lotus.block_delay
+        }),
         RpcTest::basic(StartTime::request(()).unwrap()),
         RpcTest::basic(Session::request(()).unwrap()),
     ]
