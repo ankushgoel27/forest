@@ -602,6 +602,10 @@
 <a href="#602" id="602">602</a>
 <a href="#603" id="603">603</a>
 <a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -699,6 +703,9 @@
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::gas::GasEstimateMessageGas</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::gas::GasEstimateFeeCap</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::gas::GasEstimateGasPremium</span>);
+
+        <span class="comment">// market vertical
+        </span><span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::market::MarketAddBalance</span>);
 
         <span class="comment">// miner vertical
         </span><span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::miner::MinerCreateBlock</span>);
@@ -910,6 +917,7 @@
     <span class="kw">pub mod </span>eth;
     <span class="kw">pub mod </span>f3;
     <span class="kw">pub mod </span>gas;
+    <span class="kw">pub mod </span>market;
     <span class="kw">pub mod </span>miner;
     <span class="kw">pub mod </span>misc;
     <span class="kw">pub mod </span>mpool;
