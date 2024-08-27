@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["GetHead","GetParent","GetPowerTable","GetTipset","GetTipsetByEpoch"],"mod":["types"]};
+window.SIDEBAR_ITEMS = {"enum":["F3GetCertificate","F3GetECPowerTable","F3GetF3PowerTable","F3GetLatestCertificate","GetHead","GetParent","GetParticipatingMinerIDs","GetPowerTable","GetTipset","GetTipsetByEpoch","ProtectPeer","SignMessage"],"fn":["get_f3_rpc_endpoint","get_rpc_http_client"],"mod":["types"]};

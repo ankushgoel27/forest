@@ -903,6 +903,12 @@
 <a href="#903" id="903">903</a>
 <a href="#904" id="904">904</a>
 <a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1057,6 +1063,7 @@
     AddrsListen(flume::Sender&lt;(PeerId, HashSet&lt;Multiaddr&gt;)&gt;),
     Peer(flume::Sender&lt;<span class="prelude-ty">Option</span>&lt;HashSet&lt;Multiaddr&gt;&gt;&gt;, PeerId),
     Peers(flume::Sender&lt;HashMap&lt;PeerId, HashSet&lt;Multiaddr&gt;&gt;&gt;),
+    ProtectPeer(flume::Sender&lt;()&gt;, PeerId),
     Info(flume::Sender&lt;NetInfoResult&gt;),
     Connect(flume::Sender&lt;bool&gt;, PeerId, HashSet&lt;Multiaddr&gt;),
     Disconnect(flume::Sender&lt;()&gt;, PeerId),
@@ -1090,7 +1097,8 @@
         network_name: <span class="kw-2">&amp;</span>str,
         genesis_cid: Cid,
     ) -&gt; anyhow::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>behaviour = ForestBehaviour::new(<span class="kw-2">&amp;</span>net_keypair, <span class="kw-2">&amp;</span>config, network_name)<span class="question-mark">?</span>;
+        <span class="kw">let </span>behaviour =
+            ForestBehaviour::new(<span class="kw-2">&amp;</span>net_keypair, <span class="kw-2">&amp;</span>config, network_name, peer_manager.clone())<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>swarm = SwarmBuilder::with_existing_identity(net_keypair)
             .with_tokio()
             .with_tcp(
@@ -1401,6 +1409,10 @@
                 NetRPCMethods::Peers(response_channel) =&gt; {
                     <span class="kw">let </span>peer_addresses = swarm.behaviour().peer_addresses();
                     response_channel.send_or_warn(peer_addresses);
+                }
+                NetRPCMethods::ProtectPeer(tx, peer_id) =&gt; {
+                    peer_manager.protect_peer(peer_id);
+                    tx.send_or_warn(());
                 }
                 NetRPCMethods::Info(response_channel) =&gt; {
                     response_channel.send_or_warn(swarm.network_info().into());

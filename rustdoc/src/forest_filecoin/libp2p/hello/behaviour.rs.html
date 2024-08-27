@@ -205,10 +205,16 @@
 <a href="#205" id="205">205</a>
 <a href="#206" id="206">206</a>
 <a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
 </span><span class="kw">use </span>std::{
+    sync::Arc,
     task::Poll,
     time::{Duration, Instant},
 };
@@ -222,7 +228,7 @@
 <span class="kw">use </span>tracing::warn;
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
-<span class="kw">use </span><span class="kw">crate</span>::libp2p::service::metrics;
+<span class="kw">use </span><span class="kw">crate</span>::libp2p::{service::metrics, PeerManager};
 
 <span class="kw">type </span>InnerBehaviour = request_response::Behaviour&lt;HelloCodec&gt;;
 
@@ -230,14 +236,16 @@
     inner: InnerBehaviour,
     response_channels: HashMap&lt;OutboundRequestId, flume::Sender&lt;HelloResponse&gt;&gt;,
     pending_inbound_hello_peers: HashMap&lt;PeerId, Instant&gt;,
+    peer_manager: Arc&lt;PeerManager&gt;,
 }
 
 <span class="kw">impl </span>HelloBehaviour {
-    <span class="kw">pub fn </span>new(cfg: request_response::Config) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(cfg: request_response::Config, peer_manager: Arc&lt;PeerManager&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
             inner: InnerBehaviour::new([(HELLO_PROTOCOL_NAME, ProtocolSupport::Full)], cfg),
             response_channels: Default::default(),
             pending_inbound_hello_peers: Default::default(),
+            peer_manager,
         }
     }
 
@@ -401,12 +409,14 @@
                     now.duration_since(connected_instant) &gt; INBOUND_HELLO_WAIT_TIMEOUT
                 })
         {
-            <span class="macro">tracing::warn!</span>(peer=%peer_to_disconnect, <span class="string">"Disconnecting peer for not receiving hello in 30s"</span>);
             <span class="self">self</span>.pending_inbound_hello_peers.remove(<span class="kw-2">&amp;</span>peer_to_disconnect);
-            <span class="kw">return </span>Poll::Ready(ToSwarm::CloseConnection {
-                peer_id: peer_to_disconnect,
-                connection: CloseConnection::All,
-            });
+            <span class="kw">if </span>!<span class="self">self</span>.peer_manager.is_peer_protected(<span class="kw-2">&amp;</span>peer_to_disconnect) {
+                <span class="macro">tracing::warn!</span>(peer=%peer_to_disconnect, <span class="string">"Disconnecting peer for not receiving hello in 30s"</span>);
+                <span class="kw">return </span>Poll::Ready(ToSwarm::CloseConnection {
+                    peer_id: peer_to_disconnect,
+                    connection: CloseConnection::All,
+                });
+            }
         }
 
         Poll::Pending

@@ -366,6 +366,24 @@
 <a href="#366" id="366">366</a>
 <a href="#367" id="367">367</a>
 <a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -454,6 +472,8 @@
     </span>peer_ops_rx: Receiver&lt;PeerOperation&gt;,
     <span class="doccomment">/// Peer ban list, key is peer id, value is expiration time
     </span>peer_ban_list: tokio::sync::RwLock&lt;HashMap&lt;PeerId, <span class="prelude-ty">Option</span>&lt;Instant&gt;&gt;&gt;,
+    <span class="doccomment">/// A set of peers that won't be proactively banned or disconnected from
+    </span>protected_peers: RwLock&lt;HashSet&lt;PeerId&gt;&gt;,
 }
 
 <span class="kw">impl </span>Default <span class="kw">for </span>PeerManager {
@@ -465,6 +485,7 @@
             peer_ops_tx,
             peer_ops_rx,
             peer_ban_list: Default::default(),
+            protected_peers: Default::default(),
         }
     }
 }
@@ -652,6 +673,9 @@
         reason: <span class="kw">impl </span>Into&lt;String&gt;,
         duration: <span class="prelude-ty">Option</span>&lt;Duration&gt;,
     ) {
+        <span class="kw">if </span><span class="self">self</span>.is_peer_protected(<span class="kw-2">&amp;</span>peer) {
+            <span class="kw">return</span>;
+        }
         <span class="kw">let </span><span class="kw-2">mut </span>locked = <span class="self">self</span>.peer_ban_list.write().<span class="kw">await</span>;
         locked.insert(peer, duration.and_then(|d| Instant::now().checked_add(d)));
         <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = <span class="self">self
@@ -705,6 +729,18 @@
 
     <span class="kw">pub fn </span>peer_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         <span class="self">self</span>.peers.read().full_peers.len()
+    }
+
+    <span class="kw">pub fn </span>protect_peer(<span class="kw-2">&amp;</span><span class="self">self</span>, peer_id: PeerId) {
+        <span class="self">self</span>.protected_peers.write().insert(peer_id);
+    }
+
+    <span class="kw">pub fn </span>unprotect_peer(<span class="kw-2">&amp;</span><span class="self">self</span>, peer_id: <span class="kw-2">&amp;</span>PeerId) {
+        <span class="self">self</span>.protected_peers.write().remove(peer_id);
+    }
+
+    <span class="kw">pub fn </span>is_peer_protected(<span class="kw-2">&amp;</span><span class="self">self</span>, peer_id: <span class="kw-2">&amp;</span>PeerId) -&gt; bool {
+        <span class="self">self</span>.protected_peers.read().contains(peer_id)
     }
 }
 
