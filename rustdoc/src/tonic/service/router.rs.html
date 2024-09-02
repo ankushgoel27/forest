@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.1/src/service/router.rs`."><title>router.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.2/src/service/router.rs`."><title>router.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -143,13 +143,38 @@
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
 <a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::{
     body::{boxed, BoxBody},
     metadata::GRPC_CONTENT_TYPE,
     server::NamedService,
 };
 <span class="kw">use </span>http::{HeaderName, HeaderValue, Request, Response};
-<span class="kw">use </span>pin_project::pin_project;
 <span class="kw">use </span>std::{
     convert::Infallible,
     fmt,
@@ -160,7 +185,7 @@
 <span class="kw">use </span>tower::{Service, ServiceExt};
 
 <span class="doccomment">/// A [`Service`] router.
-</span><span class="attr">#[derive(Debug, Default, Clone)]
+</span><span class="attr">#[derive(Debug, Clone)]
 </span><span class="kw">pub struct </span>Routes {
     router: axum::Router,
 }
@@ -193,6 +218,15 @@
         <span class="self">self</span>.routes.unwrap_or_default()
     }
 }
+
+<span class="kw">impl </span>Default <span class="kw">for </span>Routes {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{
+            router: axum::Router::new().fallback(unimplemented),
+        }
+    }
+}
+
 <span class="kw">impl </span>Routes {
     <span class="doccomment">/// Create a new routes with `svc` already added to it.
     </span><span class="kw">pub fn </span>new&lt;S&gt;(svc: S) -&gt; <span class="self">Self
@@ -205,8 +239,12 @@
         S::Future: Send + <span class="lifetime">'static</span>,
         S::Error: Into&lt;<span class="kw">crate</span>::Error&gt; + Send,
     {
-        <span class="kw">let </span>router = axum::Router::new().fallback(unimplemented);
-        <span class="self">Self </span>{ router }.add_service(svc)
+        <span class="self">Self</span>::default().add_service(svc)
+    }
+
+    <span class="doccomment">/// Create a new empty builder.
+    </span><span class="kw">pub fn </span>builder() -&gt; RoutesBuilder {
+        RoutesBuilder::default()
     }
 
     <span class="doccomment">/// Add a new service.
@@ -237,8 +275,20 @@
     }
 
     <span class="doccomment">/// Convert this `Routes` into an [`axum::Router`].
+    </span><span class="attr">#[deprecated(since = <span class="string">"0.12.2"</span>, note = <span class="string">"Use `Routes::into_axum_router` instead."</span>)]
     </span><span class="kw">pub fn </span>into_router(<span class="self">self</span>) -&gt; axum::Router {
+        <span class="self">self</span>.into_axum_router()
+    }
+
+    <span class="doccomment">/// Convert this `Routes` into an [`axum::Router`].
+    </span><span class="kw">pub fn </span>into_axum_router(<span class="self">self</span>) -&gt; axum::Router {
         <span class="self">self</span>.router
+    }
+}
+
+<span class="kw">impl </span>From&lt;axum::Router&gt; <span class="kw">for </span>Routes {
+    <span class="kw">fn </span>from(router: axum::Router) -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ router }
     }
 }
 
@@ -269,8 +319,7 @@
     }
 }
 
-<span class="attr">#[pin_project]
-</span><span class="kw">pub struct </span>RoutesFuture(<span class="attr">#[pin] </span>axum::routing::future::RouteFuture&lt;Infallible&gt;);
+<span class="kw">pub struct </span>RoutesFuture(axum::routing::future::RouteFuture&lt;Infallible&gt;);
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>RoutesFuture {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
@@ -281,10 +330,13 @@
 <span class="kw">impl </span>Future <span class="kw">for </span>RoutesFuture {
     <span class="kw">type </span>Output = <span class="prelude-ty">Result</span>&lt;Response&lt;BoxBody&gt;, <span class="kw">crate</span>::Error&gt;;
 
-    <span class="kw">fn </span>poll(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
-        <span class="kw">match </span><span class="macro">ready!</span>(<span class="self">self</span>.project().<span class="number">0</span>.poll(cx)) {
+    <span class="kw">fn </span>poll(<span class="kw-2">mut </span><span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;, cx: <span class="kw-2">&amp;mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; Poll&lt;<span class="self">Self</span>::Output&gt; {
+        <span class="kw">match </span><span class="macro">ready!</span>(Pin::new(<span class="kw-2">&amp;mut </span><span class="self">self</span>.as_mut().<span class="number">0</span>).poll(cx)) {
             <span class="prelude-val">Ok</span>(res) =&gt; <span class="prelude-val">Ok</span>(res.map(boxed)).into(),
-            <span class="prelude-val">Err</span>(err) =&gt; <span class="kw">match </span>err {},
+            <span class="comment">// NOTE: This pattern is not needed from Rust 1.82.
+            // See https://github.com/rust-lang/rust/pull/122792.
+            </span><span class="attr">#[allow(unreachable_patterns)]
+            </span><span class="prelude-val">Err</span>(err) =&gt; <span class="kw">match </span>err {},
         }
     }
 }

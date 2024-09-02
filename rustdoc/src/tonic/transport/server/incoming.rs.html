@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.1/src/transport/server/incoming.rs`."><title>incoming.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.2/src/transport/server/incoming.rs`."><title>incoming.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -237,15 +237,38 @@
 <a href="#237" id="237">237</a>
 <a href="#238" id="238">238</a>
 <a href="#239" id="239">239</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::service::ServerIo;
-<span class="attr">#[cfg(feature = <span class="string">"tls"</span>)]
-</span><span class="kw">use </span><span class="kw">super</span>::service::TlsAcceptor;
-<span class="kw">use </span>std::{
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::{
+    io,
     net::{SocketAddr, TcpListener <span class="kw">as </span>StdTcpListener},
+    ops::ControlFlow,
     pin::{pin, Pin},
     task::{ready, Context, Poll},
     time::Duration,
 };
+
 <span class="kw">use </span>tokio::{
     io::{AsyncRead, AsyncWrite},
     net::{TcpListener, TcpStream},
@@ -253,6 +276,10 @@
 <span class="kw">use </span>tokio_stream::wrappers::TcpListenerStream;
 <span class="kw">use </span>tokio_stream::{Stream, StreamExt};
 <span class="kw">use </span>tracing::warn;
+
+<span class="kw">use </span><span class="kw">super</span>::service::ServerIo;
+<span class="attr">#[cfg(feature = <span class="string">"tls"</span>)]
+</span><span class="kw">use </span><span class="kw">super</span>::service::TlsAcceptor;
 
 <span class="attr">#[cfg(not(feature = <span class="string">"tls"</span>))]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>tcp_incoming&lt;IO, IE&gt;(
@@ -266,8 +293,14 @@
         <span class="kw">let </span><span class="kw-2">mut </span>incoming = <span class="macro">pin!</span>(incoming);
 
         <span class="kw">while let </span><span class="prelude-val">Some</span>(item) = incoming.next().<span class="kw">await </span>{
-            <span class="kw">yield </span>item.map(ServerIo::new_io)<span class="question-mark">?
-        </span>}
+            <span class="kw">yield match </span>item {
+                <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; item.map(ServerIo::new_io)<span class="question-mark">?</span>,
+                <span class="prelude-val">Err</span>(e) =&gt; <span class="kw">match </span>handle_accept_error(e) {
+                    ControlFlow::Continue(()) =&gt; <span class="kw">continue</span>,
+                    ControlFlow::Break(e) =&gt; <span class="prelude-val">Err</span>(e)<span class="question-mark">?</span>,
+                }
+            }
+        }
     }
 }
 
@@ -303,8 +336,9 @@
                     <span class="kw">yield </span>io;
                 }
 
-                SelectOutput::Err(e) =&gt; {
-                    <span class="macro">tracing::debug!</span>(message = <span class="string">"Accept loop error."</span>, error = %e);
+                SelectOutput::Err(e) =&gt; <span class="kw">match </span>handle_accept_error(e) {
+                    ControlFlow::Continue(()) =&gt; <span class="kw">continue</span>,
+                    ControlFlow::Break(e) =&gt; <span class="prelude-val">Err</span>(e)<span class="question-mark">?</span>,
                 }
 
                 SelectOutput::Done =&gt; {
@@ -313,6 +347,18 @@
             }
         }
     }
+}
+
+<span class="kw">fn </span>handle_accept_error(e: <span class="kw">impl </span>Into&lt;<span class="kw">crate</span>::Error&gt;) -&gt; ControlFlow&lt;<span class="kw">crate</span>::Error&gt; {
+    <span class="kw">let </span>e = e.into();
+    <span class="macro">tracing::debug!</span>(error = %e, <span class="string">"accept loop error"</span>);
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(e) = e.downcast_ref::&lt;io::Error&gt;() {
+        <span class="kw">if </span>e.kind() == io::ErrorKind::ConnectionAborted {
+            <span class="kw">return </span>ControlFlow::Continue(());
+        }
+    }
+
+    ControlFlow::Break(e)
 }
 
 <span class="attr">#[cfg(feature = <span class="string">"tls"</span>)]

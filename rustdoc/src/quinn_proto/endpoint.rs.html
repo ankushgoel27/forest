@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/quinn-proto-0.11.6/src/endpoint.rs`."><title>endpoint.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="quinn_proto" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/quinn-proto-0.11.7/src/endpoint.rs`."><title>endpoint.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="quinn_proto" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1331,6 +1331,18 @@
 <a href="#1331" id="1331">1331</a>
 <a href="#1332" id="1332">1332</a>
 <a href="#1333" id="1333">1333</a>
+<a href="#1334" id="1334">1334</a>
+<a href="#1335" id="1335">1335</a>
+<a href="#1336" id="1336">1336</a>
+<a href="#1337" id="1337">1337</a>
+<a href="#1338" id="1338">1338</a>
+<a href="#1339" id="1339">1339</a>
+<a href="#1340" id="1340">1340</a>
+<a href="#1341" id="1341">1341</a>
+<a href="#1342" id="1342">1342</a>
+<a href="#1343" id="1343">1343</a>
+<a href="#1344" id="1344">1344</a>
+<a href="#1345" id="1345">1345</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::{
     collections::{hash_map, HashMap},
     convert::TryFrom,
@@ -1906,7 +1918,7 @@
 
         <span class="kw">if </span><span class="self">self</span>.cids_exhausted() {
             <span class="macro">debug!</span>(<span class="string">"refusing connection"</span>);
-            <span class="self">self</span>.index.remove_initial(incoming.orig_dst_cid);
+            <span class="self">self</span>.index.remove_initial(dst_cid);
             <span class="kw">return </span><span class="prelude-val">Err</span>(AcceptError {
                 cause: ConnectionError::CidsExhausted,
                 response: <span class="prelude-val">Some</span>(<span class="self">self</span>.initial_close(
@@ -1935,7 +1947,7 @@
             .is_err()
         {
             <span class="macro">debug!</span>(packet_number, <span class="string">"failed to authenticate initial packet"</span>);
-            <span class="self">self</span>.index.remove_initial(incoming.orig_dst_cid);
+            <span class="self">self</span>.index.remove_initial(dst_cid);
             <span class="kw">return </span><span class="prelude-val">Err</span>(AcceptError {
                 cause: TransportError::PROTOCOL_VIOLATION(<span class="string">"authentication failed"</span>).into(),
                 response: <span class="prelude-val">None</span>,
@@ -1984,9 +1996,7 @@
             transport_config,
             remote_address_validated,
         );
-        <span class="kw">if </span>dst_cid.len() != <span class="number">0 </span>{
-            <span class="self">self</span>.index.insert_initial(dst_cid, ch);
-        }
+        <span class="self">self</span>.index.insert_initial(dst_cid, ch);
 
         <span class="kw">match </span>conn.handle_first_packet(
             now,
@@ -2039,8 +2049,8 @@
         // length. If we ever issue non-Retry address validation tokens via `NEW_TOKEN`, then we'll
         // also need to validate CID length for those after decoding the token.
         </span><span class="kw">if </span>header.dst_cid.len() &lt; <span class="number">8
-            </span>&amp;&amp; (!header.token_pos.is_empty()
-                &amp;&amp; header.dst_cid.len() != <span class="self">self</span>.local_cid_generator.cid_len())
+            </span>&amp;&amp; (header.token_pos.is_empty()
+                || header.dst_cid.len() != <span class="self">self</span>.local_cid_generator.cid_len())
         {
             <span class="macro">debug!</span>(
                 <span class="string">"rejecting connection due to invalid DCID length {}"</span>,
@@ -2135,7 +2145,7 @@
 
     <span class="doccomment">/// Clean up endpoint data structures associated with an `Incoming`.
     </span><span class="kw">fn </span>clean_up_incoming(<span class="kw-2">&amp;mut </span><span class="self">self</span>, incoming: <span class="kw-2">&amp;</span>Incoming) {
-        <span class="self">self</span>.index.remove_initial(incoming.orig_dst_cid);
+        <span class="self">self</span>.index.remove_initial(incoming.packet.header.dst_cid);
         <span class="kw">let </span>incoming_buffer = <span class="self">self</span>.incoming_buffers.remove(incoming.incoming_idx);
         <span class="self">self</span>.all_incoming_buffers_total_bytes -= incoming_buffer.total_bytes;
     }
@@ -2197,6 +2207,7 @@
             cids_issued,
             loc_cids,
             addresses,
+            side,
             reset_token: <span class="prelude-val">None</span>,
         });
         <span class="macro">debug_assert_eq!</span>(id, ch.<span class="number">0</span>, <span class="string">"connection handle allocation out of sync"</span>);
@@ -2327,6 +2338,8 @@
     <span class="doccomment">/// Identifies connections based on the initial DCID the peer utilized
     ///
     /// Uses a standard `HashMap` to protect against hash collision attacks.
+    ///
+    /// Used by the server, not the client.
     </span>connection_ids_initial: HashMap&lt;ConnectionId, RouteDatagramTo&gt;,
     <span class="doccomment">/// Identifies connections based on locally created CIDs
     ///
@@ -2355,17 +2368,27 @@
 <span class="kw">impl </span>ConnectionIndex {
     <span class="doccomment">/// Associate an incoming connection with its initial destination CID
     </span><span class="kw">fn </span>insert_initial_incoming(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dst_cid: ConnectionId, incoming_key: usize) {
+        <span class="kw">if </span>dst_cid.len() == <span class="number">0 </span>{
+            <span class="kw">return</span>;
+        }
         <span class="self">self</span>.connection_ids_initial
             .insert(dst_cid, RouteDatagramTo::Incoming(incoming_key));
     }
 
     <span class="doccomment">/// Remove an association with an initial destination CID
     </span><span class="kw">fn </span>remove_initial(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dst_cid: ConnectionId) {
-        <span class="self">self</span>.connection_ids_initial.remove(<span class="kw-2">&amp;</span>dst_cid);
+        <span class="kw">if </span>dst_cid.len() == <span class="number">0 </span>{
+            <span class="kw">return</span>;
+        }
+        <span class="kw">let </span>removed = <span class="self">self</span>.connection_ids_initial.remove(<span class="kw-2">&amp;</span>dst_cid);
+        <span class="macro">debug_assert!</span>(removed.is_some());
     }
 
     <span class="doccomment">/// Associate a connection with its initial destination CID
     </span><span class="kw">fn </span>insert_initial(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dst_cid: ConnectionId, connection: ConnectionHandle) {
+        <span class="kw">if </span>dst_cid.len() == <span class="number">0 </span>{
+            <span class="kw">return</span>;
+        }
         <span class="self">self</span>.connection_ids_initial
             .insert(dst_cid, RouteDatagramTo::Connection(connection));
     }
@@ -2403,8 +2426,8 @@
 
     <span class="doccomment">/// Remove all references to a connection
     </span><span class="kw">fn </span>remove(<span class="kw-2">&amp;mut </span><span class="self">self</span>, conn: <span class="kw-2">&amp;</span>ConnectionMeta) {
-        <span class="kw">if </span>conn.init_cid.len() &gt; <span class="number">0 </span>{
-            <span class="self">self</span>.connection_ids_initial.remove(<span class="kw-2">&amp;</span>conn.init_cid);
+        <span class="kw">if </span>conn.side.is_server() {
+            <span class="self">self</span>.remove_initial(conn.init_cid);
         }
         <span class="kw">for </span>cid <span class="kw">in </span>conn.loc_cids.values() {
             <span class="self">self</span>.connection_ids.remove(cid);
@@ -2459,6 +2482,7 @@
     /// Only needed to support connections with zero-length CIDs, which cannot migrate, so we don't
     /// bother keeping it up to date.
     </span>addresses: FourTuple,
+    side: Side,
     <span class="doccomment">/// Reset token provided by the peer for the CID we're currently sending to, and the address
     /// being sent to
     </span>reset_token: <span class="prelude-ty">Option</span>&lt;(SocketAddr, ResetToken)&gt;,

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-types-0.13.1/src/protobuf.rs`."><title>protobuf.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="prost_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/prost-types-0.13.2/src/protobuf.rs`."><title>protobuf.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="prost_types" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2263,62 +2263,16 @@
 <a href="#2263" id="2263">2263</a>
 <a href="#2264" id="2264">2264</a>
 <a href="#2265" id="2265">2265</a>
-<a href="#2266" id="2266">2266</a>
-<a href="#2267" id="2267">2267</a>
-<a href="#2268" id="2268">2268</a>
-<a href="#2269" id="2269">2269</a>
-<a href="#2270" id="2270">2270</a>
-<a href="#2271" id="2271">2271</a>
-<a href="#2272" id="2272">2272</a>
-<a href="#2273" id="2273">2273</a>
-<a href="#2274" id="2274">2274</a>
-<a href="#2275" id="2275">2275</a>
-<a href="#2276" id="2276">2276</a>
-<a href="#2277" id="2277">2277</a>
-<a href="#2278" id="2278">2278</a>
-<a href="#2279" id="2279">2279</a>
-<a href="#2280" id="2280">2280</a>
-<a href="#2281" id="2281">2281</a>
-<a href="#2282" id="2282">2282</a>
-<a href="#2283" id="2283">2283</a>
-<a href="#2284" id="2284">2284</a>
-<a href="#2285" id="2285">2285</a>
-<a href="#2286" id="2286">2286</a>
-<a href="#2287" id="2287">2287</a>
-<a href="#2288" id="2288">2288</a>
-<a href="#2289" id="2289">2289</a>
-<a href="#2290" id="2290">2290</a>
-<a href="#2291" id="2291">2291</a>
-<a href="#2292" id="2292">2292</a>
-<a href="#2293" id="2293">2293</a>
-<a href="#2294" id="2294">2294</a>
-<a href="#2295" id="2295">2295</a>
-<a href="#2296" id="2296">2296</a>
-<a href="#2297" id="2297">2297</a>
-<a href="#2298" id="2298">2298</a>
-<a href="#2299" id="2299">2299</a>
-<a href="#2300" id="2300">2300</a>
-<a href="#2301" id="2301">2301</a>
-<a href="#2302" id="2302">2302</a>
-<a href="#2303" id="2303">2303</a>
-<a href="#2304" id="2304">2304</a>
-<a href="#2305" id="2305">2305</a>
-<a href="#2306" id="2306">2306</a>
-<a href="#2307" id="2307">2307</a>
-<a href="#2308" id="2308">2308</a>
-<a href="#2309" id="2309">2309</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file is @generated by prost-build.
 </span><span class="doccomment">/// The protocol compiler can output a FileDescriptorSet containing the .proto
 /// files it parses.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FileDescriptorSet {
     <span class="attr">#[prost(message, repeated, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>file: ::prost::alloc::vec::Vec&lt;FileDescriptorProto&gt;,
 }
 <span class="doccomment">/// Describes a complete .proto file.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FileDescriptorProto {
     <span class="doccomment">/// file name, relative to root of source tree
     </span><span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
@@ -2359,8 +2313,7 @@
     </span><span class="kw">pub </span>syntax: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
 }
 <span class="doccomment">/// Describes a message type.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>DescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2387,8 +2340,7 @@
 }
 <span class="doccomment">/// Nested message and enum types in `DescriptorProto`.
 </span><span class="kw">pub mod </span>descriptor_proto {
-    <span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>ExtensionRange {
         <span class="doccomment">/// Inclusive.
         </span><span class="attr">#[prost(int32, optional, tag = <span class="string">"1"</span>)]
@@ -2402,8 +2354,7 @@
     <span class="doccomment">/// Range of reserved tag numbers. Reserved tag numbers may not be used by
     /// fields or extension ranges in the same message. Reserved ranges may
     /// not overlap.
-    </span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    </span><span class="attr">#[derive(Clone, Copy, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>ReservedRange {
         <span class="doccomment">/// Inclusive.
         </span><span class="attr">#[prost(int32, optional, tag = <span class="string">"1"</span>)]
@@ -2413,16 +2364,14 @@
         </span><span class="kw">pub </span>end: ::core::option::Option&lt;i32&gt;,
     }
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ExtensionRangeOptions {
     <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
 <span class="doccomment">/// Describes a field within a message.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FieldDescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2630,8 +2579,7 @@
     }
 }
 <span class="doccomment">/// Describes a oneof.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>OneofDescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2639,8 +2587,7 @@
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;OneofOptions&gt;,
 }
 <span class="doccomment">/// Describes an enum type.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumDescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2668,8 +2615,7 @@
     /// Note that this is distinct from DescriptorProto.ReservedRange in that it
     /// is inclusive such that it can appropriately represent the entire int32
     /// domain.
-    </span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, Copy, PartialEq, ::prost::Message)]
+    </span><span class="attr">#[derive(Clone, Copy, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>EnumReservedRange {
         <span class="doccomment">/// Inclusive.
         </span><span class="attr">#[prost(int32, optional, tag = <span class="string">"1"</span>)]
@@ -2680,8 +2626,7 @@
     }
 }
 <span class="doccomment">/// Describes a value within an enum.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumValueDescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2691,8 +2636,7 @@
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;EnumValueOptions&gt;,
 }
 <span class="doccomment">/// Describes a service.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ServiceDescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2702,8 +2646,7 @@
     </span><span class="kw">pub </span>options: ::core::option::Option&lt;ServiceOptions&gt;,
 }
 <span class="doccomment">/// Describes a method of a service.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>MethodDescriptorProto {
     <span class="attr">#[prost(string, optional, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>name: ::core::option::Option&lt;::prost::alloc::string::String&gt;,
@@ -2751,8 +2694,7 @@
 ///   &lt;https://developers.google.com/protocol-buffers/docs/proto#options&gt;
 ///   If this turns out to be popular, a web service will be set up
 ///   to automatically assign option numbers.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FileOptions {
     <span class="doccomment">/// Sets the Java package where classes generated from this .proto will be
     /// placed.  By default, the proto package is used, but this is often
@@ -2915,8 +2857,7 @@
         }
     }
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>MessageOptions {
     <span class="doccomment">/// Set true to use the old proto1 MessageSet wire format for extensions.
     /// This is provided for backwards-compatibility with the MessageSet wire
@@ -2976,8 +2917,7 @@
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FieldOptions {
     <span class="doccomment">/// The ctype option instructs the C++ code generator to use a different
     /// representation of the field than it normally would.  See the specific
@@ -3142,15 +3082,13 @@
         }
     }
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>OneofOptions {
     <span class="doccomment">/// The parser stores options it doesn't recognize here. See above.
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumOptions {
     <span class="doccomment">/// Set this option to true to allow mapping different tag names to the same
     /// value.
@@ -3166,8 +3104,7 @@
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumValueOptions {
     <span class="doccomment">/// Is this enum value deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
@@ -3179,8 +3116,7 @@
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ServiceOptions {
     <span class="doccomment">/// Is this service deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
@@ -3192,8 +3128,7 @@
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"999"</span>)]
     </span><span class="kw">pub </span>uninterpreted_option: ::prost::alloc::vec::Vec&lt;UninterpretedOption&gt;,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>MethodOptions {
     <span class="doccomment">/// Is this method deprecated?
     /// Depending on the target platform, this can emit Deprecated annotations
@@ -3265,8 +3200,7 @@
 /// options protos in descriptor objects (e.g. returned by Descriptor::options(),
 /// or produced by Descriptor::CopyTo()) will never have UninterpretedOptions
 /// in them.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>UninterpretedOption {
     <span class="attr">#[prost(message, repeated, tag = <span class="string">"2"</span>)]
     </span><span class="kw">pub </span>name: ::prost::alloc::vec::Vec&lt;uninterpreted_option::NamePart&gt;,
@@ -3292,8 +3226,7 @@
     /// extension (denoted with parentheses in options specs in .proto files).
     /// E.g.,{ \["foo", false\], \["bar.baz", true\], \["qux", false\] } represents
     /// "foo.(bar.baz).qux".
-    </span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>NamePart {
         <span class="attr">#[prost(string, required, tag = <span class="string">"1"</span>)]
         </span><span class="kw">pub </span>name_part: ::prost::alloc::string::String,
@@ -3303,8 +3236,7 @@
 }
 <span class="doccomment">/// Encapsulates information about the original source file from which a
 /// FileDescriptorProto was generated.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>SourceCodeInfo {
     <span class="doccomment">/// A Location identifies a piece of source code in a .proto file which
     /// corresponds to a particular definition.  This information is intended
@@ -3355,8 +3287,7 @@
 }
 <span class="doccomment">/// Nested message and enum types in `SourceCodeInfo`.
 </span><span class="kw">pub mod </span>source_code_info {
-    <span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>Location {
         <span class="doccomment">/// Identifies which part of the FileDescriptorProto was defined at this
         /// location.
@@ -3450,8 +3381,7 @@
 <span class="doccomment">/// Describes the relationship between generated code and its original source
 /// file. A GeneratedCodeInfo message is associated with only one generated
 /// source file, but may contain references to different source .proto files.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>GeneratedCodeInfo {
     <span class="doccomment">/// An Annotation connects some span of text in generated code to an element
     /// of its generating .proto file.
@@ -3460,8 +3390,7 @@
 }
 <span class="doccomment">/// Nested message and enum types in `GeneratedCodeInfo`.
 </span><span class="kw">pub mod </span>generated_code_info {
-    <span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Message)]
+    <span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
     </span><span class="kw">pub struct </span>Annotation {
         <span class="doccomment">/// Identifies the element in the original source .proto file. This field
         /// is formatted the same as SourceCodeInfo.Location.path.
@@ -3574,8 +3503,7 @@
 ///    "value": "1.212s"
 /// }
 /// ```
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Any {
     <span class="doccomment">/// A URL/resource name that uniquely identifies the type of the serialized
     /// protocol buffer message. This string must contain at least
@@ -3612,8 +3540,7 @@
 }
 <span class="doccomment">/// `SourceContext` represents information about the source of a
 /// protobuf element, like the file in which it is defined.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>SourceContext {
     <span class="doccomment">/// The path-qualified name of the .proto file that contained the associated
     /// protobuf element.  For example: `"google/protobuf/source_context.proto"`.
@@ -3621,8 +3548,7 @@
     </span><span class="kw">pub </span>file_name: ::prost::alloc::string::String,
 }
 <span class="doccomment">/// A protocol buffer message type.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Type {
     <span class="doccomment">/// The fully qualified message name.
     </span><span class="attr">#[prost(string, tag = <span class="string">"1"</span>)]
@@ -3644,8 +3570,7 @@
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// A single field of a message type.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Field {
     <span class="doccomment">/// The field type.
     </span><span class="attr">#[prost(enumeration = <span class="string">"field::Kind"</span>, tag = <span class="string">"1"</span>)]
@@ -3838,8 +3763,7 @@
     }
 }
 <span class="doccomment">/// Enum type definition.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Enum {
     <span class="doccomment">/// Enum type name.
     </span><span class="attr">#[prost(string, tag = <span class="string">"1"</span>)]
@@ -3858,8 +3782,7 @@
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// Enum value definition.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>EnumValue {
     <span class="doccomment">/// Enum value name.
     </span><span class="attr">#[prost(string, tag = <span class="string">"1"</span>)]
@@ -3873,8 +3796,7 @@
 }
 <span class="doccomment">/// A protocol buffer option, which can be attached to a message, field,
 /// enumeration, etc.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span><span class="prelude-ty">Option </span>{
     <span class="doccomment">/// The option's name. For protobuf built-in options (options defined in
     /// descriptor.proto), this is the short name. For example, `"map_entry"`.
@@ -3927,8 +3849,7 @@
 /// sometimes simply referred to as "APIs" in other contexts, such as the name of
 /// this message itself. See &lt;https://cloud.google.com/apis/design/glossary&gt; for
 /// detailed terminology.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Api {
     <span class="doccomment">/// The fully qualified name of this interface, including package name
     /// followed by the interface's simple name.
@@ -3973,8 +3894,7 @@
     </span><span class="kw">pub </span>syntax: i32,
 }
 <span class="doccomment">/// Method represents a method of an API interface.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Method {
     <span class="doccomment">/// The simple name of this method.
     </span><span class="attr">#[prost(string, tag = <span class="string">"1"</span>)]
@@ -4086,8 +4006,7 @@
 ///    ...
 /// }
 /// ```
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Mixin {
     <span class="doccomment">/// The fully qualified name of the interface which is included.
     </span><span class="attr">#[prost(string, tag = <span class="string">"1"</span>)]
@@ -4161,8 +4080,7 @@
 /// encoded in JSON format as "3s", while 3 seconds and 1 nanosecond should
 /// be expressed in JSON format as "3.000000001s", and 3 seconds and 1
 /// microsecond should be expressed in JSON format as "3.000001s".
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Duration {
     <span class="doccomment">/// Signed seconds of the span of time. Must be from -315,576,000,000
     /// to +315,576,000,000 inclusive. Note: these bounds are computed from:
@@ -4400,8 +4318,7 @@
 /// The implementation of any API method which has a FieldMask type field in the
 /// request should verify the included field paths, and return an
 /// `INVALID_ARGUMENT` error if any path is unmappable.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>FieldMask {
     <span class="doccomment">/// The set of field mask paths.
     </span><span class="attr">#[prost(string, repeated, tag = <span class="string">"1"</span>)]
@@ -4415,8 +4332,7 @@
 /// with the proto support for the language.
 ///
 /// The JSON representation for `Struct` is JSON object.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Struct {
     <span class="doccomment">/// Unordered map of dynamically typed values.
     </span><span class="attr">#[prost(btree_map = <span class="string">"string, message"</span>, tag = <span class="string">"1"</span>)]
@@ -4431,8 +4347,7 @@
 /// variants. Absence of any variant indicates an error.
 ///
 /// The JSON representation for `Value` is JSON value.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Value {
     <span class="doccomment">/// The kind of value.
     </span><span class="attr">#[prost(oneof = <span class="string">"value::Kind"</span>, tags = <span class="string">"1, 2, 3, 4, 5, 6"</span>)]
@@ -4441,8 +4356,7 @@
 <span class="doccomment">/// Nested message and enum types in `Value`.
 </span><span class="kw">pub mod </span>value {
     <span class="doccomment">/// The kind of value.
-    </span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    </span><span class="attr">#[derive(Clone, PartialEq, ::prost::Oneof)]
     </span><span class="kw">pub enum </span>Kind {
         <span class="doccomment">/// Represents a null value.
         </span><span class="attr">#[prost(enumeration = <span class="string">"super::NullValue"</span>, tag = <span class="string">"1"</span>)]
@@ -4467,8 +4381,7 @@
 <span class="doccomment">/// `ListValue` is a wrapper around a repeated field of values.
 ///
 /// The JSON representation for `ListValue` is JSON array.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>ListValue {
     <span class="doccomment">/// Repeated field of dynamically typed values.
     </span><span class="attr">#[prost(message, repeated, tag = <span class="string">"1"</span>)]
@@ -4601,8 +4514,7 @@
 /// [`strftime`](&lt;https://docs.python.org/2/library/time.html#time.strftime&gt;) with
 /// the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
 /// the Joda Time's [`ISODateTimeFormat.dateTime()`](&lt;http://www.joda.org/joda-time/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime%2D%2D&gt;) to obtain a formatter capable of generating timestamps in this format.
-</span><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+</span><span class="attr">#[derive(Clone, Copy, PartialEq, ::prost::Message)]
 </span><span class="kw">pub struct </span>Timestamp {
     <span class="doccomment">/// Represents seconds of UTC time since Unix epoch
     /// 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to

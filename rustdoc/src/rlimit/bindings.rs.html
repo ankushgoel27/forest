@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rlimit-0.10.1/src/bindings.rs`."><title>bindings.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rlimit" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rlimit-0.10.2/src/bindings.rs`."><title>bindings.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rlimit" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -4390,6 +4390,107 @@
 <a href="#4390" id="4390">4390</a>
 <a href="#4391" id="4391">4391</a>
 <a href="#4392" id="4392">4392</a>
+<a href="#4393" id="4393">4393</a>
+<a href="#4394" id="4394">4394</a>
+<a href="#4395" id="4395">4395</a>
+<a href="#4396" id="4396">4396</a>
+<a href="#4397" id="4397">4397</a>
+<a href="#4398" id="4398">4398</a>
+<a href="#4399" id="4399">4399</a>
+<a href="#4400" id="4400">4400</a>
+<a href="#4401" id="4401">4401</a>
+<a href="#4402" id="4402">4402</a>
+<a href="#4403" id="4403">4403</a>
+<a href="#4404" id="4404">4404</a>
+<a href="#4405" id="4405">4405</a>
+<a href="#4406" id="4406">4406</a>
+<a href="#4407" id="4407">4407</a>
+<a href="#4408" id="4408">4408</a>
+<a href="#4409" id="4409">4409</a>
+<a href="#4410" id="4410">4410</a>
+<a href="#4411" id="4411">4411</a>
+<a href="#4412" id="4412">4412</a>
+<a href="#4413" id="4413">4413</a>
+<a href="#4414" id="4414">4414</a>
+<a href="#4415" id="4415">4415</a>
+<a href="#4416" id="4416">4416</a>
+<a href="#4417" id="4417">4417</a>
+<a href="#4418" id="4418">4418</a>
+<a href="#4419" id="4419">4419</a>
+<a href="#4420" id="4420">4420</a>
+<a href="#4421" id="4421">4421</a>
+<a href="#4422" id="4422">4422</a>
+<a href="#4423" id="4423">4423</a>
+<a href="#4424" id="4424">4424</a>
+<a href="#4425" id="4425">4425</a>
+<a href="#4426" id="4426">4426</a>
+<a href="#4427" id="4427">4427</a>
+<a href="#4428" id="4428">4428</a>
+<a href="#4429" id="4429">4429</a>
+<a href="#4430" id="4430">4430</a>
+<a href="#4431" id="4431">4431</a>
+<a href="#4432" id="4432">4432</a>
+<a href="#4433" id="4433">4433</a>
+<a href="#4434" id="4434">4434</a>
+<a href="#4435" id="4435">4435</a>
+<a href="#4436" id="4436">4436</a>
+<a href="#4437" id="4437">4437</a>
+<a href="#4438" id="4438">4438</a>
+<a href="#4439" id="4439">4439</a>
+<a href="#4440" id="4440">4440</a>
+<a href="#4441" id="4441">4441</a>
+<a href="#4442" id="4442">4442</a>
+<a href="#4443" id="4443">4443</a>
+<a href="#4444" id="4444">4444</a>
+<a href="#4445" id="4445">4445</a>
+<a href="#4446" id="4446">4446</a>
+<a href="#4447" id="4447">4447</a>
+<a href="#4448" id="4448">4448</a>
+<a href="#4449" id="4449">4449</a>
+<a href="#4450" id="4450">4450</a>
+<a href="#4451" id="4451">4451</a>
+<a href="#4452" id="4452">4452</a>
+<a href="#4453" id="4453">4453</a>
+<a href="#4454" id="4454">4454</a>
+<a href="#4455" id="4455">4455</a>
+<a href="#4456" id="4456">4456</a>
+<a href="#4457" id="4457">4457</a>
+<a href="#4458" id="4458">4458</a>
+<a href="#4459" id="4459">4459</a>
+<a href="#4460" id="4460">4460</a>
+<a href="#4461" id="4461">4461</a>
+<a href="#4462" id="4462">4462</a>
+<a href="#4463" id="4463">4463</a>
+<a href="#4464" id="4464">4464</a>
+<a href="#4465" id="4465">4465</a>
+<a href="#4466" id="4466">4466</a>
+<a href="#4467" id="4467">4467</a>
+<a href="#4468" id="4468">4468</a>
+<a href="#4469" id="4469">4469</a>
+<a href="#4470" id="4470">4470</a>
+<a href="#4471" id="4471">4471</a>
+<a href="#4472" id="4472">4472</a>
+<a href="#4473" id="4473">4473</a>
+<a href="#4474" id="4474">4474</a>
+<a href="#4475" id="4475">4475</a>
+<a href="#4476" id="4476">4476</a>
+<a href="#4477" id="4477">4477</a>
+<a href="#4478" id="4478">4478</a>
+<a href="#4479" id="4479">4479</a>
+<a href="#4480" id="4480">4480</a>
+<a href="#4481" id="4481">4481</a>
+<a href="#4482" id="4482">4482</a>
+<a href="#4483" id="4483">4483</a>
+<a href="#4484" id="4484">4484</a>
+<a href="#4485" id="4485">4485</a>
+<a href="#4486" id="4486">4486</a>
+<a href="#4487" id="4487">4487</a>
+<a href="#4488" id="4488">4488</a>
+<a href="#4489" id="4489">4489</a>
+<a href="#4490" id="4490">4490</a>
+<a href="#4491" id="4491">4491</a>
+<a href="#4492" id="4492">4492</a>
+<a href="#4493" id="4493">4493</a>
 </pre></div><pre class="rust"><code><span class="attr">#![allow(clippy::cast_possible_truncation)]
 #![allow(clippy::unnecessary_cast)]
 
@@ -4399,6 +4500,7 @@
         any(
             target_os = <span class="string">"aix"</span>,
             target_os = <span class="string">"emscripten"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"l4re"</span>,
             target_os = <span class="string">"linux"</span>,
             target_os = <span class="string">"nto"
@@ -4421,10 +4523,7 @@
 <span class="attr">#[cfg(all(
     any(
         target_os = <span class="string">"vxworks"</span>,
-        all(
-            unix,
-            not(any(target_os = <span class="string">"psp"</span>, target_os = <span class="string">"solid_asp3"</span>, target_os = <span class="string">"switch"</span>))
-        )
+        all(unix, not(any(target_os = <span class="string">"solid_asp3"</span>, target_os = <span class="string">"switch"</span>)))
     ),
     not(any(
         target_os = <span class="string">"fuchsia"</span>,
@@ -4432,6 +4531,7 @@
             any(
                 target_os = <span class="string">"aix"</span>,
                 target_os = <span class="string">"emscripten"</span>,
+                target_os = <span class="string">"hurd"</span>,
                 target_os = <span class="string">"l4re"</span>,
                 target_os = <span class="string">"linux"</span>,
                 target_os = <span class="string">"nto"
@@ -4454,7 +4554,12 @@
 
 <span class="attr">#[cfg(any(
     all(
-        any(target_os = <span class="string">"aix"</span>, target_os = <span class="string">"android"</span>, target_os = <span class="string">"emscripten"</span>),
+        any(
+            target_os = <span class="string">"aix"</span>,
+            target_os = <span class="string">"android"</span>,
+            target_os = <span class="string">"emscripten"</span>,
+            target_os = <span class="string">"hurd"
+        </span>),
         not(target_env = <span class="string">"newlib"</span>)
     ),
     all(
@@ -4479,7 +4584,7 @@
                 target_os = <span class="string">"emscripten"</span>,
                 target_os = <span class="string">"freebsd"</span>,
                 target_os = <span class="string">"haiku"</span>,
-                target_os = <span class="string">"hermit"</span>,
+                target_os = <span class="string">"hurd"</span>,
                 target_os = <span class="string">"illumos"</span>,
                 target_os = <span class="string">"ios"</span>,
                 target_os = <span class="string">"macos"</span>,
@@ -4489,6 +4594,7 @@
                 target_os = <span class="string">"redox"</span>,
                 target_os = <span class="string">"solaris"</span>,
                 target_os = <span class="string">"tvos"</span>,
+                target_os = <span class="string">"visionos"</span>,
                 target_os = <span class="string">"watchos"
             </span>),
             not(target_env = <span class="string">"newlib"</span>)
@@ -4498,7 +4604,6 @@
             target_env = <span class="string">"newlib"</span>,
             not(any(
                 target_os = <span class="string">"fuchsia"</span>,
-                target_os = <span class="string">"psp"</span>,
                 target_os = <span class="string">"solid_asp3"</span>,
                 target_os = <span class="string">"switch"</span>,
                 target_os = <span class="string">"vxworks"
@@ -4507,7 +4612,12 @@
     ),
     not(any(
         all(
-            any(target_os = <span class="string">"aix"</span>, target_os = <span class="string">"android"</span>, target_os = <span class="string">"emscripten"</span>),
+            any(
+                target_os = <span class="string">"aix"</span>,
+                target_os = <span class="string">"android"</span>,
+                target_os = <span class="string">"emscripten"</span>,
+                target_os = <span class="string">"hurd"
+            </span>),
             not(target_env = <span class="string">"newlib"</span>)
         ),
         all(
@@ -4525,7 +4635,12 @@
 
 <span class="attr">#[cfg(any(
     all(
-        any(target_os = <span class="string">"aix"</span>, target_os = <span class="string">"android"</span>, target_os = <span class="string">"emscripten"</span>),
+        any(
+            target_os = <span class="string">"aix"</span>,
+            target_os = <span class="string">"android"</span>,
+            target_os = <span class="string">"emscripten"</span>,
+            target_os = <span class="string">"hurd"
+        </span>),
         not(target_env = <span class="string">"newlib"</span>)
     ),
     all(
@@ -4550,7 +4665,7 @@
                 target_os = <span class="string">"emscripten"</span>,
                 target_os = <span class="string">"freebsd"</span>,
                 target_os = <span class="string">"haiku"</span>,
-                target_os = <span class="string">"hermit"</span>,
+                target_os = <span class="string">"hurd"</span>,
                 target_os = <span class="string">"illumos"</span>,
                 target_os = <span class="string">"ios"</span>,
                 target_os = <span class="string">"macos"</span>,
@@ -4560,6 +4675,7 @@
                 target_os = <span class="string">"redox"</span>,
                 target_os = <span class="string">"solaris"</span>,
                 target_os = <span class="string">"tvos"</span>,
+                target_os = <span class="string">"visionos"</span>,
                 target_os = <span class="string">"watchos"
             </span>),
             not(target_env = <span class="string">"newlib"</span>)
@@ -4569,7 +4685,6 @@
             target_env = <span class="string">"newlib"</span>,
             not(any(
                 target_os = <span class="string">"fuchsia"</span>,
-                target_os = <span class="string">"psp"</span>,
                 target_os = <span class="string">"solid_asp3"</span>,
                 target_os = <span class="string">"switch"</span>,
                 target_os = <span class="string">"vxworks"
@@ -4578,7 +4693,12 @@
     ),
     not(any(
         all(
-            any(target_os = <span class="string">"aix"</span>, target_os = <span class="string">"android"</span>, target_os = <span class="string">"emscripten"</span>),
+            any(
+                target_os = <span class="string">"aix"</span>,
+                target_os = <span class="string">"android"</span>,
+                target_os = <span class="string">"emscripten"</span>,
+                target_os = <span class="string">"hurd"
+            </span>),
             not(target_env = <span class="string">"newlib"</span>)
         ),
         all(
@@ -4617,6 +4737,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -4625,6 +4746,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -4695,6 +4817,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -4703,6 +4826,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -4769,6 +4893,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -4776,6 +4901,7 @@
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -4856,6 +4982,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -4863,6 +4990,7 @@
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -4943,6 +5071,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -4951,6 +5080,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5031,6 +5161,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5039,6 +5170,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5119,6 +5251,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5127,6 +5260,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5207,6 +5341,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5215,6 +5350,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5295,6 +5431,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5303,6 +5440,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5383,6 +5521,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5391,6 +5530,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5471,6 +5611,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5479,6 +5620,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5559,6 +5701,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -5567,6 +5710,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5795,12 +5939,14 @@
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -5879,12 +6025,14 @@
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -6253,6 +6401,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -6261,6 +6410,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -6341,6 +6491,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -6349,6 +6500,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -6434,12 +6586,14 @@
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -6519,12 +6673,14 @@
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -6622,12 +6778,14 @@
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -6707,12 +6865,14 @@
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -7064,13 +7224,23 @@
 </span><span class="kw">pub const </span>RLIMIT_RTTIME: u8 = u8::MAX;
 
 <span class="attr">#[cfg(all(
-    any(target_os = <span class="string">"dragonfly"</span>, target_os = <span class="string">"freebsd"</span>, target_os = <span class="string">"netbsd"</span>),
+    any(
+        target_os = <span class="string">"dragonfly"</span>,
+        target_os = <span class="string">"freebsd"</span>,
+        target_os = <span class="string">"hurd"</span>,
+        target_os = <span class="string">"netbsd"
+    </span>),
     not(target_env = <span class="string">"newlib"</span>)
 ))]
 </span><span class="kw">pub const </span>RLIMIT_SBSIZE: u8 = libc::RLIMIT_SBSIZE <span class="kw">as </span>u8;
 
 <span class="attr">#[cfg(not(all(
-    any(target_os = <span class="string">"dragonfly"</span>, target_os = <span class="string">"freebsd"</span>, target_os = <span class="string">"netbsd"</span>),
+    any(
+        target_os = <span class="string">"dragonfly"</span>,
+        target_os = <span class="string">"freebsd"</span>,
+        target_os = <span class="string">"hurd"</span>,
+        target_os = <span class="string">"netbsd"
+    </span>),
     not(target_env = <span class="string">"newlib"</span>)
 )))]
 </span><span class="kw">pub const </span>RLIMIT_SBSIZE: u8 = u8::MAX;
@@ -7229,6 +7399,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -7237,6 +7408,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -7317,6 +7489,7 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"haiku"</span>,
+            target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"illumos"</span>,
             target_os = <span class="string">"ios"</span>,
             target_os = <span class="string">"macos"</span>,
@@ -7325,6 +7498,7 @@
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"solaris"</span>,
             target_os = <span class="string">"tvos"</span>,
+            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"watchos"
         </span>),
         not(target_env = <span class="string">"newlib"</span>)
@@ -7417,6 +7591,7 @@
     any(
         target_os = <span class="string">"dragonfly"</span>,
         target_os = <span class="string">"freebsd"</span>,
+        target_os = <span class="string">"hurd"</span>,
         target_os = <span class="string">"illumos"</span>,
         target_os = <span class="string">"nto"</span>,
         target_os = <span class="string">"solaris"
@@ -7429,6 +7604,7 @@
     any(
         target_os = <span class="string">"dragonfly"</span>,
         target_os = <span class="string">"freebsd"</span>,
+        target_os = <span class="string">"hurd"</span>,
         target_os = <span class="string">"illumos"</span>,
         target_os = <span class="string">"nto"</span>,
         target_os = <span class="string">"solaris"
@@ -7452,6 +7628,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -7459,6 +7636,7 @@
                     target_os = <span class="string">"nto"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -7539,6 +7717,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -7547,6 +7726,7 @@
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -7627,6 +7807,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -7635,6 +7816,7 @@
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -7715,6 +7897,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -7723,6 +7906,7 @@
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -7803,6 +7987,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -7811,6 +7996,7 @@
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -7964,12 +8150,14 @@
                     target_os = <span class="string">"dragonfly"</span>,
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
                     target_os = <span class="string">"netbsd"</span>,
                     target_os = <span class="string">"nto"</span>,
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -8194,6 +8382,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -8202,6 +8391,7 @@
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -8284,12 +8474,14 @@
                     target_os = <span class="string">"dragonfly"</span>,
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
                     target_os = <span class="string">"netbsd"</span>,
                     target_os = <span class="string">"nto"</span>,
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -8378,12 +8570,14 @@
                     target_os = <span class="string">"dragonfly"</span>,
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
                     target_os = <span class="string">"netbsd"</span>,
                     target_os = <span class="string">"nto"</span>,
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -8595,7 +8789,12 @@
         </span><span class="macro">assert!</span>((<span class="number">0</span>..<span class="number">128</span>).contains(<span class="kw-2">&amp;</span>libc::RLIMIT_RTTIME));
 
         <span class="attr">#[cfg(all(
-            any(target_os = <span class="string">"dragonfly"</span>, target_os = <span class="string">"freebsd"</span>, target_os = <span class="string">"netbsd"</span>),
+            any(
+                target_os = <span class="string">"dragonfly"</span>,
+                target_os = <span class="string">"freebsd"</span>,
+                target_os = <span class="string">"hurd"</span>,
+                target_os = <span class="string">"netbsd"
+            </span>),
             not(target_env = <span class="string">"newlib"</span>)
         ))]
         </span><span class="macro">assert!</span>((<span class="number">0</span>..<span class="number">128</span>).contains(<span class="kw-2">&amp;</span>libc::RLIMIT_SBSIZE));
@@ -8682,6 +8881,7 @@
                     target_os = <span class="string">"emscripten"</span>,
                     target_os = <span class="string">"freebsd"</span>,
                     target_os = <span class="string">"haiku"</span>,
+                    target_os = <span class="string">"hurd"</span>,
                     target_os = <span class="string">"illumos"</span>,
                     target_os = <span class="string">"ios"</span>,
                     target_os = <span class="string">"macos"</span>,
@@ -8690,6 +8890,7 @@
                     target_os = <span class="string">"openbsd"</span>,
                     target_os = <span class="string">"solaris"</span>,
                     target_os = <span class="string">"tvos"</span>,
+                    target_os = <span class="string">"visionos"</span>,
                     target_os = <span class="string">"watchos"
                 </span>),
                 not(target_env = <span class="string">"newlib"</span>)
@@ -8773,6 +8974,7 @@
             any(
                 target_os = <span class="string">"dragonfly"</span>,
                 target_os = <span class="string">"freebsd"</span>,
+                target_os = <span class="string">"hurd"</span>,
                 target_os = <span class="string">"illumos"</span>,
                 target_os = <span class="string">"nto"</span>,
                 target_os = <span class="string">"solaris"

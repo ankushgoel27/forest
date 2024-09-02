@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.1/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.2/src/lib.rs`."><title>lib.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -131,6 +131,12 @@
 <a href="#131" id="131">131</a>
 <a href="#132" id="132">132</a>
 <a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! A Rust implementation of [gRPC], a high performance, open source, general
 //! RPC framework that puts mobile and HTTP/2 first.
 //!
@@ -150,22 +156,25 @@
 //! # Feature Flags
 //!
 //! - `transport`: Enables the fully featured, batteries included client and server
-//! implementation based on [`hyper`], [`tower`] and [`tokio`]. Enabled by default.
+//!   implementation based on [`hyper`], [`tower`] and [`tokio`]. This enables `server`
+//!   and `channel` features. Enabled by default.
 //! - `server`: Enables just the full featured server portion of the `transport` feature.
 //! - `channel`: Enables just the full featured channel portion of the `transport` feature.
+//! - `router`: Enables the [`axum`] based service router. Enabled by default.
 //! - `codegen`: Enables all the required exports and optional dependencies required
-//! for [`tonic-build`]. Enabled by default.
-//! - `tls`: Enables the `rustls` based TLS options for the `transport` feature. Not
-//! enabled by default.
-//! - `tls-roots`: Adds system trust roots to `rustls`-based gRPC clients using the
-//! `rustls-native-certs` crate. Not enabled by default. `tls` must be enabled to use
-//! `tls-roots`.
-//! - `tls-webpki-roots`: Add the standard trust roots from the `webpki-roots` crate to
-//! `rustls`-based gRPC clients. Not enabled by default.
-//! - `prost`: Enables the [`prost`] based gRPC [`Codec`] implementation.
-//! - `gzip`: Enables compressing requests, responses, and streams.
-//! Depends on [flate2]. Not enabled by default.
-//! Replaces the `compression` flag from earlier versions of `tonic` (&lt;= 0.7).
+//!   for [`tonic-build`]. Enabled by default.
+//! - `tls`: Enables the [`rustls`] based TLS options for the `transport` feature. Not
+//!   enabled by default.
+//! - `tls-roots`: Deprecated. An alias to `tls-native-roots` feature.
+//! - `tls-native-roots`: Adds system trust roots to [`rustls`]-based gRPC clients using the
+//!   [`rustls-native-certs`] crate. Not enabled by default.
+//! - `tls-webpki-roots`: Add the standard trust roots from the [`webpki-roots`] crate to
+//!   `rustls`-based gRPC clients. Not enabled by default.
+//! - `prost`: Enables the [`prost`] based gRPC [`Codec`] implementation. Enabled by default.
+//! - `gzip`: Enables compressing requests, responses, and streams. Depends on [`flate2`].
+//!   Not enabled by default.
+//! - `zstd`: Enables compressing requests, responses, and streams. Depends on [`zstd`].
+//!   Not enabled by default.
 //!
 //! # Structure
 //!
@@ -208,7 +217,10 @@
 //! [`rustls`]: https://docs.rs/rustls
 //! [`client`]: client/index.html
 //! [`transport`]: transport/index.html
-//! [flate2]: https://crates.io/crates/flate2
+//! [`rustls-native-certs`]: https://docs.rs/rustls-native-certs
+//! [`webpki-roots`]: https://docs.rs/webpki-roots
+//! [`flate2`]: https://docs.rs/flate2
+//! [`zstd`]: https://docs.rs/zstd
 
 </span><span class="attr">#![recursion_limit = <span class="string">"256"</span>]
 #![warn(
@@ -221,7 +233,7 @@
 #![doc(
     html_logo_url = <span class="string">"https://raw.githubusercontent.com/tokio-rs/website/master/public/img/icons/tonic.svg"
 </span>)]
-#![doc(html_root_url = <span class="string">"https://docs.rs/tonic/0.12.1"</span>)]
+#![doc(html_root_url = <span class="string">"https://docs.rs/tonic/0.12.2"</span>)]
 #![doc(issue_tracker_base_url = <span class="string">"https://github.com/hyperium/tonic/issues/"</span>)]
 #![doc(test(no_crate_inject, attr(deny(rust_2018_idioms))))]
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
@@ -253,7 +265,7 @@
 <span class="kw">pub use </span>http::Extensions;
 <span class="kw">pub use </span>request::{IntoRequest, IntoStreamingRequest, Request};
 <span class="kw">pub use </span>response::Response;
-<span class="kw">pub use </span>status::{Code, Status};
+<span class="kw">pub use </span>status::{Code, ConnectError, Status, TimeoutExpired};
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>Error = Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync&gt;;
 

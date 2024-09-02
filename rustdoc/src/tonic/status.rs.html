@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.1/src/status.rs`."><title>status.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.2/src/status.rs`."><title>status.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1013,6 +1013,39 @@
 <a href="#1013" id="1013">1013</a>
 <a href="#1014" id="1014">1014</a>
 <a href="#1015" id="1015">1015</a>
+<a href="#1016" id="1016">1016</a>
+<a href="#1017" id="1017">1017</a>
+<a href="#1018" id="1018">1018</a>
+<a href="#1019" id="1019">1019</a>
+<a href="#1020" id="1020">1020</a>
+<a href="#1021" id="1021">1021</a>
+<a href="#1022" id="1022">1022</a>
+<a href="#1023" id="1023">1023</a>
+<a href="#1024" id="1024">1024</a>
+<a href="#1025" id="1025">1025</a>
+<a href="#1026" id="1026">1026</a>
+<a href="#1027" id="1027">1027</a>
+<a href="#1028" id="1028">1028</a>
+<a href="#1029" id="1029">1029</a>
+<a href="#1030" id="1030">1030</a>
+<a href="#1031" id="1031">1031</a>
+<a href="#1032" id="1032">1032</a>
+<a href="#1033" id="1033">1033</a>
+<a href="#1034" id="1034">1034</a>
+<a href="#1035" id="1035">1035</a>
+<a href="#1036" id="1036">1036</a>
+<a href="#1037" id="1037">1037</a>
+<a href="#1038" id="1038">1038</a>
+<a href="#1039" id="1039">1039</a>
+<a href="#1040" id="1040">1040</a>
+<a href="#1041" id="1041">1041</a>
+<a href="#1042" id="1042">1042</a>
+<a href="#1043" id="1043">1043</a>
+<a href="#1044" id="1044">1044</a>
+<a href="#1045" id="1045">1045</a>
+<a href="#1046" id="1046">1046</a>
+<a href="#1047" id="1047">1047</a>
+<a href="#1048" id="1048">1048</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::metadata::MetadataMap;
 <span class="kw">use crate</span>::{body::BoxBody, metadata::GRPC_CONTENT_TYPE};
 <span class="kw">use </span>base64::Engine <span class="kw">as _</span>;
@@ -1621,8 +1654,7 @@
             });
         }
 
-        <span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(timeout) = err.downcast_ref::&lt;<span class="kw">crate</span>::transport::TimeoutExpired&gt;() {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(timeout) = err.downcast_ref::&lt;TimeoutExpired&gt;() {
             <span class="kw">return </span><span class="prelude-val">Some</span>(Status::cancelled(timeout.to_string()));
         }
 
@@ -1631,10 +1663,7 @@
         // matches the spec of:
         // &gt; The service is currently unavailable. This is most likely a transient condition that
         // &gt; can be corrected if retried with a backoff.
-        </span><span class="attr">#[cfg(feature = <span class="string">"channel"</span>)]
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(connect) =
-            err.downcast_ref::&lt;<span class="kw">crate</span>::transport::channel::service::ConnectError&gt;()
-        {
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(connect) = err.downcast_ref::&lt;ConnectError&gt;() {
             <span class="kw">return </span><span class="prelude-val">Some</span>(Status::unavailable(connect.to_string()));
         }
 
@@ -2026,6 +2055,43 @@
         <span class="kw">let </span>status = Status::from_header_map(<span class="kw-2">&amp;</span>header_map).unwrap();
 
         <span class="macro">assert_eq!</span>(status.details(), DETAILS);
+    }
+}
+
+<span class="doccomment">/// Error returned if a request didn't complete within the configured timeout.
+///
+/// Timeouts can be configured either with [`Endpoint::timeout`], [`Server::timeout`], or by
+/// setting the [`grpc-timeout` metadata value][spec].
+///
+/// [`Endpoint::timeout`]: crate::transport::server::Server::timeout
+/// [`Server::timeout`]: crate::transport::channel::Endpoint::timeout
+/// [spec]: https://github.com/grpc/grpc/blob/master/doc/PROTOCOL-HTTP2.md
+</span><span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>TimeoutExpired(<span class="kw">pub </span>());
+
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>TimeoutExpired {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"Timeout expired"</span>)
+    }
+}
+
+<span class="comment">// std::error::Error only requires a type to impl Debug and Display
+</span><span class="kw">impl </span>std::error::Error <span class="kw">for </span>TimeoutExpired {}
+
+<span class="doccomment">/// Wrapper type to indicate that an error occurs during the connection
+/// process, so that the appropriate gRPC Status can be inferred.
+</span><span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>ConnectError(<span class="kw">pub </span>Box&lt;<span class="kw">dyn </span>std::error::Error + Send + Sync&gt;);
+
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>ConnectError {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        fmt::Display::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, f)
+    }
+}
+
+<span class="kw">impl </span>std::error::Error <span class="kw">for </span>ConnectError {
+    <span class="kw">fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>std::error::Error + <span class="lifetime">'static</span>)&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="number">0</span>.as_ref())
     }
 }
 </code></pre></div></section></main></body></html>

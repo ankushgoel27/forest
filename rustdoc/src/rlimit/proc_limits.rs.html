@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rlimit-0.10.1/src/proc_limits.rs`."><title>proc_limits.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rlimit" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rlimit-0.10.2/src/proc_limits.rs`."><title>proc_limits.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="rlimit" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -200,37 +200,37 @@
 #[derive(Debug, Clone, Default)]
 #[non_exhaustive]
 </span><span class="kw">pub struct </span>ProcLimits {
-    <span class="doccomment">/// Max cpu time. See also [Resource::CPU](struct.Resource.html#associatedconstant.CPU).
+    <span class="doccomment">/// Max cpu time. See also [`Resource::CPU`](struct.Resource.html#associatedconstant.CPU).
     </span><span class="kw">pub </span>max_cpu_time: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max file size. See also [Resource::FSIZE](struct.Resource.html#associatedconstant.FSIZE).
+    <span class="doccomment">/// Max file size. See also [`Resource::FSIZE`](struct.Resource.html#associatedconstant.FSIZE).
     </span><span class="kw">pub </span>max_file_size: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max data size. See also [Resource::DATA](struct.Resource.html#associatedconstant.DATA).
+    <span class="doccomment">/// Max data size. See also [`Resource::DATA`](struct.Resource.html#associatedconstant.DATA).
     </span><span class="kw">pub </span>max_data_size: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max stack size. See also [Resource::STACK](struct.Resource.html#associatedconstant.STACK).
+    <span class="doccomment">/// Max stack size. See also [`Resource::STACK`](struct.Resource.html#associatedconstant.STACK).
     </span><span class="kw">pub </span>max_stack_size: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max core file size. See also [Resource::CORE](struct.Resource.html#associatedconstant.CORE).
+    <span class="doccomment">/// Max core file size. See also [`Resource::CORE`](struct.Resource.html#associatedconstant.CORE).
     </span><span class="kw">pub </span>max_core_file_size: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max resident set. See also [Resource::RSS](struct.Resource.html#associatedconstant.RSS).
+    <span class="doccomment">/// Max resident set. See also [`Resource::RSS`](struct.Resource.html#associatedconstant.RSS).
     </span><span class="kw">pub </span>max_resident_set: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max processes. See also [Resource::NPROC](struct.Resource.html#associatedconstant.NPROC).
+    <span class="doccomment">/// Max processes. See also [`Resource::NPROC`](struct.Resource.html#associatedconstant.NPROC).
     </span><span class="kw">pub </span>max_processes: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max open files. See also [Resource::NOFILE](struct.Resource.html#associatedconstant.NOFILE).
+    <span class="doccomment">/// Max open files. See also [`Resource::NOFILE`](struct.Resource.html#associatedconstant.NOFILE).
     </span><span class="kw">pub </span>max_open_files: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max locked memory. See also [Resource::MEMLOCK](struct.Resource.html#associatedconstant.MEMLOCK).
+    <span class="doccomment">/// Max locked memory. See also [`Resource::MEMLOCK`](struct.Resource.html#associatedconstant.MEMLOCK).
     </span><span class="kw">pub </span>max_locked_memory: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max address space. See also [Resource::AS](struct.Resource.html#associatedconstant.AS).
+    <span class="doccomment">/// Max address space. See also [`Resource::AS`](struct.Resource.html#associatedconstant.AS).
     </span><span class="kw">pub </span>max_address_space: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max file locks. See also [Resource::LOCKS](struct.Resource.html#associatedconstant.LOCKS).
+    <span class="doccomment">/// Max file locks. See also [`Resource::LOCKS`](struct.Resource.html#associatedconstant.LOCKS).
     </span><span class="kw">pub </span>max_file_locks: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max pending signals. See also [Resource::SIGPENDING](struct.Resource.html#associatedconstant.SIGPENDING).
+    <span class="doccomment">/// Max pending signals. See also [`Resource::SIGPENDING`](struct.Resource.html#associatedconstant.SIGPENDING).
     </span><span class="kw">pub </span>max_pending_signals: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max msgqueue size. See also [Resource::MSGQUEUE](struct.Resource.html#associatedconstant.MSGQUEUE).
+    <span class="doccomment">/// Max msgqueue size. See also [`Resource::MSGQUEUE`](struct.Resource.html#associatedconstant.MSGQUEUE).
     </span><span class="kw">pub </span>max_msgqueue_size: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max nice priority. See also [Resource::NICE](struct.Resource.html#associatedconstant.NICE).
+    <span class="doccomment">/// Max nice priority. See also [`Resource::NICE`](struct.Resource.html#associatedconstant.NICE).
     </span><span class="kw">pub </span>max_nice_priority: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max realtime priority. See also [Resource::RTPRIO](struct.Resource.html#associatedconstant.RTPRIO).
+    <span class="doccomment">/// Max realtime priority. See also [`Resource::RTPRIO`](struct.Resource.html#associatedconstant.RTPRIO).
     </span><span class="kw">pub </span>max_realtime_priority: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
-    <span class="doccomment">/// Max realtime timeout. See also [Resource::RTTIME](struct.Resource.html#associatedconstant.RTTIME).
+    <span class="doccomment">/// Max realtime timeout. See also [`Resource::RTTIME`](struct.Resource.html#associatedconstant.RTTIME).
     </span><span class="kw">pub </span>max_realtime_timeout: <span class="prelude-ty">Option</span>&lt;ProcLimit&gt;,
 }
 

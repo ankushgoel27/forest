@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.1/src/metadata/value.rs`."><title>value.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tonic-0.12.2/src/metadata/value.rs`."><title>value.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="tonic" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0 (051478957 2024-07-21)" data-channel="1.80.0" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1469,7 +1469,7 @@
             <span class="kw">let </span>val = AsciiMetadataValue::from(n);
             <span class="macro">assert_eq!</span>(val, <span class="kw-2">&amp;</span>n.to_string());
 
-            <span class="kw">let </span>n = ::std::<span class="macro-nonterminal">$t::MAX</span>;
+            <span class="kw">let </span>n = <span class="macro-nonterminal">$t::MAX</span>;
             <span class="kw">let </span>val = AsciiMetadataValue::from(n);
             <span class="macro">assert_eq!</span>(val, <span class="kw-2">&amp;</span>n.to_string());
         }
@@ -1793,85 +1793,85 @@
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_value_eq_value() {
-    <span class="kw">type </span>BMV = BinaryMetadataValue;
-    <span class="kw">type </span>AMV = AsciiMetadataValue;
+    <span class="kw">type </span>Bmv = BinaryMetadataValue;
+    <span class="kw">type </span>Amv = AsciiMetadataValue;
 
-    <span class="macro">assert_eq!</span>(AMV::from_static(<span class="string">"abc"</span>), AMV::from_static(<span class="string">"abc"</span>));
-    <span class="macro">assert_ne!</span>(AMV::from_static(<span class="string">"abc"</span>), AMV::from_static(<span class="string">"ABC"</span>));
+    <span class="macro">assert_eq!</span>(Amv::from_static(<span class="string">"abc"</span>), Amv::from_static(<span class="string">"abc"</span>));
+    <span class="macro">assert_ne!</span>(Amv::from_static(<span class="string">"abc"</span>), Amv::from_static(<span class="string">"ABC"</span>));
 
-    <span class="macro">assert_eq!</span>(BMV::from_bytes(<span class="string">b"abc"</span>), BMV::from_bytes(<span class="string">b"abc"</span>));
-    <span class="macro">assert_ne!</span>(BMV::from_bytes(<span class="string">b"abc"</span>), BMV::from_bytes(<span class="string">b"ABC"</span>));
+    <span class="macro">assert_eq!</span>(Bmv::from_bytes(<span class="string">b"abc"</span>), Bmv::from_bytes(<span class="string">b"abc"</span>));
+    <span class="macro">assert_ne!</span>(Bmv::from_bytes(<span class="string">b"abc"</span>), Bmv::from_bytes(<span class="string">b"ABC"</span>));
 
     <span class="comment">// Padding is ignored.
     </span><span class="macro">assert_eq!</span>(
-        BMV::from_static(<span class="string">"SGVsbG8hIQ=="</span>),
-        BMV::from_static(<span class="string">"SGVsbG8hIQ"</span>)
+        Bmv::from_static(<span class="string">"SGVsbG8hIQ=="</span>),
+        Bmv::from_static(<span class="string">"SGVsbG8hIQ"</span>)
     );
     <span class="comment">// Invalid values are all just invalid from this point of view.
     </span><span class="kw">unsafe </span>{
         <span class="macro">assert_eq!</span>(
-            BMV::from_shared_unchecked(Bytes::from_static(<span class="string">b"..{}"</span>)),
-            BMV::from_shared_unchecked(Bytes::from_static(<span class="string">b"{}.."</span>))
+            Bmv::from_shared_unchecked(Bytes::from_static(<span class="string">b"..{}"</span>)),
+            Bmv::from_shared_unchecked(Bytes::from_static(<span class="string">b"{}.."</span>))
         );
     }
 }
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_value_eq_str() {
-    <span class="kw">type </span>BMV = BinaryMetadataValue;
-    <span class="kw">type </span>AMV = AsciiMetadataValue;
+    <span class="kw">type </span>Bmv = BinaryMetadataValue;
+    <span class="kw">type </span>Amv = AsciiMetadataValue;
 
-    <span class="macro">assert_eq!</span>(AMV::from_static(<span class="string">"abc"</span>), <span class="string">"abc"</span>);
-    <span class="macro">assert_ne!</span>(AMV::from_static(<span class="string">"abc"</span>), <span class="string">"ABC"</span>);
-    <span class="macro">assert_eq!</span>(<span class="string">"abc"</span>, AMV::from_static(<span class="string">"abc"</span>));
-    <span class="macro">assert_ne!</span>(<span class="string">"ABC"</span>, AMV::from_static(<span class="string">"abc"</span>));
+    <span class="macro">assert_eq!</span>(Amv::from_static(<span class="string">"abc"</span>), <span class="string">"abc"</span>);
+    <span class="macro">assert_ne!</span>(Amv::from_static(<span class="string">"abc"</span>), <span class="string">"ABC"</span>);
+    <span class="macro">assert_eq!</span>(<span class="string">"abc"</span>, Amv::from_static(<span class="string">"abc"</span>));
+    <span class="macro">assert_ne!</span>(<span class="string">"ABC"</span>, Amv::from_static(<span class="string">"abc"</span>));
 
-    <span class="macro">assert_eq!</span>(BMV::from_bytes(<span class="string">b"abc"</span>), <span class="string">"abc"</span>);
-    <span class="macro">assert_ne!</span>(BMV::from_bytes(<span class="string">b"abc"</span>), <span class="string">"ABC"</span>);
-    <span class="macro">assert_eq!</span>(<span class="string">"abc"</span>, BMV::from_bytes(<span class="string">b"abc"</span>));
-    <span class="macro">assert_ne!</span>(<span class="string">"ABC"</span>, BMV::from_bytes(<span class="string">b"abc"</span>));
+    <span class="macro">assert_eq!</span>(Bmv::from_bytes(<span class="string">b"abc"</span>), <span class="string">"abc"</span>);
+    <span class="macro">assert_ne!</span>(Bmv::from_bytes(<span class="string">b"abc"</span>), <span class="string">"ABC"</span>);
+    <span class="macro">assert_eq!</span>(<span class="string">"abc"</span>, Bmv::from_bytes(<span class="string">b"abc"</span>));
+    <span class="macro">assert_ne!</span>(<span class="string">"ABC"</span>, Bmv::from_bytes(<span class="string">b"abc"</span>));
 
     <span class="comment">// Padding is ignored.
-    </span><span class="macro">assert_eq!</span>(BMV::from_static(<span class="string">"SGVsbG8hIQ=="</span>), <span class="string">"Hello!!"</span>);
-    <span class="macro">assert_eq!</span>(<span class="string">"Hello!!"</span>, BMV::from_static(<span class="string">"SGVsbG8hIQ=="</span>));
+    </span><span class="macro">assert_eq!</span>(Bmv::from_static(<span class="string">"SGVsbG8hIQ=="</span>), <span class="string">"Hello!!"</span>);
+    <span class="macro">assert_eq!</span>(<span class="string">"Hello!!"</span>, Bmv::from_static(<span class="string">"SGVsbG8hIQ=="</span>));
 }
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_value_eq_bytes() {
-    <span class="kw">type </span>BMV = BinaryMetadataValue;
-    <span class="kw">type </span>AMV = AsciiMetadataValue;
+    <span class="kw">type </span>Bmv = BinaryMetadataValue;
+    <span class="kw">type </span>Amv = AsciiMetadataValue;
 
-    <span class="macro">assert_eq!</span>(AMV::from_static(<span class="string">"abc"</span>), <span class="string">"abc"</span>.as_bytes());
-    <span class="macro">assert_ne!</span>(AMV::from_static(<span class="string">"abc"</span>), <span class="string">"ABC"</span>.as_bytes());
-    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="string">"abc"</span>.as_bytes(), AMV::from_static(<span class="string">"abc"</span>));
-    <span class="macro">assert_ne!</span>(<span class="kw-2">*</span><span class="string">"ABC"</span>.as_bytes(), AMV::from_static(<span class="string">"abc"</span>));
+    <span class="macro">assert_eq!</span>(Amv::from_static(<span class="string">"abc"</span>), <span class="string">"abc"</span>.as_bytes());
+    <span class="macro">assert_ne!</span>(Amv::from_static(<span class="string">"abc"</span>), <span class="string">"ABC"</span>.as_bytes());
+    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="string">"abc"</span>.as_bytes(), Amv::from_static(<span class="string">"abc"</span>));
+    <span class="macro">assert_ne!</span>(<span class="kw-2">*</span><span class="string">"ABC"</span>.as_bytes(), Amv::from_static(<span class="string">"abc"</span>));
 
-    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="string">"abc"</span>.as_bytes(), BMV::from_bytes(<span class="string">b"abc"</span>));
-    <span class="macro">assert_ne!</span>(<span class="kw-2">*</span><span class="string">"ABC"</span>.as_bytes(), BMV::from_bytes(<span class="string">b"abc"</span>));
+    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="string">"abc"</span>.as_bytes(), Bmv::from_bytes(<span class="string">b"abc"</span>));
+    <span class="macro">assert_ne!</span>(<span class="kw-2">*</span><span class="string">"ABC"</span>.as_bytes(), Bmv::from_bytes(<span class="string">b"abc"</span>));
 
     <span class="comment">// Padding is ignored.
-    </span><span class="macro">assert_eq!</span>(BMV::from_static(<span class="string">"SGVsbG8hIQ=="</span>), <span class="string">"Hello!!"</span>.as_bytes());
-    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="string">"Hello!!"</span>.as_bytes(), BMV::from_static(<span class="string">"SGVsbG8hIQ=="</span>));
+    </span><span class="macro">assert_eq!</span>(Bmv::from_static(<span class="string">"SGVsbG8hIQ=="</span>), <span class="string">"Hello!!"</span>.as_bytes());
+    <span class="macro">assert_eq!</span>(<span class="kw-2">*</span><span class="string">"Hello!!"</span>.as_bytes(), Bmv::from_static(<span class="string">"SGVsbG8hIQ=="</span>));
 }
 
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_ascii_value_hash() {
     <span class="kw">use </span>std::collections::hash_map::DefaultHasher;
-    <span class="kw">type </span>AMV = AsciiMetadataValue;
+    <span class="kw">type </span>Amv = AsciiMetadataValue;
 
-    <span class="kw">fn </span>hash(value: AMV) -&gt; u64 {
+    <span class="kw">fn </span>hash(value: Amv) -&gt; u64 {
         <span class="kw">let </span><span class="kw-2">mut </span>hasher = DefaultHasher::new();
         value.hash(<span class="kw-2">&amp;mut </span>hasher);
         hasher.finish()
     }
 
-    <span class="kw">let </span>value1 = AMV::from_static(<span class="string">"abc"</span>);
-    <span class="kw">let </span>value2 = AMV::from_static(<span class="string">"abc"</span>);
+    <span class="kw">let </span>value1 = Amv::from_static(<span class="string">"abc"</span>);
+    <span class="kw">let </span>value2 = Amv::from_static(<span class="string">"abc"</span>);
     <span class="macro">assert_eq!</span>(value1, value2);
     <span class="macro">assert_eq!</span>(hash(value1), hash(value2));
 
-    <span class="kw">let </span>value1 = AMV::from_static(<span class="string">"abc"</span>);
-    <span class="kw">let </span>value2 = AMV::from_static(<span class="string">"xyz"</span>);
+    <span class="kw">let </span>value1 = Amv::from_static(<span class="string">"abc"</span>);
+    <span class="kw">let </span>value2 = Amv::from_static(<span class="string">"xyz"</span>);
 
     <span class="macro">assert_ne!</span>(value1, value2);
     <span class="macro">assert_ne!</span>(hash(value1), hash(value2));
@@ -1880,21 +1880,21 @@
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_valid_binary_value_hash() {
     <span class="kw">use </span>std::collections::hash_map::DefaultHasher;
-    <span class="kw">type </span>BMV = BinaryMetadataValue;
+    <span class="kw">type </span>Bmv = BinaryMetadataValue;
 
-    <span class="kw">fn </span>hash(value: BMV) -&gt; u64 {
+    <span class="kw">fn </span>hash(value: Bmv) -&gt; u64 {
         <span class="kw">let </span><span class="kw-2">mut </span>hasher = DefaultHasher::new();
         value.hash(<span class="kw-2">&amp;mut </span>hasher);
         hasher.finish()
     }
 
-    <span class="kw">let </span>value1 = BMV::from_bytes(<span class="string">b"abc"</span>);
-    <span class="kw">let </span>value2 = BMV::from_bytes(<span class="string">b"abc"</span>);
+    <span class="kw">let </span>value1 = Bmv::from_bytes(<span class="string">b"abc"</span>);
+    <span class="kw">let </span>value2 = Bmv::from_bytes(<span class="string">b"abc"</span>);
     <span class="macro">assert_eq!</span>(value1, value2);
     <span class="macro">assert_eq!</span>(hash(value1), hash(value2));
 
-    <span class="kw">let </span>value1 = BMV::from_bytes(<span class="string">b"abc"</span>);
-    <span class="kw">let </span>value2 = BMV::from_bytes(<span class="string">b"xyz"</span>);
+    <span class="kw">let </span>value1 = Bmv::from_bytes(<span class="string">b"abc"</span>);
+    <span class="kw">let </span>value2 = Bmv::from_bytes(<span class="string">b"xyz"</span>);
     <span class="macro">assert_ne!</span>(value1, value2);
     <span class="macro">assert_ne!</span>(hash(value1), hash(value2));
 }
@@ -1902,24 +1902,24 @@
 <span class="attr">#[test]
 </span><span class="kw">fn </span>test_invalid_binary_value_hash() {
     <span class="kw">use </span>std::collections::hash_map::DefaultHasher;
-    <span class="kw">type </span>BMV = BinaryMetadataValue;
+    <span class="kw">type </span>Bmv = BinaryMetadataValue;
 
-    <span class="kw">fn </span>hash(value: BMV) -&gt; u64 {
+    <span class="kw">fn </span>hash(value: Bmv) -&gt; u64 {
         <span class="kw">let </span><span class="kw-2">mut </span>hasher = DefaultHasher::new();
         value.hash(<span class="kw-2">&amp;mut </span>hasher);
         hasher.finish()
     }
 
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>value1 = BMV::from_shared_unchecked(Bytes::from_static(<span class="string">b"..{}"</span>));
-        <span class="kw">let </span>value2 = BMV::from_shared_unchecked(Bytes::from_static(<span class="string">b"{}.."</span>));
+        <span class="kw">let </span>value1 = Bmv::from_shared_unchecked(Bytes::from_static(<span class="string">b"..{}"</span>));
+        <span class="kw">let </span>value2 = Bmv::from_shared_unchecked(Bytes::from_static(<span class="string">b"{}.."</span>));
         <span class="macro">assert_eq!</span>(value1, value2);
         <span class="macro">assert_eq!</span>(hash(value1), hash(value2));
     }
 
     <span class="kw">unsafe </span>{
-        <span class="kw">let </span>valid = BMV::from_bytes(<span class="string">b"abc"</span>);
-        <span class="kw">let </span>invalid = BMV::from_shared_unchecked(Bytes::from_static(<span class="string">b"{}.."</span>));
+        <span class="kw">let </span>valid = Bmv::from_bytes(<span class="string">b"abc"</span>);
+        <span class="kw">let </span>invalid = Bmv::from_shared_unchecked(Bytes::from_static(<span class="string">b"{}.."</span>));
         <span class="macro">assert_ne!</span>(valid, invalid);
         <span class="macro">assert_ne!</span>(hash(valid), hash(invalid));
     }
