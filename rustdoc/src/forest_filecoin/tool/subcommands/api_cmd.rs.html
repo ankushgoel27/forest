@@ -1920,6 +1920,13 @@
 <a href="#1920" id="1920">1920</a>
 <a href="#1921" id="1921">1921</a>
 <a href="#1922" id="1922">1922</a>
+<a href="#1923" id="1923">1923</a>
+<a href="#1924" id="1924">1924</a>
+<a href="#1925" id="1925">1925</a>
+<a href="#1926" id="1926">1926</a>
+<a href="#1927" id="1927">1927</a>
+<a href="#1928" id="1928">1928</a>
+<a href="#1929" id="1929">1929</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -2489,9 +2496,12 @@
 }
 
 <span class="kw">fn </span>beacon_tests() -&gt; Vec&lt;RpcTest&gt; {
-    <span class="macro">vec!</span>[RpcTest::identity(
-        BeaconGetEntry::request((<span class="number">10101</span>,)).unwrap(),
-    )]
+    <span class="comment">// TODO(forest): https://github.com/ChainSafe/forest/issues/4718
+    // Blocked by Lotus.
+    //vec![RpcTest::identity(
+    //    BeaconGetEntry::request((10101,)).unwrap(),
+    //)]
+    </span><span class="macro">vec!</span>[]
 }
 
 <span class="kw">fn </span>chain_tests() -&gt; Vec&lt;RpcTest&gt; {
@@ -2605,10 +2615,13 @@
 }
 
 <span class="kw">fn </span>state_tests() -&gt; Vec&lt;RpcTest&gt; {
-    <span class="macro">vec!</span>[
-        RpcTest::identity(StateGetBeaconEntry::request((<span class="number">0</span>.into(),)).unwrap()),
-        RpcTest::identity(StateGetBeaconEntry::request((<span class="number">1</span>.into(),)).unwrap()),
-    ]
+    <span class="comment">// TODO(forest): https://github.com/ChainSafe/forest/issues/4718
+    // Blocked by Lotus.
+    //vec![
+    //    RpcTest::identity(StateGetBeaconEntry::request((0.into(),)).unwrap()),
+    //    RpcTest::identity(StateGetBeaconEntry::request((1.into(),)).unwrap()),
+    //]
+    </span><span class="macro">vec!</span>[]
 }
 
 <span class="kw">fn </span>miner_tests_with_tipset&lt;DB: Blockstore&gt;(
@@ -2754,6 +2767,7 @@
             Address::new_id(<span class="number">18101</span>), <span class="comment">// msig address id
             </span>tipset.key().into(),
         ))<span class="question-mark">?</span>),
+        RpcTest::identity(BeaconGetEntry::request((tipset.epoch(),))<span class="question-mark">?</span>),
         RpcTest::identity(StateGetBeaconEntry::request((tipset.epoch(),))<span class="question-mark">?</span>),
         <span class="comment">// Not easily verifiable by using addresses extracted from blocks as most of those yield `null`
         // for both Lotus and Forest. Therefore the actor addresses are hardcoded to values that allow
