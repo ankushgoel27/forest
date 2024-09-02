@@ -734,7 +734,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::libp2p_bitswap::{BitswapStoreRead, BitswapStoreReadWrite};
 <span class="kw">use </span><span class="kw">crate</span>::message::{ChainMessage, Message <span class="kw">as </span>MessageTrait, SignedMessage};
 <span class="kw">use </span><span class="kw">crate</span>::networks::{ChainConfig, Height};
-<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::{<span class="self">self</span>, eth_tx_from_signed_eth_message};
+<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::{eth_tx_from_signed_eth_message, types::EthHash};
 <span class="kw">use </span><span class="kw">crate</span>::shim::clock::ChainEpoch;
 <span class="kw">use </span><span class="kw">crate</span>::shim::{
     address::Address, econ::TokenAmount, executor::Receipt, message::Message,
@@ -920,7 +920,7 @@
     }
 
     <span class="doccomment">/// Reads the `TipsetKey` from the blockstore for `EthAPI` queries.
-    </span><span class="kw">pub fn </span>get_required_tipset_key(<span class="kw-2">&amp;</span><span class="self">self</span>, hash: <span class="kw-2">&amp;</span>eth::Hash) -&gt; <span class="prelude-ty">Result</span>&lt;TipsetKey, Error&gt; {
+    </span><span class="kw">pub fn </span>get_required_tipset_key(<span class="kw-2">&amp;</span><span class="self">self</span>, hash: <span class="kw-2">&amp;</span>EthHash) -&gt; <span class="prelude-ty">Result</span>&lt;TipsetKey, Error&gt; {
         <span class="kw">let </span>tsk = <span class="self">self
             </span>.eth_mappings
             .read_obj::&lt;TipsetKey&gt;(hash)<span class="question-mark">?
@@ -930,13 +930,13 @@
     }
 
     <span class="doccomment">/// Writes with timestamp the `Hash` to `Cid` mapping to the blockstore for `EthAPI` queries.
-    </span><span class="kw">pub fn </span>put_mapping(<span class="kw-2">&amp;</span><span class="self">self</span>, k: eth::Hash, v: Cid, timestamp: u64) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    </span><span class="kw">pub fn </span>put_mapping(<span class="kw-2">&amp;</span><span class="self">self</span>, k: EthHash, v: Cid, timestamp: u64) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="self">self</span>.eth_mappings.write_obj(<span class="kw-2">&amp;</span>k, <span class="kw-2">&amp;</span>(v, timestamp))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// Reads the `Cid` from the blockstore for `EthAPI` queries.
-    </span><span class="kw">pub fn </span>get_mapping(<span class="kw-2">&amp;</span><span class="self">self</span>, hash: <span class="kw-2">&amp;</span>eth::Hash) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Cid&gt;, Error&gt; {
+    </span><span class="kw">pub fn </span>get_mapping(<span class="kw-2">&amp;</span><span class="self">self</span>, hash: <span class="kw-2">&amp;</span>EthHash) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Cid&gt;, Error&gt; {
         <span class="prelude-val">Ok</span>(<span class="self">self
             </span>.eth_mappings
             .read_obj::&lt;(Cid, u64)&gt;(hash)<span class="question-mark">?
@@ -1113,7 +1113,7 @@
     <span class="kw">where
         </span>DB: fvm_ipld_blockstore::Blockstore,
     {
-        <span class="kw">let </span>eth_txs: Vec&lt;(eth::Hash, Cid, u64, usize)&gt; = messages
+        <span class="kw">let </span>eth_txs: Vec&lt;(EthHash, Cid, u64, usize)&gt; = messages
             .iter()
             .enumerate()
             .filter_map(|(i, (smsg, timestamp))| {
@@ -1172,8 +1172,8 @@
     }
 }
 
-<span class="kw">fn </span>filter_lowest_index(values: Vec&lt;(eth::Hash, Cid, u64, usize)&gt;) -&gt; Vec&lt;(eth::Hash, Cid, u64)&gt; {
-    <span class="kw">let </span>map: HashMap&lt;eth::Hash, (Cid, u64, usize)&gt; = values.into_iter().fold(
+<span class="kw">fn </span>filter_lowest_index(values: Vec&lt;(EthHash, Cid, u64, usize)&gt;) -&gt; Vec&lt;(EthHash, Cid, u64)&gt; {
+    <span class="kw">let </span>map: HashMap&lt;EthHash, (Cid, u64, usize)&gt; = values.into_iter().fold(
         HashMap::default(),
         |<span class="kw-2">mut </span>acc, (hash, cid, timestamp, index)| {
             acc.entry(hash)

@@ -611,6 +611,9 @@
 <a href="#611" id="611">611</a>
 <a href="#612" id="612">612</a>
 <a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -622,6 +625,7 @@
 
 <span class="kw">pub use </span>client::Client;
 <span class="kw">pub use </span>error::ServerError;
+<span class="kw">use </span>eth::filter::EthEventHandler;
 <span class="kw">use </span>futures::FutureExt <span class="kw">as _</span>;
 <span class="kw">use </span>reflect::Ctx;
 <span class="kw">pub use </span>reflect::{ApiPath, ApiPaths, RpcMethod, RpcMethodExt};
@@ -701,6 +705,7 @@
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::eth::EthGetTransactionHashByCid</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::eth::EthMaxPriorityFeePerGas</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::eth::EthProtocolVersion</span>);
+        <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::eth::EthNewFilter</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::eth::EthSyncing</span>);
         <span class="macro-nonterminal">$</span><span class="macro">callback!</span>(<span class="macro-nonterminal">crate::rpc::eth::Web3ClientVersion</span>);
 
@@ -982,6 +987,7 @@
     <span class="kw">pub </span>mpool: Arc&lt;<span class="kw">crate</span>::message_pool::MessagePool&lt;<span class="kw">crate</span>::message_pool::MpoolRpcProvider&lt;DB&gt;&gt;&gt;,
     <span class="kw">pub </span>bad_blocks: Arc&lt;<span class="kw">crate</span>::chain_sync::BadBlockCache&gt;,
     <span class="kw">pub </span>sync_state: Arc&lt;parking_lot::RwLock&lt;<span class="kw">crate</span>::chain_sync::SyncState&gt;&gt;,
+    <span class="kw">pub </span>eth_event_handler: Arc&lt;EthEventHandler&gt;,
     <span class="kw">pub </span>network_send: flume::Sender&lt;<span class="kw">crate</span>::libp2p::NetworkMessage&gt;,
     <span class="kw">pub </span>network_name: String,
     <span class="kw">pub </span>tipset_send: flume::Sender&lt;Arc&lt;Tipset&gt;&gt;,

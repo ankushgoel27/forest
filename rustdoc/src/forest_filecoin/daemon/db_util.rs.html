@@ -363,7 +363,7 @@
 <span class="kw">use </span>walkdir::WalkDir;
 
 <span class="attr">#[cfg(doc)]
-</span><span class="kw">use </span><span class="kw">crate</span>::rpc::eth::Hash;
+</span><span class="kw">use </span><span class="kw">crate</span>::rpc::eth::types::EthHash;
 
 <span class="attr">#[cfg(doc)]
 </span><span class="kw">use </span><span class="kw">crate</span>::blocks::TipsetKey;
@@ -538,8 +538,8 @@
 
 <span class="doccomment">/// For the need for Ethereum RPC API, a new column in parity-db has been introduced to handle
 /// mapping of:
-/// - [`struct@Hash`] to [`TipsetKey`].
-/// - [`struct@Hash`] to delegated message [`Cid`].
+/// - [`struct@EthHash`] to [`TipsetKey`].
+/// - [`struct@EthHash`] to delegated message [`Cid`].
 ///
 /// This function traverses the chain store and populates the column.
 </span><span class="kw">pub fn </span>populate_eth_mappings&lt;DB&gt;(

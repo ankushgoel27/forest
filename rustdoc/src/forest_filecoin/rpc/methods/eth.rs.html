@@ -2047,13 +2047,34 @@
 <a href="#2047" id="2047">2047</a>
 <a href="#2048" id="2048">2048</a>
 <a href="#2049" id="2049">2049</a>
+<a href="#2050" id="2050">2050</a>
+<a href="#2051" id="2051">2051</a>
+<a href="#2052" id="2052">2052</a>
+<a href="#2053" id="2053">2053</a>
+<a href="#2054" id="2054">2054</a>
+<a href="#2055" id="2055">2055</a>
+<a href="#2056" id="2056">2056</a>
+<a href="#2057" id="2057">2057</a>
+<a href="#2058" id="2058">2058</a>
+<a href="#2059" id="2059">2059</a>
+<a href="#2060" id="2060">2060</a>
+<a href="#2061" id="2061">2061</a>
+<a href="#2062" id="2062">2062</a>
+<a href="#2063" id="2063">2063</a>
+<a href="#2064" id="2064">2064</a>
+<a href="#2065" id="2065">2065</a>
+<a href="#2066" id="2066">2066</a>
+<a href="#2067" id="2067">2067</a>
+<a href="#2068" id="2068">2068</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
 </span><span class="kw">mod </span>eth_tx;
+<span class="kw">pub mod </span>filter;
 <span class="kw">pub mod </span>types;
 
 <span class="kw">use </span><span class="self">self</span>::eth_tx::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="self">self</span>::filter::hex_str_to_epoch;
 <span class="kw">use </span><span class="self">self</span>::types::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">super</span>::gas;
 <span class="kw">use </span><span class="kw">crate</span>::blocks::Tipset;
@@ -2084,6 +2105,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::shim::trace::{CallReturn, ExecutionEvent};
 <span class="kw">use </span><span class="kw">crate</span>::shim::{clock::ChainEpoch, state_tree::StateTree};
 <span class="kw">use </span><span class="kw">crate</span>::utils::db::BlockstoreExt <span class="kw">as _</span>;
+<span class="kw">use </span>anyhow::{anyhow, Error};
 <span class="kw">use </span>anyhow::{bail, Context, <span class="prelude-ty">Result</span>};
 <span class="kw">use </span>cbor4ii::core::dec::Decode <span class="kw">as _</span>;
 <span class="kw">use </span>cbor4ii::core::Value;
@@ -2217,24 +2239,7 @@
 
 <span class="macro">lotus_json_with_self!</span>(Int64);
 
-<span class="attr">#[derive(
-    PartialEq,
-    Eq,
-    Hash,
-    Debug,
-    Deserialize,
-    Serialize,
-    Default,
-    Clone,
-    JsonSchema,
-    displaydoc::Display,
-    derive_more::From,
-    derive_more::Into,
-)]
-#[displaydoc(<span class="string">"{0:#x}"</span>)]
-</span><span class="kw">pub struct </span>Hash(<span class="attr">#[schemars(with = <span class="string">"String"</span>)] </span><span class="kw">pub </span>ethereum_types::H256);
-
-<span class="kw">impl </span>Hash {
+<span class="kw">impl </span>EthHash {
     <span class="comment">// Should ONLY be used for blocks and Filecoin messages. Eth transactions expect a different hashing scheme.
     </span><span class="kw">pub fn </span>to_cid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; cid::Cid {
         <span class="kw">use </span>cid::multihash::MultihashDigest;
@@ -2254,22 +2259,22 @@
     }
 }
 
-<span class="kw">impl </span>FromStr <span class="kw">for </span>Hash {
+<span class="kw">impl </span>FromStr <span class="kw">for </span>EthHash {
     <span class="kw">type </span><span class="prelude-val">Err </span>= anyhow::Error;
 
     <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
-        <span class="prelude-val">Ok</span>(Hash(ethereum_types::H256::from_str(s)<span class="question-mark">?</span>))
+        <span class="prelude-val">Ok</span>(EthHash(ethereum_types::H256::from_str(s)<span class="question-mark">?</span>))
     }
 }
 
-<span class="kw">impl </span>From&lt;Cid&gt; <span class="kw">for </span>Hash {
+<span class="kw">impl </span>From&lt;Cid&gt; <span class="kw">for </span>EthHash {
     <span class="kw">fn </span>from(cid: Cid) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(<span class="kw">_</span>, digest, <span class="kw">_</span>) = cid.hash().into_inner();
-        Hash(ethereum_types::H256::from_slice(<span class="kw-2">&amp;</span>digest[<span class="number">0</span>..<span class="number">32</span>]))
+        EthHash(ethereum_types::H256::from_slice(<span class="kw-2">&amp;</span>digest[<span class="number">0</span>..<span class="number">32</span>]))
     }
 }
 
-<span class="macro">lotus_json_with_self!</span>(Hash);
+<span class="macro">lotus_json_with_self!</span>(EthHash);
 
 <span class="attr">#[derive(PartialEq, Debug, Clone, Serialize, Deserialize, Default, JsonSchema)]
 #[serde(rename_all = <span class="string">"camelCase"</span>)]
@@ -2291,7 +2296,7 @@
 <span class="attr">#[derive(PartialEq, Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">pub struct </span>BlockHash {
-    block_hash: Hash,
+    block_hash: EthHash,
     require_canonical: bool,
 }
 
@@ -2301,7 +2306,7 @@
     <span class="attr">#[schemars(with = <span class="string">"String"</span>)]
     </span>PredefinedBlock(Predefined),
     BlockNumber(Int64),
-    BlockHash(Hash),
+    BlockHash(EthHash),
     BlockNumberObject(BlockNumber),
     BlockHashObject(BlockHash),
 }
@@ -2317,7 +2322,7 @@
         <span class="self">Self</span>::BlockNumber(Int64(number))
     }
 
-    <span class="kw">pub fn </span>from_block_hash(hash: Hash) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>from_block_hash(hash: EthHash) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::BlockHash(hash)
     }
 
@@ -2333,11 +2338,23 @@
     <span class="doccomment">/// Construct a block hash using EIP-1898 Object scheme.
     ///
     /// For details see &lt;https://eips.ethereum.org/EIPS/eip-1898&gt;
-    </span><span class="kw">pub fn </span>from_block_hash_object(hash: Hash, require_canonical: bool) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>from_block_hash_object(hash: EthHash, require_canonical: bool) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::BlockHashObject(BlockHash {
             block_hash: hash,
             require_canonical,
         })
+    }
+
+    <span class="kw">pub fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, Error&gt; {
+        <span class="kw">match </span>s {
+            <span class="string">"latest" </span>| <span class="string">"" </span>=&gt; <span class="prelude-val">Ok</span>(BlockNumberOrHash::from_predefined(Predefined::Latest)),
+            <span class="string">"earliest" </span>=&gt; <span class="prelude-val">Ok</span>(BlockNumberOrHash::from_predefined(Predefined::Earliest)),
+            hex <span class="kw">if </span>hex.starts_with(<span class="string">"0x"</span>) =&gt; {
+                <span class="kw">let </span>epoch = hex_str_to_epoch(hex)<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(BlockNumberOrHash::from_block_number(epoch))
+            }
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(<span class="string">"Invalid block identifier"</span>)),
+        }
     }
 }
 
@@ -2357,13 +2374,13 @@
 <span class="attr">#[derive(PartialEq, Debug, Clone, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">pub struct </span>Block {
-    <span class="kw">pub </span>hash: Hash,
-    <span class="kw">pub </span>parent_hash: Hash,
-    <span class="kw">pub </span>sha3_uncles: Hash,
+    <span class="kw">pub </span>hash: EthHash,
+    <span class="kw">pub </span>parent_hash: EthHash,
+    <span class="kw">pub </span>sha3_uncles: EthHash,
     <span class="kw">pub </span>miner: EthAddress,
-    <span class="kw">pub </span>state_root: Hash,
-    <span class="kw">pub </span>transactions_root: Hash,
-    <span class="kw">pub </span>receipts_root: Hash,
+    <span class="kw">pub </span>state_root: EthHash,
+    <span class="kw">pub </span>transactions_root: EthHash,
+    <span class="kw">pub </span>receipts_root: EthHash,
     <span class="kw">pub </span>logs_bloom: Bloom,
     <span class="kw">pub </span>difficulty: Uint64,
     <span class="kw">pub </span>total_difficulty: Uint64,
@@ -2372,13 +2389,13 @@
     <span class="kw">pub </span>gas_used: Uint64,
     <span class="kw">pub </span>timestamp: Uint64,
     <span class="kw">pub </span>extra_data: EthBytes,
-    <span class="kw">pub </span>mix_hash: Hash,
+    <span class="kw">pub </span>mix_hash: EthHash,
     <span class="kw">pub </span>nonce: Nonce,
     <span class="kw">pub </span>base_fee_per_gas: EthBigInt,
     <span class="kw">pub </span>size: Uint64,
     <span class="comment">// can be Vec&lt;Tx&gt; or Vec&lt;String&gt; depending on query params
     </span><span class="kw">pub </span>transactions: Transactions,
-    <span class="kw">pub </span>uncles: Vec&lt;Hash&gt;,
+    <span class="kw">pub </span>uncles: Vec&lt;EthHash&gt;,
 }
 
 <span class="kw">impl </span>Block {
@@ -2386,11 +2403,11 @@
         <span class="self">Self </span>{
             gas_limit: Uint64(BLOCK_GAS_LIMIT.saturating_mul(tipset_len <span class="kw">as _</span>)),
             logs_bloom: Bloom(ethereum_types::Bloom(FULL_BLOOM)),
-            sha3_uncles: Hash::empty_uncles(),
+            sha3_uncles: EthHash::empty_uncles(),
             transactions_root: <span class="kw">if </span>has_transactions {
-                Hash::default()
+                EthHash::default()
             } <span class="kw">else </span>{
-                Hash::empty_root()
+                EthHash::empty_root()
             },
             ..Default::default()
         }
@@ -2404,8 +2421,8 @@
 </span><span class="kw">pub struct </span>ApiEthTx {
     <span class="kw">pub </span>chain_id: Uint64,
     <span class="kw">pub </span>nonce: Uint64,
-    <span class="kw">pub </span>hash: Hash,
-    <span class="kw">pub </span>block_hash: Hash,
+    <span class="kw">pub </span>hash: EthHash,
+    <span class="kw">pub </span>block_hash: EthHash,
     <span class="kw">pub </span>block_number: Uint64,
     <span class="kw">pub </span>transaction_index: Uint64,
     <span class="kw">pub </span>from: EthAddress,
@@ -2421,9 +2438,9 @@
     </span><span class="kw">pub </span>max_priority_fee_per_gas: <span class="prelude-ty">Option</span>&lt;EthBigInt&gt;,
     <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>, default)]
     </span><span class="kw">pub </span>gas_price: <span class="prelude-ty">Option</span>&lt;EthBigInt&gt;,
-    <span class="attr">#[schemars(with = <span class="string">"Option&lt;Vec&lt;Hash&gt;&gt;"</span>)]
+    <span class="attr">#[schemars(with = <span class="string">"Option&lt;Vec&lt;EthHash&gt;&gt;"</span>)]
     #[serde(with = <span class="string">"crate::lotus_json"</span>)]
-    </span><span class="kw">pub </span>access_list: Vec&lt;Hash&gt;,
+    </span><span class="kw">pub </span>access_list: Vec&lt;EthHash&gt;,
     <span class="kw">pub </span>v: EthBigInt,
     <span class="kw">pub </span>r: EthBigInt,
     <span class="kw">pub </span>s: EthBigInt,
@@ -2652,7 +2669,7 @@
 
 <span class="kw">fn </span>get_tipset_from_hash&lt;DB: Blockstore&gt;(
     chain_store: <span class="kw-2">&amp;</span>ChainStore&lt;DB&gt;,
-    block_hash: <span class="kw-2">&amp;</span>Hash,
+    block_hash: <span class="kw-2">&amp;</span>EthHash,
 ) -&gt; anyhow::Result&lt;Tipset&gt; {
     <span class="kw">let </span>tsk = chain_store.get_required_tipset_key(block_hash)<span class="question-mark">?</span>;
     Tipset::load_required(chain_store.blockstore(), <span class="kw-2">&amp;</span>tsk)
@@ -3067,7 +3084,7 @@
 
     <span class="kw">let </span>tsk = tipset.key();
     <span class="kw">let </span>block_cid = tsk.cid()<span class="question-mark">?</span>;
-    <span class="kw">let </span>block_hash: Hash = block_cid.into();
+    <span class="kw">let </span>block_hash: EthHash = block_cid.into();
 
     <span class="kw">let </span>(state_root, msgs_and_receipts) = execute_tipset(<span class="kw-2">&amp;</span>data, <span class="kw-2">&amp;</span>tipset).<span class="kw">await</span><span class="question-mark">?</span>;
 
@@ -3171,7 +3188,7 @@
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
 
-    <span class="kw">type </span>Params = (Hash,);
+    <span class="kw">type </span>Params = (EthHash,);
     <span class="kw">type </span><span class="prelude-val">Ok </span>= Uint64;
 
     <span class="kw">async fn </span>handle(
@@ -3225,7 +3242,7 @@
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
 
-    <span class="kw">type </span>Params = (Hash,);
+    <span class="kw">type </span>Params = (EthHash,);
     <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-ty">Option</span>&lt;Cid&gt;;
 
     <span class="kw">async fn </span>handle(
@@ -3821,7 +3838,7 @@
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
 
-    <span class="kw">type </span>Params = (Hash,);
+    <span class="kw">type </span>Params = (EthHash,);
     <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-ty">Option</span>&lt;ApiEthTx&gt;;
 
     <span class="kw">async fn </span>handle(
@@ -3887,7 +3904,7 @@
     <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
 
     <span class="kw">type </span>Params = (Cid,);
-    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-ty">Option</span>&lt;Hash&gt;;
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= <span class="prelude-ty">Option</span>&lt;EthHash&gt;;
 
     <span class="kw">async fn </span>handle(
         ctx: Ctx&lt;<span class="kw">impl </span>Blockstore + Send + Sync + <span class="lifetime">'static</span>&gt;,
@@ -3948,6 +3965,27 @@
     }
 }
 
+<span class="kw">pub enum </span>EthNewFilter {}
+<span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>EthNewFilter {
+    <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthNewFilter"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_newFilter"</span>);
+    <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">1</span>] = [<span class="string">"filter_spec"</span>];
+    <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
+    <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
+
+    <span class="kw">type </span>Params = (EthFilterSpec,);
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= FilterID;
+
+    <span class="kw">async fn </span>handle(
+        ctx: Ctx&lt;<span class="kw">impl </span>Blockstore + Send + Sync + <span class="lifetime">'static</span>&gt;,
+        (filter_spec,): <span class="self">Self</span>::Params,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
+        <span class="kw">let </span>eth_event_handler = ctx.eth_event_handler.clone();
+        <span class="kw">let </span>chain_height = ctx.chain_store().heaviest_tipset().epoch();
+        <span class="prelude-val">Ok</span>(eth_event_handler.eth_new_filter(<span class="kw-2">&amp;</span>filter_spec, chain_height)<span class="question-mark">?</span>)
+    }
+}
+
 <span class="kw">pub enum </span>EthAddressToFilecoinAddress {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>EthAddressToFilecoinAddress {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthAddressToFilecoinAddress"</span>;
@@ -3972,7 +4010,7 @@
     <span class="kw">use </span>quickcheck::Arbitrary;
     <span class="kw">use </span>quickcheck_macros::quickcheck;
 
-    <span class="kw">impl </span>Arbitrary <span class="kw">for </span>Hash {
+    <span class="kw">impl </span>Arbitrary <span class="kw">for </span>EthHash {
         <span class="kw">fn </span>arbitrary(g: <span class="kw-2">&amp;mut </span>quickcheck::Gen) -&gt; <span class="self">Self </span>{
             <span class="kw">let </span>arr: [u8; <span class="number">32</span>] = std::array::from_fn(|_ix| u8::arbitrary(g));
             <span class="self">Self</span>(ethereum_types::H256(arr))
@@ -4072,16 +4110,16 @@
         ];
 
         <span class="kw">for </span>hash <span class="kw">in </span>test_cases {
-            <span class="kw">let </span>h: Hash = serde_json::from_str(hash).unwrap();
+            <span class="kw">let </span>h: EthHash = serde_json::from_str(hash).unwrap();
 
             <span class="kw">let </span>c = h.to_cid();
-            <span class="kw">let </span>h1: Hash = c.into();
+            <span class="kw">let </span>h1: EthHash = c.into();
             <span class="macro">assert_eq!</span>(h, h1);
         }
     }
 
     <span class="attr">#[quickcheck]
-    </span><span class="kw">fn </span>test_eth_hash_roundtrip(eth_hash: Hash) {
+    </span><span class="kw">fn </span>test_eth_hash_roundtrip(eth_hash: EthHash) {
         <span class="kw">let </span>cid = eth_hash.to_cid();
         <span class="kw">let </span>hash = cid.into();
         <span class="macro">assert_eq!</span>(eth_hash, hash);
@@ -4090,10 +4128,10 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_block_constructor() {
         <span class="kw">let </span>block = Block::new(<span class="bool-val">false</span>, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(block.transactions_root, Hash::empty_root());
+        <span class="macro">assert_eq!</span>(block.transactions_root, EthHash::empty_root());
 
         <span class="kw">let </span>block = Block::new(<span class="bool-val">true</span>, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(block.transactions_root, Hash::default());
+        <span class="macro">assert_eq!</span>(block.transactions_root, EthHash::default());
     }
 }
 </code></pre></div></section></main></body></html>

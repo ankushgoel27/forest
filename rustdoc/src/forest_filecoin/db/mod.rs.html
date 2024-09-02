@@ -252,7 +252,7 @@
 <span class="kw">mod </span>db_mode;
 <span class="kw">pub mod </span>migration;
 
-<span class="kw">use </span><span class="kw">crate</span>::rpc::eth;
+<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::types::EthHash;
 <span class="kw">use </span>anyhow::Context <span class="kw">as _</span>;
 <span class="kw">use </span>cid::Cid;
 <span class="kw">use </span>serde::de::DeserializeOwned;
@@ -361,32 +361,32 @@
 </span><span class="kw">pub trait </span>EthMappingsStore {
     <span class="doccomment">/// Reads binary field from the `EthMappings` store. This should be used for
     /// non-serializable data. For serializable data, use [`EthMappingsStoreExt::read_obj`].
-    </span><span class="kw">fn </span>read_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;&gt;;
+    </span><span class="kw">fn </span>read_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;&gt;;
 
     <span class="doccomment">/// Writes binary field to the `EthMappings` store. This should be used for
     /// non-serializable data. For serializable data, use [`EthMappingsStoreExt::write_obj`].
-    </span><span class="kw">fn </span>write_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash, value: <span class="kw-2">&amp;</span>[u8]) -&gt; anyhow::Result&lt;()&gt;;
+    </span><span class="kw">fn </span>write_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash, value: <span class="kw-2">&amp;</span>[u8]) -&gt; anyhow::Result&lt;()&gt;;
 
     <span class="doccomment">/// Returns `Ok(true)` if key exists in store.
-    </span><span class="kw">fn </span>exists(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash) -&gt; anyhow::Result&lt;bool&gt;;
+    </span><span class="kw">fn </span>exists(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash) -&gt; anyhow::Result&lt;bool&gt;;
 
     <span class="doccomment">/// Returns all message CIDs with their timestamp.
     </span><span class="kw">fn </span>get_message_cids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; anyhow::Result&lt;Vec&lt;(Cid, u64)&gt;&gt;;
 
     <span class="doccomment">/// Deletes `keys` if keys exist in store.
-    </span><span class="kw">fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, keys: Vec&lt;eth::Hash&gt;) -&gt; anyhow::Result&lt;()&gt;;
+    </span><span class="kw">fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, keys: Vec&lt;EthHash&gt;) -&gt; anyhow::Result&lt;()&gt;;
 }
 
 <span class="kw">impl</span>&lt;T: EthMappingsStore&gt; EthMappingsStore <span class="kw">for </span>Arc&lt;T&gt; {
-    <span class="kw">fn </span>read_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;&gt; {
+    <span class="kw">fn </span>read_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;u8&gt;&gt;&gt; {
         EthMappingsStore::read_bin(<span class="self">self</span>.as_ref(), key)
     }
 
-    <span class="kw">fn </span>write_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash, value: <span class="kw-2">&amp;</span>[u8]) -&gt; anyhow::Result&lt;()&gt; {
+    <span class="kw">fn </span>write_bin(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash, value: <span class="kw-2">&amp;</span>[u8]) -&gt; anyhow::Result&lt;()&gt; {
         EthMappingsStore::write_bin(<span class="self">self</span>.as_ref(), key, value)
     }
 
-    <span class="kw">fn </span>exists(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash) -&gt; anyhow::Result&lt;bool&gt; {
+    <span class="kw">fn </span>exists(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash) -&gt; anyhow::Result&lt;bool&gt; {
         EthMappingsStore::exists(<span class="self">self</span>.as_ref(), key)
     }
 
@@ -394,25 +394,25 @@
         EthMappingsStore::get_message_cids(<span class="self">self</span>.as_ref())
     }
 
-    <span class="kw">fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, keys: Vec&lt;eth::Hash&gt;) -&gt; anyhow::Result&lt;()&gt; {
+    <span class="kw">fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, keys: Vec&lt;EthHash&gt;) -&gt; anyhow::Result&lt;()&gt; {
         EthMappingsStore::delete(<span class="self">self</span>.as_ref(), keys)
     }
 }
 
 <span class="kw">pub trait </span>EthMappingsStoreExt {
-    <span class="kw">fn </span>read_obj&lt;V: DeserializeOwned&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;V&gt;&gt;;
-    <span class="kw">fn </span>write_obj&lt;V: Serialize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash, value: <span class="kw-2">&amp;</span>V) -&gt; anyhow::Result&lt;()&gt;;
+    <span class="kw">fn </span>read_obj&lt;V: DeserializeOwned&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;V&gt;&gt;;
+    <span class="kw">fn </span>write_obj&lt;V: Serialize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash, value: <span class="kw-2">&amp;</span>V) -&gt; anyhow::Result&lt;()&gt;;
 }
 
 <span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + EthMappingsStore&gt; EthMappingsStoreExt <span class="kw">for </span>T {
-    <span class="kw">fn </span>read_obj&lt;V: DeserializeOwned&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;V&gt;&gt; {
+    <span class="kw">fn </span>read_obj&lt;V: DeserializeOwned&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash) -&gt; anyhow::Result&lt;<span class="prelude-ty">Option</span>&lt;V&gt;&gt; {
         <span class="kw">match </span><span class="self">self</span>.read_bin(key)<span class="question-mark">? </span>{
             <span class="prelude-val">Some</span>(bytes) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(fvm_ipld_encoding::from_slice(<span class="kw-2">&amp;</span>bytes)<span class="question-mark">?</span>)),
             <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
         }
     }
 
-    <span class="kw">fn </span>write_obj&lt;V: Serialize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>eth::Hash, value: <span class="kw-2">&amp;</span>V) -&gt; anyhow::Result&lt;()&gt; {
+    <span class="kw">fn </span>write_obj&lt;V: Serialize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>EthHash, value: <span class="kw-2">&amp;</span>V) -&gt; anyhow::Result&lt;()&gt; {
         <span class="self">self</span>.write_bin(key, <span class="kw-2">&amp;</span>fvm_ipld_encoding::to_vec(value)<span class="question-mark">?</span>)
     }
 }

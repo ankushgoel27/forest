@@ -1904,6 +1904,22 @@
 <a href="#1904" id="1904">1904</a>
 <a href="#1905" id="1905">1905</a>
 <a href="#1906" id="1906">1906</a>
+<a href="#1907" id="1907">1907</a>
+<a href="#1908" id="1908">1908</a>
+<a href="#1909" id="1909">1909</a>
+<a href="#1910" id="1910">1910</a>
+<a href="#1911" id="1911">1911</a>
+<a href="#1912" id="1912">1912</a>
+<a href="#1913" id="1913">1913</a>
+<a href="#1914" id="1914">1914</a>
+<a href="#1915" id="1915">1915</a>
+<a href="#1916" id="1916">1916</a>
+<a href="#1917" id="1917">1917</a>
+<a href="#1918" id="1918">1918</a>
+<a href="#1919" id="1919">1919</a>
+<a href="#1920" id="1920">1920</a>
+<a href="#1921" id="1921">1921</a>
+<a href="#1922" id="1922">1922</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3183,6 +3199,22 @@
             )
             .unwrap(),
         ));
+        tests.push(RpcTest::basic(
+            EthNewFilter::request_with_alias(
+                (EthFilterSpec {
+                    from_block: <span class="prelude-val">None</span>,
+                    to_block: <span class="prelude-val">None</span>,
+                    address: <span class="macro">vec!</span>[EthAddress::from_str(
+                        <span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>,
+                    )
+                    .unwrap()],
+                    topics: EthTopicSpec(<span class="macro">vec!</span>[]),
+                    block_hash: <span class="prelude-val">None</span>,
+                },),
+                use_alias,
+            )
+            .unwrap(),
+        ));
         tests.push(RpcTest::identity(
             EthAddressToFilecoinAddress::request((EthAddress::from_str(
                 <span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>,
@@ -3196,7 +3228,7 @@
 
 <span class="kw">fn </span>eth_tests_with_tipset&lt;DB: Blockstore&gt;(store: <span class="kw-2">&amp;</span>Arc&lt;DB&gt;, shared_tipset: <span class="kw-2">&amp;</span>Tipset) -&gt; Vec&lt;RpcTest&gt; {
     <span class="kw">let </span>block_cid = shared_tipset.key().cid().unwrap();
-    <span class="kw">let </span>block_hash: Hash = block_cid.into();
+    <span class="kw">let </span>block_hash: EthHash = block_cid.into();
 
     <span class="kw">let </span><span class="kw-2">mut </span>tests = <span class="macro">vec!</span>[
         RpcTest::identity(
@@ -3384,7 +3416,7 @@
         }
     }
     tests.push(RpcTest::identity(
-        EthGetMessageCidByTransactionHash::request((Hash::from_str(
+        EthGetMessageCidByTransactionHash::request((EthHash::from_str(
             <span class="string">"0x37690cfec6c1bf4c3b9288c7a5d783e98731e90b0a4c177c2a374c7a9427355f"</span>,
         )<span class="question-mark">?</span>,))<span class="question-mark">?</span>,
     ));

@@ -265,6 +265,8 @@
 <a href="#265" id="265">265</a>
 <a href="#266" id="266">266</a>
 <a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -413,6 +415,7 @@
     <span class="kw">use </span><span class="kw">crate</span>::libp2p::NetworkMessage;
     <span class="kw">use </span><span class="kw">crate</span>::message_pool::{MessagePool, MpoolRpcProvider};
     <span class="kw">use </span><span class="kw">crate</span>::networks::ChainConfig;
+    <span class="kw">use </span><span class="kw">crate</span>::rpc::eth::filter::EthEventHandler;
     <span class="kw">use </span><span class="kw">crate</span>::rpc::RPCState;
     <span class="kw">use </span><span class="kw">crate</span>::shim::address::Address;
     <span class="kw">use </span><span class="kw">crate</span>::state_manager::StateManager;
@@ -487,6 +490,7 @@
             mpool: Arc::new(pool),
             bad_blocks: Default::default(),
             sync_state: Arc::new(parking_lot::RwLock::new(Default::default())),
+            eth_event_handler: Arc::new(EthEventHandler::new()),
             network_send,
             network_name: TEST_NET_NAME.to_owned(),
             start_time,

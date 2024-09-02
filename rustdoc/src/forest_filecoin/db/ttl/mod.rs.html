@@ -166,7 +166,7 @@
 
 </span><span class="kw">use </span><span class="kw">crate</span>::eth::EthChainId;
 <span class="kw">use </span><span class="kw">crate</span>::message::ChainMessage;
-<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::{<span class="self">self</span>, eth_tx_from_signed_eth_message};
+<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::{eth_tx_from_signed_eth_message, types::EthHash};
 <span class="kw">use </span>fvm_ipld_blockstore::Blockstore;
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::time::Duration;
@@ -193,7 +193,7 @@
     <span class="doccomment">/// Remove keys whose `(duration - timestamp) &gt; TTL` from the database
     /// where `duration` is the elapsed time since "UNIX timestamp".
     </span><span class="kw">fn </span>ttl_workflow(<span class="kw-2">&amp;</span><span class="self">self</span>, duration: Duration) -&gt; anyhow::Result&lt;()&gt; {
-        <span class="kw">let </span>keys: Vec&lt;eth::Hash&gt; = <span class="self">self
+        <span class="kw">let </span>keys: Vec&lt;EthHash&gt; = <span class="self">self
             </span>.db
             .get_message_cids()<span class="question-mark">?
             </span>.iter()
@@ -205,7 +205,7 @@
                 <span class="kw">if let </span><span class="prelude-val">Ok</span>(ChainMessage::Signed(smsg)) = message {
                     <span class="kw">let </span>result = eth_tx_from_signed_eth_message(<span class="kw-2">&amp;</span>smsg, <span class="self">self</span>.eth_chain_id);
                     <span class="kw">if let </span><span class="prelude-val">Ok</span>((<span class="kw">_</span>, tx)) = result {
-                        tx.eth_hash().ok().map(eth::Hash)
+                        tx.eth_hash().ok().map(EthHash)
                     } <span class="kw">else </span>{
                         <span class="prelude-val">None
                     </span>}

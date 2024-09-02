@@ -789,6 +789,8 @@
 <a href="#789" id="789">789</a>
 <a href="#790" id="790">790</a>
 <a href="#791" id="791">791</a>
+<a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -819,6 +821,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::libp2p::{Libp2pConfig, Libp2pService, PeerManager};
 <span class="kw">use </span><span class="kw">crate</span>::message_pool::{MessagePool, MpoolConfig, MpoolRpcProvider};
 <span class="kw">use </span><span class="kw">crate</span>::networks::{<span class="self">self</span>, ChainConfig, NetworkChain};
+<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::filter::EthEventHandler;
 <span class="kw">use </span><span class="kw">crate</span>::rpc::start_rpc;
 <span class="kw">use </span><span class="kw">crate</span>::rpc::RPCState;
 <span class="kw">use </span><span class="kw">crate</span>::shim::address::{CurrentNetwork, Network};
@@ -1190,6 +1193,7 @@
                     mpool,
                     bad_blocks,
                     sync_state,
+                    eth_event_handler: Arc::new(EthEventHandler::new()),
                     network_send,
                     network_name,
                     start_time,
