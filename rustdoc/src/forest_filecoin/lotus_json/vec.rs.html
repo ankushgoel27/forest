@@ -77,10 +77,10 @@
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="kw">impl</span>&lt;T&gt; HasLotusJson <span class="kw">for </span>Vec&lt;T&gt;
-<span class="comment">// TODO(aatifsyed): https://github.com/ChainSafe/forest/issues/4032
-//                  This shouldn't recurse - LotusJson&lt;Vec&lt;T&gt;&gt; should only handle
-//                  the OUTER issue of serializing an empty Vec as null, and
-//                  shouldn't be interested in the inner representation.
+<span class="comment">// TODO(forest): https://github.com/ChainSafe/forest/issues/4032
+//               This shouldn't recurse - LotusJson&lt;Vec&lt;T&gt;&gt; should only handle
+//               the OUTER issue of serializing an empty Vec as null, and
+//               shouldn't be interested in the inner representation.
 </span><span class="kw">where
     </span>T: HasLotusJson + Clone,
 {

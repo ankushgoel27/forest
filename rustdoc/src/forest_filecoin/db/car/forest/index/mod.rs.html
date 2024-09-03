@@ -977,13 +977,13 @@
 }
 
 <span class="attr">#[cfg_vis(feature = <span class="string">"benchmark-private"</span>, <span class="kw">pub</span>)]
-#[allow(unused)] </span><span class="comment">// TODO(aatifsyed): https://github.com/ChainSafe/forest/issues/3565
+#[allow(unused)] </span><span class="comment">// required for benchmarking
 </span><span class="kw">struct </span>Iter&lt;R&gt; {
     inner: R,
     positions: iter::StepBy&lt;std::ops::Range&lt;u64&gt;&gt;,
 }
 
-<span class="attr">#[allow(unused)] </span><span class="comment">// TODO(aatifsyed): https://github.com/ChainSafe/forest/issues/3565
+<span class="attr">#[allow(unused)] </span><span class="comment">// required for benchmarking
 </span><span class="kw">impl</span>&lt;R&gt; Iterator <span class="kw">for </span>Iter&lt;R&gt;
 <span class="kw">where
     </span>R: ReadAt + Size,
@@ -1002,7 +1002,7 @@
     </span>R: ReadAt + Size,
 {
     <span class="attr">#[cfg_vis(feature = <span class="string">"benchmark-private"</span>, <span class="kw">pub</span>)]
-    #[allow(unused)] </span><span class="comment">// TODO(aatifsyed): https://github.com/ChainSafe/forest/issues/3565
+    #[allow(unused)] </span><span class="comment">// required for benchmarking
     </span><span class="kw">fn </span>iter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;Iter&lt;<span class="kw-2">&amp;</span>R&gt;&gt; {
         <span class="kw">let </span>end = <span class="self">self</span>.inner.size()<span class="question-mark">?</span>.ok_or_else(|| {
             io::Error::new(io::ErrorKind::Other, <span class="string">"couldn't get end of table size"</span>)
