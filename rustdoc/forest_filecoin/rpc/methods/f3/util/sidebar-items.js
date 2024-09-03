@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["F3_PERMANENT_PARTICIPATING_MINER_IDS_ENV_KEY"],"fn":["get_f3_permanent_participating_miner_ids"],"static":["F3_PERMANENT_PARTICIPATING_MINER_IDS"]};

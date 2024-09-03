@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["F3PowerEntry","F3TipSet","F3TipSetKey"]};
+window.SIDEBAR_ITEMS = {"struct":["F3LeaseManager","F3PowerEntry","F3TipSet","F3TipSetKey"]};

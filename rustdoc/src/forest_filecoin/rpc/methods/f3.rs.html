@@ -554,6 +554,48 @@
 <a href="#554" id="554">554</a>
 <a href="#555" id="555">555</a>
 <a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -564,13 +606,14 @@
 //!
 
 </span><span class="kw">mod </span>types;
+<span class="kw">mod </span>util;
 
-<span class="kw">use </span><span class="self">self</span>::types::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="self">self</span>::{types::<span class="kw-2">*</span>, util::<span class="kw-2">*</span>};
+<span class="kw">use </span><span class="kw">super</span>::wallet::WalletSign;
 <span class="kw">use crate</span>::{
     chain::index::ResolveNullTipset,
     libp2p::{NetRPCMethods, NetworkMessage},
     lotus_json::HasLotusJson <span class="kw">as _</span>,
-    networks::NetworkChain,
     rpc::{ApiPaths, Ctx, Permission, RpcMethod, ServerError},
     shim::{
         address::{Address, Protocol},
@@ -578,6 +621,7 @@
         crypto::Signature,
     },
 };
+<span class="kw">use </span>ahash::{HashMap, HashSet};
 <span class="kw">use </span>fil_actor_interface::{
     convert::{
         from_policy_v13_to_v10, from_policy_v13_to_v11, from_policy_v13_to_v12,
@@ -589,9 +633,11 @@
 <span class="kw">use </span>jsonrpsee::core::{client::ClientT <span class="kw">as _</span>, params::ArrayParams};
 <span class="kw">use </span>libp2p::PeerId;
 <span class="kw">use </span>num::Signed <span class="kw">as _</span>;
+<span class="kw">use </span>once_cell::sync::Lazy;
+<span class="kw">use </span>parking_lot::RwLock;
 <span class="kw">use </span>std::{borrow::Cow, fmt::Display, str::FromStr <span class="kw">as _</span>, sync::Arc};
 
-<span class="kw">use </span><span class="kw">super</span>::wallet::WalletSign;
+<span class="kw">static </span>F3_LEASE_MANAGER: Lazy&lt;F3LeaseManager&gt; = Lazy::new(Default::default);
 
 <span class="kw">pub enum </span>GetTipsetByEpoch {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>GetTipsetByEpoch {
@@ -986,15 +1032,12 @@
     <span class="kw">type </span>Params = ();
     <span class="kw">type </span><span class="prelude-val">Ok </span>= Vec&lt;u64&gt;;
 
-    <span class="kw">async fn </span>handle(ctx: Ctx&lt;<span class="kw">impl </span>Blockstore&gt;, <span class="kw">_</span>: <span class="self">Self</span>::Params) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
-        <span class="kw">match </span>ctx.chain_config().network {
-            NetworkChain::Devnet(<span class="kw">_</span>) =&gt; {
-                <span class="comment">// For now, just hard code the devnet miner for testing
-                </span><span class="kw">let </span>shared_miner_addr = Address::from_str(<span class="string">"t01000"</span>)<span class="question-mark">?</span>;
-                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[shared_miner_addr.id()<span class="question-mark">?</span>])
-            }
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[]),
+    <span class="kw">async fn </span>handle(<span class="kw">_</span>: Ctx&lt;<span class="kw">impl </span>Blockstore&gt;, <span class="kw">_</span>: <span class="self">Self</span>::Params) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>ids = F3_LEASE_MANAGER.get_active_participants();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(permanent_miner_ids) = (<span class="kw-2">*</span>F3_PERMANENT_PARTICIPATING_MINER_IDS).clone() {
+            ids.extend(permanent_miner_ids);
         }
+        <span class="prelude-val">Ok</span>(ids.into_iter().collect())
     }
 }
 
@@ -1018,7 +1061,8 @@
     </span>}
 }
 
-<span class="kw">pub enum </span>F3GetCertificate {}
+<span class="doccomment">/// returns a finality certificate at given instance number
+</span><span class="kw">pub enum </span>F3GetCertificate {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">1</span>&gt; <span class="kw">for </span>F3GetCertificate {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.F3GetCertificate"</span>;
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">1</span>] = [<span class="string">"instance"</span>];
@@ -1040,7 +1084,8 @@
     }
 }
 
-<span class="kw">pub enum </span>F3GetLatestCertificate {}
+<span class="doccomment">/// returns the latest finality certificate
+</span><span class="kw">pub enum </span>F3GetLatestCertificate {}
 <span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>F3GetLatestCertificate {
     <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.F3GetLatestCertificate"</span>;
     <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
@@ -1094,6 +1139,45 @@
         params.insert(tsk.into_lotus_json())<span class="question-mark">?</span>;
         <span class="kw">let </span>response = client.request(<span class="self">Self</span>::NAME, params).<span class="kw">await</span><span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(response)
+    }
+}
+
+<span class="doccomment">/// F3Participate should be called by a storage provider to participate in signing F3 consensus.
+/// Calling this API gives the node a lease to sign in F3 on behalf of given SP.
+/// The lease should be active only on one node. The lease will expire at the newLeaseExpiration.
+/// To continue participating in F3 with the given node, call F3Participate again before the newLeaseExpiration time.
+/// newLeaseExpiration cannot be further than 5 minutes in the future.
+/// It is recommended to call F3Participate every 60 seconds with newLeaseExpiration set 2min into the future.
+/// The oldLeaseExpiration has to be set to newLeaseExpiration of the last successful call.
+/// For the first call to F3Participate, set the oldLeaseExpiration to zero value/time in the past.
+/// F3Participate will return true if the lease was accepted. The minerID has to be the ID address of the miner.
+</span><span class="kw">pub enum </span>F3Participate {}
+<span class="kw">impl </span>RpcMethod&lt;<span class="number">3</span>&gt; <span class="kw">for </span>F3Participate {
+    <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.F3Participate"</span>;
+    <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">3</span>] = [
+        <span class="string">"miner_address"</span>,
+        <span class="string">"new_lease_expiration"</span>,
+        <span class="string">"old_lease_expiration"</span>,
+    ];
+    <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
+    <span class="kw">const </span>PERMISSION: Permission = Permission::Sign;
+
+    <span class="kw">type </span>Params = (
+        Address,
+        chrono::DateTime&lt;chrono::Utc&gt;,
+        chrono::DateTime&lt;chrono::Utc&gt;,
+    );
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= bool;
+
+    <span class="kw">async fn </span>handle(
+        <span class="kw">_</span>: Ctx&lt;<span class="kw">impl </span>Blockstore&gt;,
+        (miner, new_lease_expiration, old_lease_expiration): <span class="self">Self</span>::Params,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
+        <span class="prelude-val">Ok</span>(F3_LEASE_MANAGER.upsert_defensive(
+            miner.id()<span class="question-mark">?</span>,
+            new_lease_expiration,
+            old_lease_expiration,
+        )<span class="question-mark">?</span>)
     }
 }
 
