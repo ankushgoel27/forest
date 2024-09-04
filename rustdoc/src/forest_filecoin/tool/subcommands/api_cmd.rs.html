@@ -1927,6 +1927,18 @@
 <a href="#1927" id="1927">1927</a>
 <a href="#1928" id="1928">1928</a>
 <a href="#1929" id="1929">1929</a>
+<a href="#1930" id="1930">1930</a>
+<a href="#1931" id="1931">1931</a>
+<a href="#1932" id="1932">1932</a>
+<a href="#1933" id="1933">1933</a>
+<a href="#1934" id="1934">1934</a>
+<a href="#1935" id="1935">1935</a>
+<a href="#1936" id="1936">1936</a>
+<a href="#1937" id="1937">1937</a>
+<a href="#1938" id="1938">1938</a>
+<a href="#1939" id="1939">1939</a>
+<a href="#1940" id="1940">1940</a>
+<a href="#1941" id="1941">1941</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3365,6 +3377,18 @@
             ))
             .unwrap(),
         ),
+        RpcTest::identity(
+            EthGetTransactionByBlockNumberAndIndex::request((
+                (shared_tipset.epoch() <span class="kw">as </span>u64).into(),
+                <span class="number">0</span>.into(),
+            ))
+            .unwrap(),
+        )
+        .policy_on_rejected(PolicyOnRejected::PassWithIdenticalError),
+        RpcTest::identity(
+            EthGetTransactionByBlockHashAndIndex::request((block_hash.clone(), <span class="number">0</span>.into())).unwrap(),
+        )
+        .policy_on_rejected(PolicyOnRejected::PassWithIdenticalError),
         RpcTest::identity(
             EthGetBlockByHash::request((
                 BlockNumberOrHash::from_block_hash(block_hash.clone()),

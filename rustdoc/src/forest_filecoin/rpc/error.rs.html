@@ -135,6 +135,24 @@
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
 <a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -150,6 +168,16 @@
 </span><span class="attr">#[derive(derive_more::From, derive_more::Into, Debug, PartialEq)]
 </span><span class="kw">pub struct </span>ServerError {
     inner: ErrorObjectOwned,
+}
+
+<span class="doccomment">/// According to the [JSON-RPC 2.0 spec](https://www.jsonrpc.org/specification#response_object),
+/// the error codes from -32000 to -32099 are reserved for implementation-defined server-errors.
+/// We define them here.
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>implementation_defined_errors {
+    <span class="doccomment">/// This error indicates that the method is not supported by the current version of the Forest
+    /// node. Note that it's not the same as not found, as we are explicitly not supporting it,
+    /// e.g., because it's deprecated or Lotus is doing the same.
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>UNSUPPORTED_METHOD: i32 = -<span class="number">32001</span>;
 }
 
 <span class="kw">impl </span>ServerError {
@@ -178,6 +206,14 @@
                 <span class="string">"This method is stubbed as part of https://github.com/ChainSafe/forest/issues/4528"
                     </span>.into(),
             ),
+        )
+    }
+
+    <span class="kw">pub fn </span>unsupported_method() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(
+            implementation_defined_errors::UNSUPPORTED_METHOD,
+            <span class="string">"unsupported method"</span>,
+            <span class="prelude-val">Some</span>(<span class="string">"This method is not supported by the current version of the Forest node"</span>.into()),
         )
     }
 }

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"macro":["ctor","from2internal"],"struct":["ServerError"]};
+window.SIDEBAR_ITEMS = {"macro":["ctor","from2internal"],"mod":["implementation_defined_errors"],"struct":["ServerError"]};
