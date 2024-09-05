@@ -1939,6 +1939,9 @@
 <a href="#1939" id="1939">1939</a>
 <a href="#1940" id="1940">1940</a>
 <a href="#1941" id="1941">1941</a>
+<a href="#1942" id="1942">1942</a>
+<a href="#1943" id="1943">1943</a>
+<a href="#1944" id="1944">1944</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3240,6 +3243,9 @@
                 use_alias,
             )
             .unwrap(),
+        ));
+        tests.push(RpcTest::basic(
+            EthNewBlockFilter::request_with_alias((), use_alias).unwrap(),
         ));
         tests.push(RpcTest::identity(
             EthAddressToFilecoinAddress::request((EthAddress::from_str(

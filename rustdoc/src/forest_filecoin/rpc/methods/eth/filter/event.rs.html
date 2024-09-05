@@ -113,6 +113,10 @@
 <a href="#113" id="113">113</a>
 <a href="#114" id="114">114</a>
 <a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -128,7 +132,7 @@
 <span class="kw">use </span>parking_lot::RwLock;
 
 <span class="attr">#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 </span><span class="kw">pub struct </span>EventFilter {
     id: FilterID,
     min_height: ChainEpoch, <span class="comment">// minimum epoch to apply filter
@@ -161,7 +165,7 @@
         })
     }
 
-    <span class="kw">pub fn </span>install(<span class="kw-2">&amp;</span><span class="self">self</span>, pf: ParsedFilter) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="kw">dyn </span>Filter&gt;&gt; {
+    <span class="kw">pub fn </span>install(<span class="kw-2">&amp;</span><span class="self">self</span>, pf: ParsedFilter) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;EventFilter&gt;&gt; {
         <span class="kw">let </span>id = FilterID::new().context(<span class="string">"Failed to generate new FilterID"</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let </span>filter = Arc::new(EventFilter {
@@ -179,9 +183,9 @@
         <span class="prelude-val">Ok</span>(filter)
     }
 
-    <span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>FilterID) -&gt; bool {
+    <span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>FilterID) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&lt;EventFilter&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>filters = <span class="self">self</span>.filters.write();
-        filters.remove(id).is_some()
+        filters.remove(id)
     }
 }
 
@@ -219,7 +223,11 @@
 
         <span class="comment">// Test case 2: Remove the EventFilter
         </span><span class="kw">let </span>removed = event_manager.remove(<span class="kw-2">&amp;</span>filter_id);
-        <span class="macro">assert!</span>(removed, <span class="string">"Filter should be successfully removed"</span>);
+        <span class="macro">assert_eq!</span>(
+            removed,
+            <span class="prelude-val">Some</span>(filter),
+            <span class="string">"Filter should be successfully removed"
+        </span>);
 
         <span class="comment">// Verify that the filter is no longer in the event manager
         </span>{

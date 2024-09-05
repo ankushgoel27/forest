@@ -383,6 +383,53 @@
 <a href="#383" id="383">383</a>
 <a href="#384" id="384">384</a>
 <a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -442,10 +489,6 @@
         filter_spec: <span class="kw-2">&amp;</span>EthFilterSpec,
         chain_height: i64,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;FilterID, Error&gt; {
-        <span class="kw">if </span><span class="self">self</span>.filter_store.is_none() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::msg(<span class="string">"NotSupported"</span>));
-        }
-
         <span class="kw">if let </span><span class="prelude-val">Some</span>(event_filter_manager) = <span class="kw-2">&amp;</span><span class="self">self</span>.event_filter_manager {
             <span class="kw">let </span>pf = filter_spec
                 .parse_eth_filter_spec(chain_height, <span class="self">self</span>.max_filter_height_range)
@@ -456,11 +499,34 @@
                 .context(<span class="string">"Installation error"</span>)<span class="question-mark">?</span>;
 
             <span class="kw">if let </span><span class="prelude-val">Some</span>(filter_store) = <span class="kw-2">&amp;</span><span class="self">self</span>.filter_store {
-                <span class="kw">if </span>filter_store.add(filter.clone()).is_err() {
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(tipset_filter_manager) = <span class="kw-2">&amp;</span><span class="self">self</span>.tipset_filter_manager {
-                        <span class="kw">let _ </span>= tipset_filter_manager.remove(filter.id());
-                    }
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::msg(<span class="string">"Removal error"</span>));
+                <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = filter_store.add(filter.clone()) {
+                    <span class="macro">ensure!</span>(
+                        event_filter_manager.remove(filter.id()).is_some(),
+                        <span class="string">"Filter not found"
+                    </span>);
+                    <span class="macro">bail!</span>(<span class="string">"Adding filter failed: {}"</span>, err);
+                }
+            }
+            <span class="prelude-val">Ok</span>(filter.id().clone())
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::msg(<span class="string">"NotSupported"</span>))
+        }
+    }
+
+    <span class="comment">// Installs an eth tipset filter
+    </span><span class="kw">pub fn </span>eth_new_block_filter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;FilterID, Error&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(tipset_filter_manager) = <span class="kw-2">&amp;</span><span class="self">self</span>.tipset_filter_manager {
+            <span class="kw">let </span>filter = tipset_filter_manager
+                .install()
+                .context(<span class="string">"Installation error"</span>)<span class="question-mark">?</span>;
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(filter_store) = <span class="kw-2">&amp;</span><span class="self">self</span>.filter_store {
+                <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = filter_store.add(filter.clone()) {
+                    <span class="macro">ensure!</span>(
+                        tipset_filter_manager.remove(filter.id()).is_some(),
+                        <span class="string">"Filter not found"
+                    </span>);
+                    <span class="macro">bail!</span>(<span class="string">"Adding filter failed: {}"</span>, err);
                 }
             }
             <span class="prelude-val">Ok</span>(filter.id().clone())
@@ -593,7 +659,7 @@
     <span class="prelude-val">Ok</span>(keys)
 }
 
-<span class="attr">#[derive(Debug, Serialize, Deserialize)]
+<span class="attr">#[derive(Debug, PartialEq, Serialize, Deserialize)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>ActorEventBlock {
     codec: u64,
     value: Vec&lt;u8&gt;,
@@ -766,6 +832,34 @@
         </span><span class="kw">let </span>hex_str = <span class="string">"0xG"</span>;
         <span class="kw">let </span>result = hex_str_to_epoch(hex_str);
         <span class="macro">assert!</span>(result.is_err());
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_eth_new_filter() {
+        <span class="kw">let </span>eth_event_handler = EthEventHandler::new();
+
+        <span class="kw">let </span>filter_spec = EthFilterSpec {
+            from_block: <span class="prelude-val">Some</span>(<span class="string">"earliest"</span>.into()),
+            to_block: <span class="prelude-val">Some</span>(<span class="string">"latest"</span>.into()),
+            address: <span class="macro">vec!</span>[
+                EthAddress::from_str(<span class="string">"0xff38c072f286e3b20b3954ca9f99c05fbecc64aa"</span>).unwrap(),
+            ],
+            topics: EthTopicSpec(<span class="macro">vec!</span>[]),
+            block_hash: <span class="prelude-val">None</span>,
+        };
+
+        <span class="kw">let </span>chain_height = <span class="number">50</span>;
+        <span class="kw">let </span>result = eth_event_handler.eth_new_filter(<span class="kw-2">&amp;</span>filter_spec, chain_height);
+
+        <span class="macro">assert!</span>(result.is_ok(), <span class="string">"Expected successful filter creation"</span>);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_eth_new_block_filter() {
+        <span class="kw">let </span>eth_event_handler = EthEventHandler::new();
+        <span class="kw">let </span>result = eth_event_handler.eth_new_block_filter();
+
+        <span class="macro">assert!</span>(result.is_ok(), <span class="string">"Expected successful block filter creation"</span>);
     }
 }
 </code></pre></div></section></main></body></html>

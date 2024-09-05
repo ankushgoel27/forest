@@ -97,6 +97,10 @@
 <a href="#97" id="97">97</a>
 <a href="#98" id="98">98</a>
 <a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -107,7 +111,7 @@
 <span class="kw">use </span>parking_lot::RwLock;
 
 <span class="attr">#[allow(dead_code)]
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 </span><span class="kw">pub struct </span>TipSetFilter {
     id: FilterID,
     max_results: usize,
@@ -155,9 +159,9 @@
         <span class="prelude-val">Ok</span>(filter)
     }
 
-    <span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>FilterID) -&gt; bool {
+    <span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>FilterID) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&lt;TipSetFilter&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>filters = <span class="self">self</span>.filters.write();
-        filters.remove(id).is_some()
+        filters.remove(id)
     }
 }
 
@@ -187,7 +191,11 @@
         <span class="comment">// Test case 3: Remove the installed TipSetFilter
         </span><span class="kw">let </span>filter_id = installed_filter.id().clone();
         <span class="kw">let </span>removed = tipset_manager.remove(<span class="kw-2">&amp;</span>filter_id);
-        <span class="macro">assert!</span>(removed, <span class="string">"Filter should be successfully removed"</span>);
+        <span class="macro">assert_eq!</span>(
+            removed,
+            <span class="prelude-val">Some</span>(installed_filter),
+            <span class="string">"Filter should be successfully removed"
+        </span>);
 
         <span class="comment">// Verify that the filter is no longer in the tipset manager
         </span>{

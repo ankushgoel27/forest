@@ -2106,6 +2106,27 @@
 <a href="#2106" id="2106">2106</a>
 <a href="#2107" id="2107">2107</a>
 <a href="#2108" id="2108">2108</a>
+<a href="#2109" id="2109">2109</a>
+<a href="#2110" id="2110">2110</a>
+<a href="#2111" id="2111">2111</a>
+<a href="#2112" id="2112">2112</a>
+<a href="#2113" id="2113">2113</a>
+<a href="#2114" id="2114">2114</a>
+<a href="#2115" id="2115">2115</a>
+<a href="#2116" id="2116">2116</a>
+<a href="#2117" id="2117">2117</a>
+<a href="#2118" id="2118">2118</a>
+<a href="#2119" id="2119">2119</a>
+<a href="#2120" id="2120">2120</a>
+<a href="#2121" id="2121">2121</a>
+<a href="#2122" id="2122">2122</a>
+<a href="#2123" id="2123">2123</a>
+<a href="#2124" id="2124">2124</a>
+<a href="#2125" id="2125">2125</a>
+<a href="#2126" id="2126">2126</a>
+<a href="#2127" id="2127">2127</a>
+<a href="#2128" id="2128">2128</a>
+<a href="#2129" id="2129">2129</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -4063,6 +4084,27 @@
         <span class="kw">let </span>eth_event_handler = ctx.eth_event_handler.clone();
         <span class="kw">let </span>chain_height = ctx.chain_store().heaviest_tipset().epoch();
         <span class="prelude-val">Ok</span>(eth_event_handler.eth_new_filter(<span class="kw-2">&amp;</span>filter_spec, chain_height)<span class="question-mark">?</span>)
+    }
+}
+
+<span class="kw">pub enum </span>EthNewBlockFilter {}
+<span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthNewBlockFilter {
+    <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthNewBlockFilter"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_newBlockFilter"</span>);
+    <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
+    <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
+    <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
+
+    <span class="kw">type </span>Params = ();
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= FilterID;
+
+    <span class="kw">async fn </span>handle(
+        ctx: Ctx&lt;<span class="kw">impl </span>Blockstore + Send + Sync + <span class="lifetime">'static</span>&gt;,
+        (): <span class="self">Self</span>::Params,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
+        <span class="kw">let </span>eth_event_handler = ctx.eth_event_handler.clone();
+
+        <span class="prelude-val">Ok</span>(eth_event_handler.eth_new_block_filter()<span class="question-mark">?</span>)
     }
 }
 
