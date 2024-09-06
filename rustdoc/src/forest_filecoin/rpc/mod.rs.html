@@ -618,12 +618,16 @@
 <a href="#618" id="618">618</a>
 <a href="#619" id="619">619</a>
 <a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
 </span><span class="kw">mod </span>auth_layer;
 <span class="kw">mod </span>channel;
 <span class="kw">mod </span>client;
+<span class="kw">mod </span>log_layer;
 <span class="kw">mod </span>metrics_layer;
 <span class="kw">mod </span>request;
 
@@ -631,6 +635,7 @@
 <span class="kw">pub use </span>error::ServerError;
 <span class="kw">use </span>eth::filter::EthEventHandler;
 <span class="kw">use </span>futures::FutureExt <span class="kw">as _</span>;
+<span class="kw">use </span>log_layer::LogLayer;
 <span class="kw">use </span>reflect::Ctx;
 <span class="kw">pub use </span>reflect::{ApiPath, ApiPaths, RpcMethod, RpcMethodExt};
 <span class="kw">pub use </span>request::Request;
@@ -1101,7 +1106,8 @@
                         headers,
                         keystore: keystore.clone(),
                     })
-                    .layer(MetricsLayer {});
+                    .layer(LogLayer::default())
+                    .layer(MetricsLayer::default());
                 <span class="kw">let </span><span class="kw-2">mut </span>jsonrpsee_svc = svc_builder
                     .set_rpc_middleware(rpc_middleware)
                     .build(methods, stop_handle);

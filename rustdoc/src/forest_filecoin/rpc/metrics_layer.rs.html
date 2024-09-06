@@ -67,8 +67,8 @@
 <span class="kw">use </span>tower::Layer;
 
 <span class="comment">// State-less jsonrpcsee layer for measuring RPC metrics
-</span><span class="attr">#[derive(Clone)]
-</span><span class="kw">pub struct </span>MetricsLayer {}
+</span><span class="attr">#[derive(Clone, Default)]
+</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>MetricsLayer {}
 
 <span class="kw">impl</span>&lt;S&gt; Layer&lt;S&gt; <span class="kw">for </span>MetricsLayer {
     <span class="kw">type </span>Service = RecordMetrics&lt;S&gt;;
@@ -79,7 +79,7 @@
 }
 
 <span class="attr">#[derive(Clone)]
-</span><span class="kw">pub struct </span>RecordMetrics&lt;S&gt; {
+</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>RecordMetrics&lt;S&gt; {
     service: S,
 }
 
@@ -98,18 +98,18 @@
         <span class="kw">async move </span>{
             <span class="comment">// Cannot use HistogramTimerExt::start_timer here since it would lock the metric.
             </span><span class="kw">let </span>start_time = std::time::Instant::now();
-            <span class="kw">let </span>req = service.call(req).<span class="kw">await</span>;
+            <span class="kw">let </span>resp = service.call(req).<span class="kw">await</span>;
 
             metrics::RPC_METHOD_TIME
                 .get_or_create(<span class="kw-2">&amp;</span>method)
                 <span class="comment">// Observe the elapsed time in milliseconds
                 </span>.observe(start_time.elapsed().as_secs_f64() * <span class="number">1000.0</span>);
 
-            <span class="kw">if </span>req.is_error() {
+            <span class="kw">if </span>resp.is_error() {
                 metrics::RPC_METHOD_FAILURE.get_or_create(<span class="kw-2">&amp;</span>method).inc();
             }
 
-            req
+            resp
         }
         .boxed()
     }
