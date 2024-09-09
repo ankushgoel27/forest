@@ -1942,6 +1942,9 @@
 <a href="#1942" id="1942">1942</a>
 <a href="#1943" id="1943">1943</a>
 <a href="#1944" id="1944">1944</a>
+<a href="#1945" id="1945">1945</a>
+<a href="#1946" id="1946">1946</a>
+<a href="#1947" id="1947">1947</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3243,6 +3246,9 @@
                 use_alias,
             )
             .unwrap(),
+        ));
+        tests.push(RpcTest::basic(
+            EthNewPendingTransactionFilter::request_with_alias((), use_alias).unwrap(),
         ));
         tests.push(RpcTest::basic(
             EthNewBlockFilter::request_with_alias((), use_alias).unwrap(),

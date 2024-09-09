@@ -101,10 +101,11 @@
 <a href="#101" id="101">101</a>
 <a href="#102" id="102">102</a>
 <a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
-</span><span class="kw">use </span><span class="kw">crate</span>::rpc::eth::{filter::Filter, FilterID};
+</span><span class="kw">use </span><span class="kw">crate</span>::rpc::eth::{filter::Filter, filter::FilterManager, FilterID};
 <span class="kw">use </span><span class="kw">crate</span>::rpc::Arc;
 <span class="kw">use </span>ahash::AHashMap <span class="kw">as </span>HashMap;
 <span class="kw">use </span>anyhow::{Context, <span class="prelude-ty">Result</span>};
@@ -136,7 +137,7 @@
 /// configured for each filter.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>TipSetFilterManager {
-    filters: RwLock&lt;HashMap&lt;FilterID, Arc&lt;TipSetFilter&gt;&gt;&gt;,
+    filters: RwLock&lt;HashMap&lt;FilterID, Arc&lt;<span class="kw">dyn </span>Filter&gt;&gt;&gt;,
     max_filter_results: usize,
 }
 
@@ -147,19 +148,20 @@
             max_filter_results,
         })
     }
+}
 
-    <span class="kw">pub fn </span>install(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;TipSetFilter&gt;&gt; {
+<span class="kw">impl </span>FilterManager <span class="kw">for </span>TipSetFilterManager {
+    <span class="kw">fn </span>install(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="kw">dyn </span>Filter&gt;&gt; {
         <span class="kw">let </span>filter = TipSetFilter::new(<span class="self">self</span>.max_filter_results)
-            .context(<span class="string">"Failed to create a new TipSetFilter"</span>)<span class="question-mark">?</span>;
-        <span class="kw">let </span>id = filter.id.clone();
+            .context(<span class="string">"Failed to create a new tipset filter"</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>id = filter.id().clone();
 
-        <span class="kw">let </span><span class="kw-2">mut </span>filters = <span class="self">self</span>.filters.write();
-        filters.insert(id, filter.clone());
+        <span class="self">self</span>.filters.write().insert(id, filter.clone());
 
         <span class="prelude-val">Ok</span>(filter)
     }
 
-    <span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>FilterID) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&lt;TipSetFilter&gt;&gt; {
+    <span class="kw">fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>FilterID) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&lt;<span class="kw">dyn </span>Filter&gt;&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>filters = <span class="self">self</span>.filters.write();
         filters.remove(id)
     }
@@ -192,8 +194,8 @@
         </span><span class="kw">let </span>filter_id = installed_filter.id().clone();
         <span class="kw">let </span>removed = tipset_manager.remove(<span class="kw-2">&amp;</span>filter_id);
         <span class="macro">assert_eq!</span>(
-            removed,
-            <span class="prelude-val">Some</span>(installed_filter),
+            removed.map(|f| f.id().clone()),
+            <span class="prelude-val">Some</span>(installed_filter.id().clone()),
             <span class="string">"Filter should be successfully removed"
         </span>);
 

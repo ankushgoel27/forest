@@ -2127,6 +2127,27 @@
 <a href="#2127" id="2127">2127</a>
 <a href="#2128" id="2128">2128</a>
 <a href="#2129" id="2129">2129</a>
+<a href="#2130" id="2130">2130</a>
+<a href="#2131" id="2131">2131</a>
+<a href="#2132" id="2132">2132</a>
+<a href="#2133" id="2133">2133</a>
+<a href="#2134" id="2134">2134</a>
+<a href="#2135" id="2135">2135</a>
+<a href="#2136" id="2136">2136</a>
+<a href="#2137" id="2137">2137</a>
+<a href="#2138" id="2138">2138</a>
+<a href="#2139" id="2139">2139</a>
+<a href="#2140" id="2140">2140</a>
+<a href="#2141" id="2141">2141</a>
+<a href="#2142" id="2142">2142</a>
+<a href="#2143" id="2143">2143</a>
+<a href="#2144" id="2144">2144</a>
+<a href="#2145" id="2145">2145</a>
+<a href="#2146" id="2146">2146</a>
+<a href="#2147" id="2147">2147</a>
+<a href="#2148" id="2148">2148</a>
+<a href="#2149" id="2149">2149</a>
+<a href="#2150" id="2150">2150</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -4084,6 +4105,27 @@
         <span class="kw">let </span>eth_event_handler = ctx.eth_event_handler.clone();
         <span class="kw">let </span>chain_height = ctx.chain_store().heaviest_tipset().epoch();
         <span class="prelude-val">Ok</span>(eth_event_handler.eth_new_filter(<span class="kw-2">&amp;</span>filter_spec, chain_height)<span class="question-mark">?</span>)
+    }
+}
+
+<span class="kw">pub enum </span>EthNewPendingTransactionFilter {}
+<span class="kw">impl </span>RpcMethod&lt;<span class="number">0</span>&gt; <span class="kw">for </span>EthNewPendingTransactionFilter {
+    <span class="kw">const </span>NAME: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"Filecoin.EthNewPendingTransactionFilter"</span>;
+    <span class="kw">const </span>NAME_ALIAS: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; = <span class="prelude-val">Some</span>(<span class="string">"eth_newPendingTransactionFilter"</span>);
+    <span class="kw">const </span>PARAM_NAMES: [<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; <span class="number">0</span>] = [];
+    <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V1;
+    <span class="kw">const </span>PERMISSION: Permission = Permission::Read;
+
+    <span class="kw">type </span>Params = ();
+    <span class="kw">type </span><span class="prelude-val">Ok </span>= FilterID;
+
+    <span class="kw">async fn </span>handle(
+        ctx: Ctx&lt;<span class="kw">impl </span>Blockstore + Send + Sync + <span class="lifetime">'static</span>&gt;,
+        (): <span class="self">Self</span>::Params,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
+        <span class="kw">let </span>eth_event_handler = ctx.eth_event_handler.clone();
+
+        <span class="prelude-val">Ok</span>(eth_event_handler.eth_new_pending_transaction_filter()<span class="question-mark">?</span>)
     }
 }
 

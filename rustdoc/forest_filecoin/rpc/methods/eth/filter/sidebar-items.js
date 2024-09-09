@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["hex_str_to_epoch","keys_to_keys_with_codec","parse_block_range","parse_eth_topics"],"mod":["event","store","tipset"],"struct":["ActorEventBlock","EthEventHandler","ParsedFilter"]};
+window.SIDEBAR_ITEMS = {"fn":["hex_str_to_epoch","keys_to_keys_with_codec","parse_block_range","parse_eth_topics"],"mod":["event","mempool","store","tipset"],"struct":["ActorEventBlock","EthEventHandler","ParsedFilter"],"trait":["FilterManager"]};

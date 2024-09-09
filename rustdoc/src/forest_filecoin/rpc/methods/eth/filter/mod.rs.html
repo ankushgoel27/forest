@@ -430,16 +430,80 @@
 <a href="#430" id="430">430</a>
 <a href="#431" id="431">431</a>
 <a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
+</span><span class="doccomment">//! # Ethereum Event Filters Module
+//!
+//! This module provides the structures and logic necessary to manage filters for Ethereum
+//! events, tipsets, and mempool operations. Ethereum event filters enable clients to monitor
+//! and subscribe to changes in the blockchain, such as log events, pending transactions in the
+//! mempool, or new tipsets in the chain. These filters can be customized to capture specific events
+//! or conditions based on various parameters.
+//!
+//! ## Filter Types:
+//!
+//! - **Event Filter**: Captures blockchain events, such as smart contract log events, emitted by specific actors.
+//! - **TipSet Filter**: Tracks changes in the blockchain's tipset (the latest set of blocks).
+//! - **Mempool Filter**: Monitors the Ethereum mempool for new pending transactions that meet certain criteria.
 </span><span class="kw">mod </span>event;
+<span class="kw">mod </span>mempool;
 <span class="kw">mod </span>store;
 <span class="kw">mod </span>tipset;
 
 <span class="kw">use </span><span class="kw">super</span>::BlockNumberOrHash;
 <span class="kw">use </span><span class="kw">super</span>::Predefined;
 <span class="kw">use </span><span class="kw">crate</span>::rpc::eth::filter::event::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::rpc::eth::filter::mempool::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::rpc::eth::filter::tipset::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::rpc::eth::types::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::shim::address::Address;
@@ -453,6 +517,12 @@
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>store::<span class="kw-2">*</span>;
 
+<span class="doccomment">/// Trait for managing filters. Provides common functionality for installing and removing filters.
+</span><span class="kw">pub trait </span>FilterManager {
+    <span class="kw">fn </span>install(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="kw">dyn </span>Filter&gt;, Error&gt;;
+    <span class="kw">fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, filter_id: <span class="kw-2">&amp;</span>FilterID) -&gt; <span class="prelude-ty">Option</span>&lt;Arc&lt;<span class="kw">dyn </span>Filter&gt;&gt;;
+}
+
 <span class="doccomment">/// Handles Ethereum event filters, providing an interface for creating and managing filters.
 ///
 /// The `EthEventHandler` structure is the central point for managing Ethereum filters,
@@ -463,6 +533,7 @@
     max_filter_height_range: ChainEpoch,
     event_filter_manager: <span class="prelude-ty">Option</span>&lt;Arc&lt;EventFilterManager&gt;&gt;,
     tipset_filter_manager: <span class="prelude-ty">Option</span>&lt;Arc&lt;TipSetFilterManager&gt;&gt;,
+    mempool_filter_manager: <span class="prelude-ty">Option</span>&lt;Arc&lt;MempoolFilterManager&gt;&gt;,
 }
 
 <span class="kw">impl </span>EthEventHandler {
@@ -474,12 +545,14 @@
             <span class="prelude-val">Some</span>(MemFilterStore::new(max_filters) <span class="kw">as </span>Arc&lt;<span class="kw">dyn </span>FilterStore&gt;);
         <span class="kw">let </span>event_filter_manager = <span class="prelude-val">Some</span>(EventFilterManager::new(max_filter_results));
         <span class="kw">let </span>tipset_filter_manager = <span class="prelude-val">Some</span>(TipSetFilterManager::new(max_filter_results));
+        <span class="kw">let </span>mempool_filter_manager = <span class="prelude-val">Some</span>(MempoolFilterManager::new(max_filter_results));
 
         <span class="self">Self </span>{
             filter_store,
             max_filter_height_range,
             event_filter_manager,
             tipset_filter_manager,
+            mempool_filter_manager,
         }
     }
 
@@ -513,19 +586,15 @@
         }
     }
 
-    <span class="comment">// Installs an eth tipset filter
-    </span><span class="kw">pub fn </span>eth_new_block_filter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;FilterID, Error&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(tipset_filter_manager) = <span class="kw-2">&amp;</span><span class="self">self</span>.tipset_filter_manager {
-            <span class="kw">let </span>filter = tipset_filter_manager
-                .install()
-                .context(<span class="string">"Installation error"</span>)<span class="question-mark">?</span>;
-
+    <span class="kw">fn </span>install_filter(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        filter_manager: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;Arc&lt;<span class="kw">dyn </span>FilterManager&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;FilterID, Error&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(manager) = filter_manager {
+            <span class="kw">let </span>filter = manager.install().context(<span class="string">"Installation error"</span>)<span class="question-mark">?</span>;
             <span class="kw">if let </span><span class="prelude-val">Some</span>(filter_store) = <span class="kw-2">&amp;</span><span class="self">self</span>.filter_store {
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = filter_store.add(filter.clone()) {
-                    <span class="macro">ensure!</span>(
-                        tipset_filter_manager.remove(filter.id()).is_some(),
-                        <span class="string">"Filter not found"
-                    </span>);
+                    <span class="macro">ensure!</span>(manager.remove(filter.id()).is_some(), <span class="string">"Filter not found"</span>);
                     <span class="macro">bail!</span>(<span class="string">"Adding filter failed: {}"</span>, err);
                 }
             }
@@ -533,6 +602,24 @@
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(Error::msg(<span class="string">"NotSupported"</span>))
         }
+    }
+
+    <span class="comment">// Installs an eth block filter
+    </span><span class="kw">pub fn </span>eth_new_block_filter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;FilterID, Error&gt; {
+        <span class="kw">let </span>filter_manager: <span class="prelude-ty">Option</span>&lt;Arc&lt;<span class="kw">dyn </span>FilterManager&gt;&gt; = <span class="self">self
+            </span>.tipset_filter_manager
+            .as_ref()
+            .map(|fm| Arc::clone(fm) <span class="kw">as </span>Arc&lt;<span class="kw">dyn </span>FilterManager&gt;);
+        <span class="self">self</span>.install_filter(<span class="kw-2">&amp;</span>filter_manager)
+    }
+
+    <span class="comment">// Installs an eth pending transaction filter
+    </span><span class="kw">pub fn </span>eth_new_pending_transaction_filter(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;FilterID, Error&gt; {
+        <span class="kw">let </span>filter_manager: <span class="prelude-ty">Option</span>&lt;Arc&lt;<span class="kw">dyn </span>FilterManager&gt;&gt; = <span class="self">self
+            </span>.mempool_filter_manager
+            .as_ref()
+            .map(|fm| Arc::clone(fm) <span class="kw">as </span>Arc&lt;<span class="kw">dyn </span>FilterManager&gt;);
+        <span class="self">self</span>.install_filter(<span class="kw-2">&amp;</span>filter_manager)
     }
 }
 
@@ -860,6 +947,17 @@
         <span class="kw">let </span>result = eth_event_handler.eth_new_block_filter();
 
         <span class="macro">assert!</span>(result.is_ok(), <span class="string">"Expected successful block filter creation"</span>);
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_eth_new_pending_transaction_filter() {
+        <span class="kw">let </span>eth_event_handler = EthEventHandler::new();
+        <span class="kw">let </span>result = eth_event_handler.eth_new_pending_transaction_filter();
+
+        <span class="macro">assert!</span>(
+            result.is_ok(),
+            <span class="string">"Expected successful pending transaction filter creation"
+        </span>);
     }
 }
 </code></pre></div></section></main></body></html>
