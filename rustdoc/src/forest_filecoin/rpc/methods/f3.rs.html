@@ -1014,7 +1014,7 @@
         <span class="kw">let </span>(tx, rx) = flume::bounded(<span class="number">1</span>);
         ctx.network_send
             .send_async(NetworkMessage::JSONRPCRequest {
-                method: NetRPCMethods::ProtectPeer(tx, peer_id),
+                method: NetRPCMethods::ProtectPeer(tx, std::iter::once(peer_id).collect()),
             })
             .<span class="kw">await</span><span class="question-mark">?</span>;
         rx.recv_async().<span class="kw">await</span><span class="question-mark">?</span>;

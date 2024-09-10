@@ -1945,6 +1945,9 @@
 <a href="#1945" id="1945">1945</a>
 <a href="#1946" id="1946">1946</a>
 <a href="#1947" id="1947">1947</a>
+<a href="#1948" id="1948">1948</a>
+<a href="#1949" id="1949">1949</a>
+<a href="#1950" id="1950">1950</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1987,6 +1990,7 @@
 <span class="kw">use </span>fvm_ipld_blockstore::Blockstore;
 <span class="kw">use </span>itertools::Itertools <span class="kw">as _</span>;
 <span class="kw">use </span>jsonrpsee::types::ErrorCode;
+<span class="kw">use </span>libp2p::PeerId;
 <span class="kw">use </span>serde::de::DeserializeOwned;
 <span class="kw">use </span>serde::{Deserialize, Serialize};
 <span class="kw">use </span>serde_json::Value;
@@ -2603,24 +2607,26 @@
 }
 
 <span class="kw">fn </span>net_tests() -&gt; Vec&lt;RpcTest&gt; {
-    <span class="comment">// Tests with a known peer id tend to be flaky, use a random peer id to test the unhappy path only
-    </span><span class="kw">let </span>random_peer_id = libp2p::PeerId::random().to_string();
-
     <span class="comment">// More net commands should be tested. Tracking issue:
     // https://github.com/ChainSafe/forest/issues/3639
     </span><span class="macro">vec!</span>[
         RpcTest::basic(NetAddrsListen::request(()).unwrap()),
         RpcTest::basic(NetPeers::request(()).unwrap()),
         RpcTest::identity(NetListening::request(()).unwrap()),
-        RpcTest::basic(NetAgentVersion::request((random_peer_id.clone(),)).unwrap())
+        <span class="comment">// Tests with a known peer id tend to be flaky, use a random peer id to test the unhappy path only
+        </span>RpcTest::basic(NetAgentVersion::request((PeerId::random().to_string(),)).unwrap())
             .policy_on_rejected(PolicyOnRejected::PassWithIdenticalError),
-        RpcTest::basic(NetFindPeer::request((random_peer_id,)).unwrap())
+        RpcTest::basic(NetFindPeer::request((PeerId::random().to_string(),)).unwrap())
             .policy_on_rejected(PolicyOnRejected::Pass)
             .ignore(<span class="string">"It times out in lotus when peer not found"</span>),
         RpcTest::basic(NetInfo::request(()).unwrap())
             .ignore(<span class="string">"Not implemented in Lotus. Why do we even have this method?"</span>),
         RpcTest::basic(NetAutoNatStatus::request(()).unwrap()),
         RpcTest::identity(NetVersion::request(()).unwrap()),
+        RpcTest::identity(NetProtectAdd::request((<span class="macro">vec!</span>[PeerId::random().to_string()],)).unwrap()),
+        RpcTest::identity(
+            NetProtectRemove::request((<span class="macro">vec!</span>[PeerId::random().to_string()],)).unwrap(),
+        ),
     ]
 }
 

@@ -909,6 +909,15 @@
 <a href="#909" id="909">909</a>
 <a href="#910" id="910">910</a>
 <a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1063,7 +1072,8 @@
     AddrsListen(flume::Sender&lt;(PeerId, HashSet&lt;Multiaddr&gt;)&gt;),
     Peer(flume::Sender&lt;<span class="prelude-ty">Option</span>&lt;HashSet&lt;Multiaddr&gt;&gt;&gt;, PeerId),
     Peers(flume::Sender&lt;HashMap&lt;PeerId, HashSet&lt;Multiaddr&gt;&gt;&gt;),
-    ProtectPeer(flume::Sender&lt;()&gt;, PeerId),
+    ProtectPeer(flume::Sender&lt;()&gt;, HashSet&lt;PeerId&gt;),
+    UnprotectPeer(flume::Sender&lt;()&gt;, HashSet&lt;PeerId&gt;),
     Info(flume::Sender&lt;NetInfoResult&gt;),
     Connect(flume::Sender&lt;bool&gt;, PeerId, HashSet&lt;Multiaddr&gt;),
     Disconnect(flume::Sender&lt;()&gt;, PeerId),
@@ -1410,8 +1420,16 @@
                     <span class="kw">let </span>peer_addresses = swarm.behaviour().peer_addresses();
                     response_channel.send_or_warn(peer_addresses);
                 }
-                NetRPCMethods::ProtectPeer(tx, peer_id) =&gt; {
-                    peer_manager.protect_peer(peer_id);
+                NetRPCMethods::ProtectPeer(tx, peer_ids) =&gt; {
+                    peer_ids.into_iter().for_each(|peer_id| {
+                        peer_manager.protect_peer(peer_id);
+                    });
+                    tx.send_or_warn(());
+                }
+                NetRPCMethods::UnprotectPeer(tx, peer_ids) =&gt; {
+                    peer_ids.iter().for_each(|peer_id| {
+                        peer_manager.unprotect_peer(peer_id);
+                    });
                     tx.send_or_warn(());
                 }
                 NetRPCMethods::Info(response_channel) =&gt; {
