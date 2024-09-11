@@ -487,8 +487,8 @@ OPTIONS:
     <span class="doccomment">/// Import a snapshot from a local CAR file or URL
     </span><span class="attr">#[arg(long)]
     </span><span class="kw">pub </span>import_snapshot: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// Snapshot import mode. Available modes are `copy`, `move` and `symlink`.
-    </span><span class="attr">#[arg(long, default_value = <span class="string">"copy"</span>)]
+    <span class="doccomment">/// Snapshot import mode. Available modes are `auto`, `copy`, `move`, `symlink` and `hardlink`.
+    </span><span class="attr">#[arg(long, default_value = <span class="string">"auto"</span>)]
     </span><span class="kw">pub </span>import_mode: ImportMode,
     <span class="doccomment">/// Halt with exit code 0 after successfully importing a snapshot
     </span><span class="attr">#[arg(long)]

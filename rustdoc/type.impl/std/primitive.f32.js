@@ -1,4 +1,5 @@
 (function() {var type_impls = {
+"forest_filecoin":[],
 "linux_raw_sys":[],
 "nonzero_ext":[],
 "serde":[],

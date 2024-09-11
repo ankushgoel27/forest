@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["r2g"],"derive":["R2G"]};

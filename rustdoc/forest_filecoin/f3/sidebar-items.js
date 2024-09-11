@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["is_sidecar_ffi_enabled","run_f3_sidecar_if_enabled"],"mod":["go_ffi"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["binding"],"struct":["GoF3NodeImpl"],"trait":["GoF3Node"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":["r2g"],"constant":["DEFAULT_BINDING_FILE"],"derive":["R2G"],"enum":["MemType","ResponseFuture"],"fn":["new_atomic_slot"],"macro":["max_mem_type","r2g_include_binding"],"struct":["CopyStruct","DataView","ListRef","ResponseFutureWithoutReq","SlotReader","SlotWriter","StringRef","Writer"],"trait":["FromRef","ToRef"]};

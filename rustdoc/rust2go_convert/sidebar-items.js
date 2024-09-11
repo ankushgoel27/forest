@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MemType"],"macro":["max_mem_type"],"struct":["CopyStruct","DataView","ListRef","StringRef","Writer"],"trait":["FromRef","ToRef"]};

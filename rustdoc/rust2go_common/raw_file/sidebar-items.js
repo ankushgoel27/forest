@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["DropSafe","ParamTypeInner"],"struct":["FnRepr","Param","ParamType","RawRsFile","TraitRepr"]};

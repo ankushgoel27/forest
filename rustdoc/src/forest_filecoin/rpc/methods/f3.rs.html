@@ -1181,7 +1181,7 @@
     }
 }
 
-<span class="kw">fn </span>get_f3_rpc_endpoint() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+<span class="kw">pub fn </span>get_f3_rpc_endpoint() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
     <span class="kw">if let </span><span class="prelude-val">Ok</span>(host) = std::env::var(<span class="string">"FOREST_F3_SIDECAR_RPC_ENDPOINT"</span>) {
         Cow::Owned(host)
     } <span class="kw">else </span>{

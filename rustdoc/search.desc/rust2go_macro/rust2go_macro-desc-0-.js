@@ -1,0 +1,1 @@
+searchState.loadedDescShard("rust2go_macro", 0, "")
