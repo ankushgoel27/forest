@@ -810,6 +810,20 @@
 <a href="#810" id="810">810</a>
 <a href="#811" id="811">811</a>
 <a href="#812" id="812">812</a>
+<a href="#813" id="813">813</a>
+<a href="#814" id="814">814</a>
+<a href="#815" id="815">815</a>
+<a href="#816" id="816">816</a>
+<a href="#817" id="817">817</a>
+<a href="#818" id="818">818</a>
+<a href="#819" id="819">819</a>
+<a href="#820" id="820">820</a>
+<a href="#821" id="821">821</a>
+<a href="#822" id="822">822</a>
+<a href="#823" id="823">823</a>
+<a href="#824" id="824">824</a>
+<a href="#825" id="825">825</a>
+<a href="#826" id="826">826</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -1225,7 +1239,21 @@
         </span>});
 
         services.spawn_blocking({
-            <span class="kw">let </span>finality = chain_config.policy.chain_finality;
+            <span class="kw">let </span>finality = std::env::var(<span class="string">"FOREST_F3_FINALITY"</span>)
+                .ok()
+                .and_then(|v| <span class="kw">match </span>v.parse::&lt;i64&gt;() {
+                    <span class="prelude-val">Ok</span>(f) <span class="kw">if </span>f &gt; <span class="number">0 </span>=&gt; {
+                        <span class="macro">tracing::info!</span>(<span class="string">"Using F3 finality {f} set by FOREST_F3_FINALITY"</span>);
+                        <span class="prelude-val">Some</span>(f)
+                    }
+                    <span class="kw">_ </span>=&gt; {
+                        <span class="macro">tracing::warn!</span>(
+                            <span class="string">"Invalid FOREST_F3_FINALITY value {v}. A positive integer is expected."
+                        </span>);
+                        <span class="prelude-val">None
+                    </span>}
+                })
+                .unwrap_or(chain_config.policy.chain_finality);
             <span class="kw">let </span>default_f3_db_path = config
                 .client
                 .data_dir
