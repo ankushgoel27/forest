@@ -1659,17 +1659,17 @@
     <span class="kw">const </span>API_PATHS: ApiPaths = ApiPaths::V0;
     <span class="kw">const </span>PERMISSION: Permission = Permission::Admin;
 
-    <span class="kw">type </span>Params = (ApiTipsetKey,);
+    <span class="kw">type </span>Params = (TipsetKey,);
     <span class="kw">type </span><span class="prelude-val">Ok </span>= ();
 
     <span class="kw">async fn </span>handle(
         ctx: Ctx&lt;<span class="kw">impl </span>Blockstore&gt;,
-        (ApiTipsetKey(tsk),): <span class="self">Self</span>::Params,
+        (tsk,): <span class="self">Self</span>::Params,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>::Ok, ServerError&gt; {
         <span class="comment">// This is basically a port of the reference implementation at
         // https://github.com/filecoin-project/lotus/blob/v1.23.0/node/impl/full/chain.go#L321
 
-        </span><span class="kw">let </span>new_head = ctx.chain_store().load_required_tipset_or_heaviest(<span class="kw-2">&amp;</span>tsk)<span class="question-mark">?</span>;
+        </span><span class="kw">let </span>new_head = ctx.chain_index().load_required_tipset(<span class="kw-2">&amp;</span>tsk)<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>current = ctx.chain_store().heaviest_tipset();
         <span class="kw">while </span>current.epoch() &gt;= new_head.epoch() {
             <span class="kw">for </span>cid <span class="kw">in </span>current.key().to_cids() {

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["AuthCommands"],"fn":["process_perms"]};
+window.SIDEBAR_ITEMS = {"enum":["AuthCommands"]};

@@ -401,6 +401,10 @@
 <a href="#401" id="401">401</a>
 <a href="#402" id="402">402</a>
 <a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -484,12 +488,16 @@
 }
 
 <span class="doccomment">/// The permission required to call an RPC method.
-</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+</span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, displaydoc::Display)]
 </span><span class="kw">pub enum </span>Permission {
-    Admin,
-    Sign,
-    Write,
-    Read,
+    <span class="doccomment">/// admin
+    </span>Admin,
+    <span class="doccomment">/// sign
+    </span>Sign,
+    <span class="doccomment">/// write
+    </span>Write,
+    <span class="doccomment">/// read
+    </span>Read,
 }
 
 <span class="doccomment">/// Which paths should this method be exposed on?
