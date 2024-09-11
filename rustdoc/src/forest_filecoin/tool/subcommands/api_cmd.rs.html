@@ -1948,6 +1948,9 @@
 <a href="#1948" id="1948">1948</a>
 <a href="#1949" id="1949">1949</a>
 <a href="#1950" id="1950">1950</a>
+<a href="#1951" id="1951">1951</a>
+<a href="#1952" id="1952">1952</a>
+<a href="#1953" id="1953">1953</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -3258,6 +3261,9 @@
         ));
         tests.push(RpcTest::basic(
             EthNewBlockFilter::request_with_alias((), use_alias).unwrap(),
+        ));
+        tests.push(RpcTest::identity(
+            EthUninstallFilter::request_with_alias((FilterID::new().unwrap(),), use_alias).unwrap(),
         ));
         tests.push(RpcTest::identity(
             EthAddressToFilecoinAddress::request((EthAddress::from_str(
