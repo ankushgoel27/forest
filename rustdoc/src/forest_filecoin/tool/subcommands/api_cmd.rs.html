@@ -2001,6 +2001,23 @@
 <a href="#2001" id="2001">2001</a>
 <a href="#2002" id="2002">2002</a>
 <a href="#2003" id="2003">2003</a>
+<a href="#2004" id="2004">2004</a>
+<a href="#2005" id="2005">2005</a>
+<a href="#2006" id="2006">2006</a>
+<a href="#2007" id="2007">2007</a>
+<a href="#2008" id="2008">2008</a>
+<a href="#2009" id="2009">2009</a>
+<a href="#2010" id="2010">2010</a>
+<a href="#2011" id="2011">2011</a>
+<a href="#2012" id="2012">2012</a>
+<a href="#2013" id="2013">2013</a>
+<a href="#2014" id="2014">2014</a>
+<a href="#2015" id="2015">2015</a>
+<a href="#2016" id="2016">2016</a>
+<a href="#2017" id="2017">2017</a>
+<a href="#2018" id="2018">2018</a>
+<a href="#2019" id="2019">2019</a>
+<a href="#2020" id="2020">2020</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -2397,6 +2414,9 @@
     Fail,
     Pass,
     PassWithIdenticalError,
+    <span class="doccomment">/// If Forest reason is a subset of Lotus reason, the test passes.
+    /// We don't always bubble up errors and format the error chain like Lotus.
+    </span>PassWithQuasiIdenticalError,
 }
 
 <span class="kw">struct </span>RpcTest {
@@ -3554,9 +3574,18 @@
             tests.push(RpcTest::identity(
                 EthGetMessageCidByTransactionHash::request((tx.hash.clone(),))<span class="question-mark">?</span>,
             ));
-            tests.push(RpcTest::identity(EthGetTransactionByHash::request((
-                tx.hash,
-            ))<span class="question-mark">?</span>));
+            tests.push(RpcTest::identity(EthGetTransactionByHash::request((tx
+                .hash
+                .clone(),))<span class="question-mark">?</span>));
+
+            <span class="kw">if </span>smsg.message.from.protocol() == Protocol::Delegated
+                &amp;&amp; smsg.message.to.protocol() == Protocol::Delegated
+            {
+                tests.push(
+                    RpcTest::identity(EthGetTransactionReceipt::request((tx.hash,))<span class="question-mark">?</span>)
+                        .policy_on_rejected(PolicyOnRejected::PassWithQuasiIdenticalError),
+                );
+            }
         }
     }
     tests.push(RpcTest::identity(
@@ -3794,6 +3823,11 @@
                 <span class="kw">match </span>test.policy_on_rejected {
                     PolicyOnRejected::Pass =&gt; <span class="bool-val">true</span>,
                     PolicyOnRejected::PassWithIdenticalError <span class="kw">if </span>reason_forest == reason_lotus =&gt; {
+                        <span class="bool-val">true
+                    </span>}
+                    PolicyOnRejected::PassWithQuasiIdenticalError
+                        <span class="kw">if </span>reason_lotus.starts_with(reason_forest) =&gt;
+                    {
                         <span class="bool-val">true
                     </span>}
                     <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,

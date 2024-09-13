@@ -122,6 +122,8 @@
 <a href="#122" id="122">122</a>
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -165,7 +167,9 @@
 </span><span class="kw">pub struct </span>EventFilterManager {
     filters: RwLock&lt;HashMap&lt;FilterID, Arc&lt;EventFilter&gt;&gt;&gt;,
     max_filter_results: usize,
-}
+    <span class="comment">// TODO(elmattic): https://github.com/ChainSafe/forest/issues/4740
+    //pub event_index: Option&lt;Arc&lt;EventIndex&gt;&gt;,
+</span>}
 
 <span class="kw">impl </span>EventFilterManager {
     <span class="kw">pub fn </span>new(max_filter_results: usize) -&gt; Arc&lt;<span class="self">Self</span>&gt; {

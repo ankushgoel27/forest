@@ -435,6 +435,12 @@
 <a href="#435" id="435">435</a>
 <a href="#436" id="436">436</a>
 <a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019-2024 ChainSafe Systems
 // SPDX-License-Identifier: Apache-2.0, MIT
 
@@ -632,6 +638,12 @@
     }
 }
 
+<span class="kw">impl </span>From&lt;[u8; <span class="number">20</span>]&gt; <span class="kw">for </span>EthAddress {
+    <span class="kw">fn </span>from(value: [u8; <span class="number">20</span>]) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>(ethereum_types::H160(value))
+    }
+}
+
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>EthAddress&gt; <span class="kw">for </span>FilecoinAddress {
     <span class="kw">type </span>Error = anyhow::Error;
 
@@ -782,7 +794,7 @@
 <span class="attr">#[derive(Serialize, Deserialize, Debug, Clone, JsonSchema)]
 </span><span class="kw">pub struct </span>EthHashList(<span class="kw">pub </span>Vec&lt;EthHash&gt;);
 
-<span class="attr">#[derive(Serialize, Deserialize, Debug, Clone, JsonSchema)]
+<span class="attr">#[derive(Default, Serialize, Deserialize, Debug, Clone, JsonSchema)]
 </span><span class="kw">pub struct </span>EthTopicSpec(<span class="kw">pub </span>Vec&lt;EthHashList&gt;);
 
 <span class="doccomment">/// Represents a filter specification for querying Ethereum event logs.
@@ -817,7 +829,7 @@
 ///   neither `from_block` nor `to_block` can be specified.
 ///   This field is skipped during serialization if `None`.
 ///   [the spec](https://github.com/filecoin-project/lotus/blob/475139ff95407ed9d55d3a2ef87e28da66512937/chain/types/ethtypes/eth_types.go#L602-L627).
-</span><span class="attr">#[derive(Serialize, Deserialize, Debug, Clone, JsonSchema)]
+</span><span class="attr">#[derive(Default, Serialize, Deserialize, Debug, Clone, JsonSchema)]
 #[serde(rename_all = <span class="string">"camelCase"</span>)]
 </span><span class="kw">pub struct </span>EthFilterSpec {
     <span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>, default)]

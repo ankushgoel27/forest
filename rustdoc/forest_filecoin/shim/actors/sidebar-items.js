@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["common","market","miner","multisig","state_load","verifreg","version"]};
+window.SIDEBAR_ITEMS = {"mod":["common","eam","market","miner","multisig","state_load","verifreg","version"]};
