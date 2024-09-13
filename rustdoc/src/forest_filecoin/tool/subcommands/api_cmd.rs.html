@@ -3432,14 +3432,14 @@
             ))
             .unwrap(),
         ),
-        RpcTest::identity(
+        RpcTest::basic(
             EthGetBlockByNumber::request((
                 BlockNumberOrHash::from_predefined(Predefined::Safe),
                 <span class="bool-val">true</span>,
             ))
             .unwrap(),
         ),
-        RpcTest::identity(
+        RpcTest::basic(
             EthGetBlockByNumber::request((
                 BlockNumberOrHash::from_predefined(Predefined::Finalized),
                 <span class="bool-val">true</span>,
