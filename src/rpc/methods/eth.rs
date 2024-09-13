@@ -1128,6 +1128,16 @@ async fn new_eth_tx_receipt<DB: Blockstore>(
     Ok(receipt)
 }
 
+fn tx_hash_from_message_cid<DB: Blockstore>(
+    ctx: &Ctx<DB>,
+    state: &StateTree<DB>,
+    message_cid: Cid,
+) -> Result<EthHash> {
+    let msg = get_signed_message(ctx, message_cid).unwrap();
+    let tx = new_eth_tx_from_signed_message(&msg, state, ctx.chain_config().eth_chain_id)?;
+    Ok(tx.hash)
+}
+
 fn get_signed_message<DB: Blockstore>(ctx: &Ctx<DB>, message_cid: Cid) -> Result<SignedMessage> {
     let result: Result<SignedMessage, crate::chain::Error> =
         crate::chain::message_from_cid(ctx.store(), &message_cid);
@@ -2223,6 +2233,106 @@ impl RpcMethod<1> for EthGetTransactionReceipt {
 
         Ok(tx_receipt)
     }
+}
+
+enum EthTraceAction {}
+enum EthTraceResult {}
+
+struct EthTraceBlockData {
+    r#type: String,
+    error: Option<String>,
+    subtraces: Int64,
+    trace_address: Vec<Int64>,
+    action: EthTraceAction,
+    result: EthTraceResult,
+    block_hash: EthHash,
+    block_number: Int64,
+    transaction_hash: EthHash,
+    transaction_position: Int64,
+}
+
+/// From
+/// <https://github.com/filecoin-project/lotus/blob/e2a77b488f4e83c008cee408332928911167ceff/documentation/en/api-v1-unstable-methods.md#EthTraceBlock>
+/// Returns an OpenEthereum-compatible trace of the given block (implementing `trace_block`),
+/// translating Filecoin semantics into Ethereum semantics and tracing both EVM and FVM calls.
+/// Features:
+///
+/// - FVM actor create events, calls, etc. show up as if they were EVM smart contract events.
+/// - Native FVM call inputs are ABI-encoded (Solidity ABI) as if they were calls to a
+///   `handle_filecoin_method(uint64 method, uint64 codec, bytes params)` function
+///   (where `codec` is the IPLD codec of `params`).
+/// - Native FVM call outputs (return values) are ABI-encoded as `(uint32 exit_code, uint64
+///   codec, bytes output)` where `codec` is the IPLD codec of `output`.
+///
+/// Limitations (for now):
+///
+/// 1. Block rewards are not included in the trace.
+/// 2. SELFDESTRUCT operations are not included in the trace.
+/// 3. EVM smart contract "create" events always specify `0xfe` as the "code" for newly created EVM smart contracts.
+pub enum EthTraceBlock {}
+impl RpcMethod<1> for EthTraceBlock {
+    const NAME: &'static str = "Filecoin.EthTraceBlock";
+    const NAME_ALIAS: Option<&'static str> = Some("trace_block");
+    const N_REQUIRED_PARAMS: usize = 1;
+    const PARAM_NAMES: [&'static str; 1] = ["blk_num"];
+    const API_PATHS: ApiPaths = ApiPaths::V1;
+    const PERMISSION: Permission = Permission::Read;
+    type Params = (BlockNumberOrHash,);
+    type Ok = EthTxReceipt;
+    async fn handle(
+        ctx: Ctx<impl Blockstore + Send + Sync + 'static>,
+        (blk_num,): Self::Params,
+    ) -> Result<Self::Ok, ServerError> {
+        let tipset = tipset_by_block_number_or_hash(ctx.chain_store(), blk_num)?;
+        let (state_root, exec_trace) = ctx.state_manager.execution_trace(&tipset).await?;
+        let state_tree = StateTree::new_from_root(ctx.store_owned(), &state_root)?;
+        let tipset_key = tipset.key().cid()?;
+        let block_hash: EthHash = tipset_key.into();
+
+        let mut all_traces: Vec<EthTraceBlockData> = Vec::with_capacity(exec_trace.len());
+        let mut msg_index = 0;
+
+        for invocation_result in exec_trace {
+            if invocation_result.msg.from == FilecoinAddress::SYSTEM_ACTOR {
+                // Skip system actor messages
+                continue;
+            }
+
+            msg_index += 1;
+
+            let tx_hash = tx_hash_from_message_cid(&ctx, &state_tree, invocation_result.msg.cid())?;
+            let environment = create_base_environment(&state_tree, invocation_result.msg.from)?;
+
+            // build traces and iterate over them in the env
+        }
+
+        // https://github.com/filecoin-project/lotus/blob/e2a77b488f4e83c008cee408332928911167ceff/node/impl/full/eth.go#L850-L916
+        todo!()
+    }
+}
+
+// TODO: move it a more appropriate place
+#[derive(Default)]
+struct Environment {
+    caller: EthAddress,
+    is_evm: bool,
+    subtrace_count: i64,
+    traces: Vec<EthTraceBlockData>,
+    last_byte_code: Option<EthAddress>,
+}
+
+fn create_base_environment<DB: Blockstore>(
+    state_tree: &StateTree<DB>,
+    from: FilecoinAddress,
+) -> anyhow::Result<Environment> {
+    let sender = lookup_eth_address(&from, state_tree)?.context(format!(
+        "top-level message sender {} could not be found",
+        from
+    ))?;
+    Ok(Environment {
+        caller: sender,
+        ..Default::default()
+    })
 }
 
 #[cfg(test)]

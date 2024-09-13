@@ -508,6 +508,41 @@ where
         })
     }
 
+    pub async fn execution_trace(
+        self: &Arc<Self>,
+        tipset: &Arc<Tipset>,
+    ) -> anyhow::Result<(Cid, Vec<ApiInvocResult>)> {
+        // let tipset_key = tipset.key();
+        // potentially introduce a cache. Todo later if needed.
+
+        let mut trace = Vec::new();
+        let exec_monitor = |ctx: MessageCallbackCtx<'_>| {
+            match ctx.at {
+                CalledAt::Applied => {
+                    let result = ApiInvocResult {
+                        msg: ctx.message.message().clone(),
+                        msg_cid: ctx.cid,
+                        msg_rct: Some(ctx.apply_ret.msg_receipt()),
+                        error: ctx.apply_ret.failure_info().unwrap_or_default(),
+                        duration: ctx.duration.as_nanos().clamp(0, u64::MAX as u128) as u64,
+                        gas_cost: MessageGasCost::new(ctx.message.message(), ctx.apply_ret)?,
+                        execution_trace: structured::parse_events(ctx.apply_ret.exec_trace())
+                            .unwrap_or_default(),
+                    };
+                    trace.push(result);
+                    Ok(())
+                }
+                _ => Ok(()), // ignored
+            }
+        };
+        let (state_root, _) = self.compute_tipset_state_blocking(
+            tipset.clone(),
+            Some(exec_monitor),
+            VMTrace::Traced,
+        )?;
+        Ok((state_root, trace))
+    }
+
     /// runs the given message and returns its result without any persisted
     /// changes.
     pub fn call(
